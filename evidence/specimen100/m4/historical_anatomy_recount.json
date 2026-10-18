@@ -1,0 +1,34 @@
+{
+  "schema": "specimen100.m4.historical_anatomy_recount.v1",
+  "generated_utc": "2026-10-18T10:34:47Z",
+  "artifact": "/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/evidence/lisp_normalized.txt",
+  "bytes": 371331415,
+  "sha256": "bef2a63fc92d28f582c2426d1e61d6c942d89006e3676ce2949d2df78270d794",
+  "declared_sha256": "bef2a63fc92d28f582c2426d1e61d6c942d89006e3676ce2949d2df78270d794",
+  "sha_match": true,
+  "histogram": {
+    "/": 150761408,
+    "<": 98369120,
+    "*": 73798229,
+    "p": 47934035,
+    "D": 468609,
+    "J": 8,
+    "i": 4,
+    "v": 1,
+    "#": 1
+  },
+  "sum_check": true,
+  "vs_historical_claim": {
+    "v": "1",
+    "J": "8",
+    "i": "4",
+    "/": "~150M",
+    "recount": {
+      "v": 1,
+      "J": 8,
+      "i": 4,
+      "/": 150761408
+    }
+  },
+  "note": "Recuento del artefacto historico normalize (Windows). La regeneracion con nuestro bolge19 (--normalize) queda como tarea M4."
+}
