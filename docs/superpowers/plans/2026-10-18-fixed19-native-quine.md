@@ -118,7 +118,7 @@
 - [x] Implement unique run IDs and an append-only report index. Preserve every rejected candidate and its reason. (Implemented in Task 2; verified and pinned by the Task 4 tests.)
 - [x] Run the smoke campaign with `python3 tools/search_fixed19_quine.py --contract quine/contract.json --budget quine/budget-smoke.json --output-root evidence/quine`, then run the verifier on each surviving candidate.
   Expected: either a fully demonstrated candidate or a `NOT_DEMONSTRATED` / `BUDGET_EXHAUSTED` report with the exact explored bounds and hashes. Actual: `BUDGET_EXHAUSTED` after 2,082 candidates (1,997 halted, all byte-mismatched; 84 `MAX_STEPS`; 1 `WALL_TIMEOUT`); all 1,997 halting candidates re-verified `NOT_DEMONSTRATED`. Evidence and digests in `docs/QUINE_RESEARCH.md`.
-- [ ] Commit with `docs: record fixed19 quine research run`.
+- [x] Commit with `docs: record fixed19 quine research run` (`98e1139`).
 
 ## Completion gate
 
