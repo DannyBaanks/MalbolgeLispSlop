@@ -12,7 +12,7 @@ The joke targets manual opcode purism: reviewing an enormous self-modifying inst
 
 ## 2. Target profile and compatibility boundary
 
-- The selected execution profile is the fixed-width 19-trit (`3^19`) machine implemented by `bolge19`. The initial compose calls this “Unshackled 19-trit”; this repo will use “fixed-3^19” in claims because current evidence does not establish parity with dynamically widening Unshackled.
+- The selected execution profile is the fixed-width 19-trit (`3^19`) machine implemented by `bolge19`. The initial compose calls this “Unshackled 19-trit”; this repo will call it “fixed-3^19” because current evidence does not establish parity with dynamically widening Unshackled.
 - Classic Malbolge `3^10`, fixed `3^19`, dynamically widening Unshackled, and Malbolge Free remain separate profiles. A result in one profile does not establish a result in another.
 - The existing `bolge19` M1 guest is only an input/output/halt slice. It is not Lisp conformance, a quine, or proof of parity with every Unshackled implementation.
 - MalbolgeLISP v1.2 documentation is a historical feature reference, not code to copy and not an unquestioned oracle. The project will write its own language specification and tests. Compatibility claims will be limited to behaviors demonstrated against those tests.
@@ -102,7 +102,7 @@ An optional report may display a tongue-in-cheek “manual review years” estim
 ## 9. Non-goals and limits
 
 - No hand-programming or manual cleanup of generated Malbolge source.
-- No claim that Classic BolgeForge output runs as fixed-19-trit Unshackled.
+- No claim that Classic BolgeForge output runs under the fixed-`3^19` profile.
 - No claim of dynamic-width Unshackled or Malbolge Free compatibility from this fixed-width target.
 - No host-side Lisp evaluator presented as native guest execution.
 - No record, speed, or “most advanced” claim without comparable measurements and independent evidence.

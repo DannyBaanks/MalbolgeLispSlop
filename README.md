@@ -32,6 +32,8 @@ forever.
 - Evidence and claims: [PARITY_MATRIX.md](docs/PARITY_MATRIX.md)
 - Risks: [RISKS.md](docs/RISKS.md)
 - Milestones: [PLAN.md](docs/PLAN.md)
+- Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
+- Detailed subsystem plans: [plan index](docs/superpowers/plans/README.md)
 - Third-party provenance: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
 No upstream repository is modified. The large MalbolgeLISP specimen and its

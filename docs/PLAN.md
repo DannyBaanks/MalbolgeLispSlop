@@ -42,3 +42,11 @@ interpreter or canned output is not conformance.
 No upstream edits, publishing, push, or pull request are part of these
 milestones. Any future publication requires a separate user request and
 resolved artifact licensing.
+
+## Full-system implementation plan
+
+The M0/M1 claims above remain the recorded baseline. The approved full-system
+specification and its split, dependency-ordered implementation plans are
+indexed in [`docs/superpowers/plans/README.md`](superpowers/plans/README.md).
+The synthesis-backend capability gate must pass before implementation of the
+guest Lisp runtime begins. Native quine research remains a separate track.
