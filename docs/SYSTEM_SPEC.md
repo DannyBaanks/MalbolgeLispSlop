@@ -4,6 +4,18 @@
 **Approved design direction:** fixed `3^19` target; new automatic synthesis backend inspired by BolgeForge  
 **Scope:** product and architecture only. This document does not claim that the proposed runtime or synthesizer exists.
 
+## Approved execution amendment — 2026-10-18
+
+The user approved `superpowers/plans/2026-10-18-complete-native-lisp.md` after
+H2 commit `9e76248`. This amendment takes precedence over the older wording
+below: Lisp completion requires the complete independently implemented v1.2
+surface and persistent guest REPL; **the quine is a separate research track,
+not a Lisp completion gate**. Z3 (`z3-solver==4.16.0.0`) is explicitly allowed
+in development/construction/verification alongside Python 3.12 and Zig 0.16.0;
+neither it nor the host reference evaluator may evaluate runtime Lisp inputs.
+The target VM/profile remains fixed-3^19. Old evidence is never re-sealed.
+Implementation progress and decisions live in `IMPLEMENTATION_LEDGER.md`.
+
 ## 1. Purpose
 
 MalbolgeLispSlop will be an original Lisp system whose evaluator runs inside a generated Malbolge guest program using the fixed `3^19` profile. It will include a host-side toolchain, a guest REPL, a conformance suite, reproducible generated source, and a native guest quine.

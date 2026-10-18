@@ -1,0 +1,2 @@
+# Construction and verification only; the generated guest has no Z3 dependency.
+z3-solver==4.16.0.0
