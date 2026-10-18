@@ -1,0 +1,152 @@
+======================================================================
+FAIL: test_all_first_bytes_take_the_correct_guest_path (tests.test_branch.BranchTests.test_all_first_bytes_take_the_correct_guest_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 38, in compile
+    from slopsynth.branch import lower_branch
+ModuleNotFoundError: No module named 'slopsynth.branch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 45, in test_all_first_bytes_take_the_correct_guest_path
+    built = self.compile()
+            ^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 40, in compile
+    self.fail("H2 has no native branch lowering")
+AssertionError: H2 has no native branch lowering
+
+======================================================================
+FAIL: test_block_names_and_order_do_not_choose_the_behavior (tests.test_branch.BranchTests.test_block_names_and_order_do_not_choose_the_behavior)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 38, in compile
+    from slopsynth.branch import lower_branch
+ModuleNotFoundError: No module named 'slopsynth.branch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 100, in test_block_names_and_order_do_not_choose_the_behavior
+    self.assertEqual(self.compile().image, self.compile(renamed).image)
+                     ^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 40, in compile
+    self.fail("H2 has no native branch lowering")
+AssertionError: H2 has no native branch lowering
+
+======================================================================
+FAIL: test_changed_profile_and_false_case_are_refused (tests.test_branch.BranchTests.test_changed_profile_and_false_case_are_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 38, in compile
+    from slopsynth.branch import lower_branch
+ModuleNotFoundError: No module named 'slopsynth.branch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 94, in test_changed_profile_and_false_case_are_refused
+    self.compile(profile=replace(self.profile, eof_value=0))
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 40, in compile
+    self.fail("H2 has no native branch lowering")
+AssertionError: H2 has no native branch lowering
+
+======================================================================
+FAIL: test_cli_emits_module_and_round_trips_it (tests.test_branch.BranchTests.test_cli_emits_module_and_round_trips_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 112, in test_cli_emits_module_and_round_trips_it
+    self.assertEqual(result.returncode, 0, result.stderr.decode())
+AssertionError: 3 != 0 : filter.slop: parsed as module 'filter' with 1 function(s); there is no lowering for control flow yet, so nothing was emitted
+
+
+======================================================================
+FAIL: test_eof_and_each_output_byte_execute_in_the_real_vm (tests.test_branch.BranchTests.test_eof_and_each_output_byte_execute_in_the_real_vm)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 38, in compile
+    from slopsynth.branch import lower_branch
+ModuleNotFoundError: No module named 'slopsynth.branch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 62, in test_eof_and_each_output_byte_execute_in_the_real_vm
+    built = self.compile()
+            ^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 40, in compile
+    self.fail("H2 has no native branch lowering")
+AssertionError: H2 has no native branch lowering
+
+======================================================================
+FAIL: test_registers_arithmetic_and_different_arms_are_refused (tests.test_branch.BranchTests.test_registers_arithmetic_and_different_arms_are_refused) (source='name filter\ncase 0141,41\nentry top\ntop:\nread\nbrz B, zero, nonzero\nzero:\nhalt\nnonzero:\nread\nwrite\nhalt\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 38, in compile
+    from slopsynth.branch import lower_branch
+ModuleNotFoundError: No module named 'slopsynth.branch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 90, in test_registers_arithmetic_and_different_arms_are_refused
+    self.compile(source)
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 40, in compile
+    self.fail("H2 has no native branch lowering")
+AssertionError: H2 has no native branch lowering
+
+======================================================================
+FAIL: test_registers_arithmetic_and_different_arms_are_refused (tests.test_branch.BranchTests.test_registers_arithmetic_and_different_arms_are_refused) (source='name filter\ncase 0141,41\nentry top\ntop:\nread B\nbrz A, zero, nonzero\nzero:\nhalt\nnonzero:\nread\nwrite\nhalt\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 38, in compile
+    from slopsynth.branch import lower_branch
+ModuleNotFoundError: No module named 'slopsynth.branch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 90, in test_registers_arithmetic_and_different_arms_are_refused
+    self.compile(source)
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 40, in compile
+    self.fail("H2 has no native branch lowering")
+AssertionError: H2 has no native branch lowering
+
+======================================================================
+FAIL: test_registers_arithmetic_and_different_arms_are_refused (tests.test_branch.BranchTests.test_registers_arithmetic_and_different_arms_are_refused) (source='name filter\ncase 0141,41\nentry top\ntop:\nread\nbrz A, zero, nonzero\nzero:\nhalt\nnonzero:\nadd A, A, 1\nread\nwrite\nhalt\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 38, in compile
+    from slopsynth.branch import lower_branch
+ModuleNotFoundError: No module named 'slopsynth.branch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 90, in test_registers_arithmetic_and_different_arms_are_refused
+    self.compile(source)
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 40, in compile
+    self.fail("H2 has no native branch lowering")
+AssertionError: H2 has no native branch lowering
+
+======================================================================
+FAIL: test_registers_arithmetic_and_different_arms_are_refused (tests.test_branch.BranchTests.test_registers_arithmetic_and_different_arms_are_refused) (source='name filter\ncase 0141,41\nentry top\ntop:\nread\nbrz A, zero, nonzero\nzero:\nwrite\nhalt\nnonzero:\nread\nwrite\nhalt\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 38, in compile
+    from slopsynth.branch import lower_branch
+ModuleNotFoundError: No module named 'slopsynth.branch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 90, in test_registers_arithmetic_and_different_arms_are_refused
+    self.compile(source)
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 40, in compile
+    self.fail("H2 has no native branch lowering")
+AssertionError: H2 has no native branch lowering
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.055s
+
+FAILED (failures=9)

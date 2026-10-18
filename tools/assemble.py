@@ -72,14 +72,7 @@ def main(argv: list[str]) -> int:
 
     placed = parse_placed(args.source.read_text(encoding="utf-8"))
     if placed.program is None:
-        assert placed.module is not None
-        print(
-            f"{args.source.name}: parsed as module {placed.module.name!r} with "
-            f"{len(placed.module.functions)} function(s); there is no lowering for "
-            "control flow yet, so nothing was emitted",
-            file=sys.stderr,
-        )
-        return 3
+        return _assemble_branch(args, placed, profile)
 
     try:
         built = assemble(placed, profile, line_width=args.line_width)
@@ -139,6 +132,40 @@ def main(argv: list[str]) -> int:
 
 def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def _assemble_branch(args, placed, profile) -> int:
+    from slopsynth.branch import lower_branch
+
+    if args.against is not None:
+        print("--against requires a straight-line JSON goal", file=sys.stderr)
+        return 3
+    try:
+        built = lower_branch(placed.module, profile, line_width=args.line_width)
+        if args.round_trip:
+            reparsed = parse_placed(format_placed(placed))
+            if (reparsed != placed or lower_branch(
+                    reparsed.module, profile, line_width=args.line_width).image != built.image):
+                raise AssemblyError("round trip changed the module or image")
+        if args.out is not None:
+            # Evidence and previous outputs are never silently replaced.
+            with args.out.open("xb") as stream:
+                stream.write(built.image)
+    except (AssemblyError, OSError) as exc:
+        print(f"{args.source.name}: assembly refused: {exc}", file=sys.stderr)
+        return 3
+    if not args.quiet:
+        print(f"{args.source.name}: guest {placed.name}, {built.cells} cells")
+        print(f"  lowering={built.lowering} (scoped H2; general control flow remains unsupported)")
+        for label, addresses in built.labels:
+            print(f"  label {label}: cells {','.join(map(str, addresses))}")
+        print(f"  walk: accepted_cells={built.cells} verdict=ACCEPTED")
+        print(f"  image_sha256={_sha(built.image)}")
+        if args.round_trip:
+            print("round-trip: identical")
+        if args.out is not None:
+            print(f"wrote {args.out} ({len(built.image)} bytes)")
+    return 0
 
 
 if __name__ == "__main__":

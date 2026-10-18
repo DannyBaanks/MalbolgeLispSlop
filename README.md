@@ -42,6 +42,9 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
   [protocol](evidence/loader_gate_v1/protocol.md)
 - Front-end gate H1, our own `.slop` text to canonical image:
   [protocol](evidence/hell_frontend_v1/protocol.md)
+- Native branch gate H2, zero stops / nonzero echoes the next byte:
+  [protocol](evidence/h2_branch_v1/protocol.md), [Spanish guide](GUIA.md).
+  This is a scoped 259-cell lowering, not general control flow or a Lisp guest.
 - Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
 - Quine research (fixed-3^19): [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md)
 - Specimen-100 research: [SPECIMEN100.md](docs/SPECIMEN100.md) — canonical REPL reproduced; regeneration and truncation research PARTIAL, no behavioral-equivalence claim

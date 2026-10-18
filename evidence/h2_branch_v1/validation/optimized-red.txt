@@ -1,0 +1,13 @@
+======================================================================
+FAIL: test_optimized_evidence_gate_rejects_a_vm_that_always_stops (tests.test_branch.BranchTests.test_optimized_evidence_gate_rejects_a_vm_that_always_stops)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_branch.py", line 143, in test_optimized_evidence_gate_rejects_a_vm_that_always_stops
+    self.assertEqual(result.returncode, 1, result.stdout.decode() + result.stderr.decode())
+AssertionError: 0 != 1 : H2 DEMONSTRATED_SCOPED: 259 cells, 1800 VM runs; /tmp/tmpqcs5dyf6/20261018T175016Z-ab0a9841
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.530s
+
+FAILED (failures=1)

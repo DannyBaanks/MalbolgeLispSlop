@@ -1,0 +1,46 @@
+{
+  "actual_vm_runs": 1800,
+  "base_revision": "1194d7807ad562497f232cf9505970a5c2943596",
+  "claims": {
+    "GENERAL-BOOTSTRAP": "NOT_DEMONSTRATED",
+    "GENERAL-BRZ": "NOT_DEMONSTRATED",
+    "GENERAL-JUMP": "NOT_DEMONSTRATED",
+    "H2-ZERO-STOP-ELSE-ECHO": "DEMONSTRATED_SCOPED",
+    "LISP-GUEST": "NOT_DEMONSTRATED"
+  },
+  "command": [
+    "/usr/bin/python3",
+    "tools/verify_h2_branch.py"
+  ],
+  "config": {
+    "address_space_bytes": 536870912,
+    "loader": "canonical",
+    "max_steps": 512,
+    "output_bytes": 8,
+    "timeout_seconds": 5
+  },
+  "failure": null,
+  "image_cells": 259,
+  "image_sha256": "519bcf325b380a975fa5424b66e2d4eff3867053140391327841313ce263bc77",
+  "model_selector_traces": 257,
+  "negative_controls": 2,
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "schema": "h2-branch-v1",
+  "sources_sha256": {
+    "build/bolge19": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e",
+    "examples/branch.slop": "5725b5fb71593150b17945bf64a6539a380b80654fc282350e654600e31a0ec3",
+    "profiles/fixed19.json": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+    "slopsynth/branch.py": "17c3d513531dcc076cc34efb552dbd5c3f9b6e974d2beca23208c16eed5ff70b",
+    "slopsynth/canonical.py": "32acccd6851972c4fe8750ac1bcfbf7a00bb4f5a587254fcdd97903c0fd3b8c5",
+    "slopsynth/encode.py": "04115a499555fd5f25517cc85aeb9c329b89a75b2806f13d1ee62839609d9d6d",
+    "slopsynth/lang.py": "b42f4a36cdc50c38f014b27e420bba04bb3397dc438e6043a619db67317a84fd",
+    "slopsynth/model.py": "9e043c17f3c71340c0d15f180717c774e412cfe9792d0fb7d6d6b07d0fa9fb4c",
+    "src/bolge19.zig": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+    "tests/test_branch.py": "3285ee24a6d55aacf2f338df0f6905a4aa347ae6c4f3142d575fc2bbadfbbe63",
+    "tools/assemble.py": "29194b267fbbfd326acc6f480981e5f556d7a5c24b0ec33c00dfe9d4c9cb0e7d",
+    "tools/guest_runner.py": "5d87ef2916572728156ff92afe85551dcb00985f42fefa67a2024487c86213f1",
+    "tools/verify_h2_branch.py": "1941f6f7139b03fe147d93382afac6100483d35383cdac0769ce50fd649f8936"
+  },
+  "timestamp_utc": "20261018T174742Z"
+}

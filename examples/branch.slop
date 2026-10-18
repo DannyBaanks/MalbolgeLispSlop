@@ -1,0 +1,17 @@
+; First byte is a selector. Zero stops; nonzero echoes the next byte.
+; EOF is nonzero and the echoed EOF low byte is da in fixed-3^19.
+name zero_filter
+case 0041,
+case 0141,41
+case ff42,42
+case ,da
+entry choose
+choose:
+    read
+    brz A, stop, echo
+stop:
+    halt
+echo:
+    read
+    write
+    halt

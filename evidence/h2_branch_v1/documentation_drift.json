@@ -1,0 +1,19 @@
+{
+  "base_revision": "1194d7807ad562497f232cf9505970a5c2943596",
+  "changes": [
+    {
+      "after_H2": "fd7bccc0eb3316aa7efb5af0f2436642a47dcf3340884878a8c03bdbb94578e0",
+      "before_H2": "4437c8a84942d6524933ca870970730feb30fcf21c753a493c608e73329ad4c3",
+      "path": "README.md",
+      "sealed_in_m6": "87c30dd72e5a1831bbd244e8fa12cde6217c272f07b153fb55a5cad26ea62da9"
+    },
+    {
+      "after_H2": "3d376ed6854413465c392ec2915e5bb43f80baf0a0efbe8a70014f02ff0d03a2",
+      "before_H2": "e34c8bae95a734c0a8ea72b001339d7fdc008aeabf2f0513ec53eff4ad8571e2",
+      "path": "docs/PARITY_MATRIX.md",
+      "sealed_in_m6": "f447643dfa449fbff341949062f9ab9ed47ce1d096084eaf2877f377f664edea"
+    }
+  ],
+  "note": "Append-only correction. Previous M6/L1/H1 evidence remains byte-unchanged; do not run m6/finalize.py against HEAD.",
+  "schema": "h2-documentation-drift-v1"
+}

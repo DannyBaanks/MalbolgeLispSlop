@@ -3,8 +3,9 @@
 Two shapes parse. A *straight-line guest* is the subset the certified lowering
 actually emits today: ``read``, ``write`` and ``halt``, optionally annotated with
 labels and absolute-address anchors. A *module* carries control flow: it parses
-into the same typed IR the search back-end uses, but nothing lowers it, so the
-assembler must refuse to emit rather than invent bytes.
+into the same typed IR the search back-end uses. The CLI now lowers one H2
+shape (zero stops, nonzero reads and echoes another byte) through
+:mod:`slopsynth.branch`; every other module remains unsupported.
 """
 
 from __future__ import annotations
@@ -195,7 +196,10 @@ def parse_placed(text: str) -> Placed:
             continue
         head, _, rest = statement.partition(" ")
         head = head.lower()
-        operands = _split_operands(rest.strip(), number)
+        # Empty input/output are valid byte strings for a case (EOF / silence).
+        # Operation operands retain the strict non-empty grammar.
+        operands = ([part.strip() for part in rest.strip().split(",")]
+                    if head == "case" else _split_operands(rest.strip(), number))
 
         if head == "name":
             if name is not None:

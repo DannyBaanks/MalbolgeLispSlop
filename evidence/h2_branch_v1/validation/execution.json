@@ -1,0 +1,44 @@
+{
+  "base_revision": "1194d7807ad562497f232cf9505970a5c2943596",
+  "commands": [
+    {
+      "command": "bash tools/build.sh",
+      "exit_status": 0,
+      "raw": "build.txt"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -q",
+      "exit_status": 0,
+      "raw": "suite.txt"
+    },
+    {
+      "command": "python3 -O tools/verify_h2_branch.py",
+      "exit_status": 0,
+      "raw": "gate.txt"
+    },
+    {
+      "command": "python3 -m unittest tests.test_branch.BranchTests.test_optimized_evidence_gate_rejects_a_vm_that_always_stops -q",
+      "exit_status": 1,
+      "phase": "RED before explicit-check repair",
+      "raw": "optimized-red.txt"
+    },
+    {
+      "command": "python3 -m unittest tests.test_branch -q",
+      "note": "Shell wrapper ended with cat (exit 0); unittest failures are preserved, its separate exit status was not captured.",
+      "phase": "RED before H2 implementation",
+      "raw": "red.txt"
+    }
+  ],
+  "limits": [
+    "No general branch/jump lowering",
+    "No Lisp interpreter",
+    "EOF depends on pinned fixed19 VM lazy-memory tail"
+  ],
+  "review": {
+    "final_repair_validation": "New -O failure-injection regression plus full suite and real optimized campaign; no claim that reviewer approved the subsequent repair.",
+    "initial": "Independent reviewer found stale frontend docstring (fixed), then optimized-Python assertion bypass (reproduced and repaired)."
+  },
+  "unchanged_sources": {
+    "src/bolge19.zig": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3"
+  }
+}

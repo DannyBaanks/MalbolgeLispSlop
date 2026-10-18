@@ -61,3 +61,21 @@ them), so `Lisp semantics in guest` and `Independent backend agreement` stay
 `[NOT_DEMONSTRATED]`. What changed is that the compiled route now has a tool of
 ours at the front of it, MIT-licensed and profile-driven, instead of depending on
 someone else's HeLL or LMFAO.
+
+## Native branch gate H2 (2026-10-18)
+
+[Gate H2](../evidence/h2_branch_v1/protocol.md) adds one certified CFG through
+the CLI's `slopsynth.branch` path: `read A; brz A, stop, echo`, where `stop`
+halts and `echo` reads and writes the next byte, then halts. One generated
+259-cell image uses an actual input-dependent native JMP and self-modifying
+bootstrap. The sealed campaign covers every first byte, missing payloads,
+every output byte at all four arm copies, EOF, formatting, and two mutants.
+Labels and cases do not choose an image by input: one image runs all cases.
+
+H2-ZERO-STOP-ELSE-ECHO is `DEMONSTRATED_SCOPED`. General BRZ, general JMP,
+reusable initialization, arbitrary arms, memory/arithmetic, loops/calls, and
+Lisp remain `NOT_DEMONSTRATED`. `compile_module`'s search path is unchanged;
+its old capability table and semantic-proof enum have not been upgraded.
+EOF specifically depends on this fixed19 VM's lazy-memory pattern and the
+exact emitted tail; no Unshackled parity follows. The H1 paragraph above is
+historical as to its then-missing branch lowering.
