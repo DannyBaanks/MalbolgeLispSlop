@@ -1,0 +1,8 @@
+{
+  "name": "echo",
+  "operations": [
+    {"op": "read_a"},
+    {"op": "write_a"},
+    {"op": "halt"}
+  ]
+}

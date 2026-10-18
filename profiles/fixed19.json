@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "name": "fixed-3^19",
+  "trits": 19,
+  "end": 1162261467,
+  "eof_value": 1162261466,
+  "dispatch": {
+    "jump": 4,
+    "output": 5,
+    "input": 23,
+    "rotate": 39,
+    "move": 40,
+    "crazy": 62,
+    "nop": 68,
+    "halt": 81
+  },
+  "loaders": {
+    "raw": {
+      "skip_whitespace": false,
+      "whitespace_is_cell": true,
+      "validate_opcodes": false,
+      "whitespace_bytes": [9, 10, 13, 32],
+      "position_cycle": null,
+      "byte_min": 0,
+      "byte_max_exclusive": 256
+    },
+    "canonical": {
+      "skip_whitespace": true,
+      "whitespace_is_cell": false,
+      "validate_opcodes": true,
+      "whitespace_bytes": [9, 10, 13, 32],
+      "position_cycle": 564,
+      "byte_min": 33,
+      "byte_max_exclusive": 127
+    }
+  }
+}
