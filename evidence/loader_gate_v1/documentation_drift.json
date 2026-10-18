@@ -1,0 +1,33 @@
+{
+  "schema": "loader_gate_v1.documentation_drift.v1",
+  "date": "2026-10-18",
+  "why": "Gate L1 appends a dated section to docs/PARITY_MATRIX.md and adds a status link to README.md. evidence/specimen100/m6/documentation_hashes.json pins the pre-edit hashes of both files. That sealed M6 snapshot is left exactly as published; this file records the supersession instead of rewriting it.",
+  "superseded_pins": [
+    {
+      "file": "README.md",
+      "m6_pinned_sha256": "87c30dd72e5a1831bbd244e8fa12cde6217c272f07b153fb55a5cad26ea62da9",
+      "head_sha256_after_l1": "789624909e3d026f67ef516d67a907d6bbbbeb9f1bad46967edd308b29a4f6fe"
+    },
+    {
+      "file": "docs/PARITY_MATRIX.md",
+      "m6_pinned_sha256": "f447643dfa449fbff341949062f9ab9ed47ce1d096084eaf2877f377f664edea",
+      "head_sha256_after_l1": "943b458bc15dfa1554dc663b04ef8c513e64895f514035703e95471919143a54"
+    }
+  ],
+  "still_matching_pins": [
+    {
+      "file": "docs/SPECIMEN100.md",
+      "sha256": "faffe94073ff1b176df430c4d6d74761f545de8fe7cb7b44fd7db197c22af4e4"
+    },
+    {
+      "file": "docs/BASELINE.md",
+      "sha256": "855377847a29cdea4ab9d06443000f00d893eb716a5649adbfa99a811c21a7e9"
+    },
+    {
+      "file": "docs/RISKS.md",
+      "sha256": "24b23884e67bb23d479fd933a82339f3873bd4cb0cc5619381b29cf5bb03dba3"
+    }
+  ],
+  "consequence": "documentation_hashes.json is a snapshot of the M6 closeout, not a live checker. No test in tests/ compares it against HEAD, so the drift is silent: 93 tests pass with the old pins in place. Anyone re-running evidence/specimen100/m6/finalize.py would overwrite the sealed M6 snapshot with post-L1 hashes; do not run it against this HEAD.",
+  "verified_by": "python3 -m pytest -q tests -> 93 passed, 24 subtests passed"
+}

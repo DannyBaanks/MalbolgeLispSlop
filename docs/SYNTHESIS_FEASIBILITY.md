@@ -81,6 +81,21 @@ reported as unsatisfiable.
 
 These are IR contracts only. None has a demonstrated guest implementation.
 
+## Route implication (2026-10-18)
+
+[Gate L1](../evidence/loader_gate_v1/protocol.md) shows an already-compiled
+opcode-aligned-text image from the HeLL/LMFAO line running correctly on this
+same VM: 5/5 sealed oracles byte-exact, agreeing with the upstream `Unshackled`
+engine, with the raw loader as a negative control. That does not move any row of
+the table above — the search lowering still has no guest implementation for
+branch, memory, arithmetic, loops or calls — but it changes what the gate is
+evidence *about*. The blocker is candidate generation, not the machine: a guest
+program can already reach `fixed-3^19` by compilation, so the search route now
+competes against a compiler route rather than being the only route. Any move to
+the compiler route needs its own licensing and reproduction decision first
+(LMFAO is GPLv3, ELVM is MIT, this repository is MIT, and the workspace rule is
+copy-and-revalidate, never import).
+
 ## Reproduction
 
 Run from the repository root:

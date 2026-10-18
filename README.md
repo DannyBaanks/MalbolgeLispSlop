@@ -38,6 +38,8 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
 - Evidence and claims: [PARITY_MATRIX.md](docs/PARITY_MATRIX.md)
 - Risks: [RISKS.md](docs/RISKS.md)
 - Milestones: [PLAN.md](docs/PLAN.md)
+- Loader gate L1, a compiled image running on fixed-`3^19`:
+  [protocol](evidence/loader_gate_v1/protocol.md)
 - Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
 - Quine research (fixed-3^19): [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md)
 - Specimen-100 research: [SPECIMEN100.md](docs/SPECIMEN100.md) — canonical REPL reproduced; regeneration and truncation research PARTIAL, no behavioral-equivalence claim

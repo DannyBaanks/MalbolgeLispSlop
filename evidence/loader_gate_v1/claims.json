@@ -1,0 +1,83 @@
+{
+ "schema": "loader_gate_v1.claims.v1",
+ "date": "2026-10-18",
+ "gate": "L1",
+ "null_hypothesis": "the vendored fixed-3^19 VM cannot correctly run an opcode-aligned-text image produced by the HeLL/LMFAO line",
+ "outcome": "H0_REJECTED",
+ "execution": {
+  "path": "evidence/loader_gate_v1/execution.json",
+  "sha256": "5d618872c4acab73073ab7bd328c765a4558accd3db995c7c73b3d0fe8725bf2"
+ },
+ "claims": [
+  {
+   "id": "L1-VM-CANONICAL",
+   "status": "DEMONSTRATED",
+   "claim": "build/bolge19 --loader canonical reproduces the sealed 2n+1 outputs byte-for-byte on artifact.mu (5/5)",
+   "evidence": [
+    "raw/canonical_{0..4}.out",
+    "execution.json"
+   ],
+   "sha256": "5d618872c4acab73073ab7bd328c765a4558accd3db995c7c73b3d0fe8725bf2"
+  },
+  {
+   "id": "L1-BACKEND-AGREEMENT",
+   "status": "DEMONSTRATED_SCOPED",
+   "claim": "the vendored VM agrees with the independent canonical Unshackled engine on this specimen class (one artifact, five inputs, one program shape)",
+   "evidence": [
+    "raw/unshackled_{0..4}.out",
+    "execution.json"
+   ],
+   "sha256": "5d618872c4acab73073ab7bd328c765a4558accd3db995c7c73b3d0fe8725bf2"
+  },
+  {
+   "id": "L1-RAW-SILENT-CORRUPTION",
+   "status": "DEMONSTRATED",
+   "claim": "the default raw loader turns the trailing CR/LF into cells, seeds pat=[10,581130723,10...] instead of pat=[81,581130652,81...], and halts with identical 0x02 0xCE garbage for all five inputs at exit 0",
+   "evidence": [
+    "raw/raw_{0..4}.out",
+    "raw/raw_{0..4}.err"
+   ],
+   "sha256": "5d618872c4acab73073ab7bd328c765a4558accd3db995c7c73b3d0fe8725bf2"
+  },
+  {
+   "id": "L1-COMPILED-ROUTE-OPEN",
+   "status": "DEMONSTRATED",
+   "claim": "a compiled program reaches the fixed-3^19 guest, so the VM is not the blocker for the synthesis gates",
+   "evidence": [
+    "execution.json"
+   ],
+   "sha256": "5d618872c4acab73073ab7bd328c765a4558accd3db995c7c73b3d0fe8725bf2"
+  },
+  {
+   "id": "L1-LISP-GUEST",
+   "status": "NOT_DEMONSTRATED",
+   "claim": "a Lisp interpreter runs as a guest on fixed-3^19",
+   "evidence": [],
+   "sha256": null
+  },
+  {
+   "id": "L1-MALBOLGELISP-CONFORMANCE",
+   "status": "NOT_DEMONSTRATED",
+   "claim": "artifact.mu says anything about MalbolgeLISP semantics; it is Translator-product-class, and the canonical loader refuses lisp.mb and core.mb",
+   "evidence": [],
+   "sha256": null
+  },
+  {
+   "id": "L1-SEARCH-GATES",
+   "status": "UNCHANGED_NOT_DEMONSTRATED",
+   "claim": "branch_zero, store_load, add_sub, countdown, call_return by search lowering",
+   "evidence": [
+    "../synthesis/capability-search-2026-10-18T074621Z/report.json"
+   ],
+   "sha256": null
+  },
+  {
+   "id": "L1-GENERAL-UNSHACKLED-PARITY",
+   "status": "NOT_DEMONSTRATED",
+   "claim": "general parity between the vendored VM and the canonical engine beyond this specimen",
+   "evidence": [],
+   "sha256": null
+  }
+ ],
+ "not_redistributed": "artifact.mu, observed_{0..4}.bin and the Unshackled binary live in another repository and are referenced by hash and path only"
+}

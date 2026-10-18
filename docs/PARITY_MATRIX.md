@@ -25,3 +25,17 @@ independent Unshackled parity or full Lisp conformance. M4 regeneration remains
 PARTIAL (36.0488% covered, zero covered-byte mismatches). M5 behavioral
 equivalence is NOT_DEMONSTRATED: the sealed G cannot supply a complete nonempty
 suffix, so the conditional behavioral battery was not executed.
+
+## Loader gate L1 (2026-10-18)
+
+[Gate L1](../evidence/loader_gate_v1/protocol.md) adds the first agreement with
+an engine of a different lineage: on an opcode-aligned-text image from the
+HeLL/LMFAO line, `build/bolge19 --loader canonical` reproduces the sealed
+per-input oracles 5/5 byte-for-byte and agrees with the upstream `Unshackled`
+VM on the same five cases, while the default `raw` loader halts with identical
+garbage (`0x02 0xCE`) at exit 0. Scope: one artifact, five inputs, one program
+shape, and a Translator-product-class specimen — so the `Independent backend
+agreement` row above stays `[NOT_DEMONSTRATED]` for MalbolgeLISP semantics, and
+`Lisp semantics in guest` is unchanged. What the gate does establish is that the
+fixed-3^19 VM is not what blocks a guest program: a *compiled* image already
+runs on it.
