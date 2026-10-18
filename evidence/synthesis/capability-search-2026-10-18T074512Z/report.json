@@ -1,0 +1,326 @@
+{
+  "bounds": {
+    "max_address_inclusive": 64,
+    "max_cells": 8,
+    "max_nodes": 1000,
+    "max_steps": 128
+  },
+  "command": [
+    "python3",
+    "tools/probe_synthesis_capabilities.py",
+    "--max-cells",
+    "8",
+    "--max-nodes",
+    "1000",
+    "--max-steps",
+    "128",
+    "--max-address",
+    "64"
+  ],
+  "engine": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19",
+  "input_sha256": {
+    "encoder": "04115a499555fd5f25517cc85aeb9c329b89a75b2806f13d1ee62839609d9d6d",
+    "engine": "d42284300da101032759fbe7d123aaac619467e2f25d0c9b43045eb46c9d9380",
+    "module:add_sub": "ff6933486990d576636fbdb41a998a81b8f20147cb4674cf70264b576c45290e",
+    "module:branch_zero": "4cad82cdca1c1d7644f66ada02db1215673d5c7f222e9fce4246bc527d2a65be",
+    "module:call_return": "d51451844f9b0fd34957bb560443ffcd80096c6668c49737aed6c644bdb24ca2",
+    "module:countdown": "1236ac91c4314d5e8d8bc5b7b9bfeb6f59f0772b70f9dc38cf1dc80f3169b242",
+    "module:store_load": "92c378240a613be3db67eca86ef800e5e34c2c18b7c6db6c645596695df049a2",
+    "probe_tool": "9d1852b28f3c9ed3fb04afca3ad938316f9776541ab953e4547de4b641ef4e1f",
+    "profile": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+    "search_backend": "5aaef627e15f7e19ac440ea999b81c43f19a2d120cc0b42567162825e320baab",
+    "semantic_model": "9e043c17f3c71340c0d15f180717c774e412cfe9792d0fb7d6d6b07d0fa9fb4c"
+  },
+  "loader": "canonical",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "profile": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/profiles/fixed19.json",
+  "python_version": "3.12.3",
+  "repo_revision_at_run": "b34b76417238a1b3d6e1d945b7466949a88a6dbd",
+  "run_id": "2026-10-18T074512Z",
+  "schema_version": 1,
+  "seed": null,
+  "target_profile": "fixed-3^19",
+  "targets": [
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "branch_zero/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "5a",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "branch_zero/case-00/stderr.bin",
+          "raw_stdout": "branch_zero/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "00",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "4e",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "branch_zero/case-01/stderr.bin",
+          "raw_stdout": "branch_zero/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "01",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "4e",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "branch_zero/case-02/stderr.bin",
+          "raw_stdout": "branch_zero/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "ff",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams; I/O cases and structural trace guards filter observational candidates only",
+      "semantic_proof": null,
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "branch_zero",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    },
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "store_load/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "store_load/case-00/stderr.bin",
+          "raw_stdout": "store_load/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "00",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "01",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "store_load/case-01/stderr.bin",
+          "raw_stdout": "store_load/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "01",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "ff",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "store_load/case-02/stderr.bin",
+          "raw_stdout": "store_load/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "ff",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams; I/O cases and structural trace guards filter observational candidates only",
+      "semantic_proof": null,
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "store_load",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    },
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "add_sub/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "add_sub/case-00/stderr.bin",
+          "raw_stdout": "add_sub/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "0001",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "01",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "add_sub/case-01/stderr.bin",
+          "raw_stdout": "add_sub/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "0101",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "fd",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "add_sub/case-02/stderr.bin",
+          "raw_stdout": "add_sub/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "ffff",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams; I/O cases and structural trace guards filter observational candidates only",
+      "semantic_proof": null,
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "add_sub",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    },
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "countdown/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "countdown/case-00/stderr.bin",
+          "raw_stdout": "countdown/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "00",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "0100",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "countdown/case-01/stderr.bin",
+          "raw_stdout": "countdown/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "01",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "03020100",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "countdown/case-02/stderr.bin",
+          "raw_stdout": "countdown/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "03",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams; I/O cases and structural trace guards filter observational candidates only",
+      "semantic_proof": null,
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "countdown",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    },
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "call_return/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "call_return/case-00/stderr.bin",
+          "raw_stdout": "call_return/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "00",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "01",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "call_return/case-01/stderr.bin",
+          "raw_stdout": "call_return/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "01",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "ff",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "call_return/case-02/stderr.bin",
+          "raw_stdout": "call_return/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "ff",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams; I/O cases and structural trace guards filter observational candidates only",
+      "semantic_proof": null,
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "call_return",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    }
+  ],
+  "worktree_may_be_dirty": true
+}
