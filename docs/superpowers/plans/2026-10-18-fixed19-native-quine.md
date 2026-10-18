@@ -74,7 +74,7 @@
 - [x] Implement the deterministic search loop using only profile-derived candidates and the guest runner; candidates are dispatch-name products encoded by the synthesis API and retained in a new run directory.
 - [x] Run: `python3 -m unittest tests.test_quine_search -v`.
   Expected: PASS; reports distinguish budget exhaustion from a fully explored bounded space.
-- [ ] Commit with `feat: add bounded fixed19 quine search driver`.
+- [x] Commit with `feat: add bounded fixed19 quine search driver` (`1c77832`).
 
 ### Task 3: Verify candidate execution byte-for-byte
 
@@ -90,11 +90,11 @@
 - Success requires canonical guest loading, `stdout == source.read_bytes()`, status `HALT`, and an image/source digest match in the report. Capture stderr separately; telemetry there does not count as quine output.
 - A second backend is recorded only when it is genuinely independent and accepts the same fixed profile and loader. Otherwise the report says single-implementation verification.
 
-- [ ] Write `test_quine_compares_exact_source_bytes`, `test_quine_verifier_runs_guest_candidate`, `test_quine_requires_halt_and_no_extra_output`, `test_quine_manifest_detects_candidate_mutation`, and negative cases for final-newline mismatch, `MAX_STEPS`, and `WALL_TIMEOUT`.
-- [ ] Run: `./tools/build.sh` and `python3 -m unittest tests.test_quine_verifier -v`.
+- [x] Write `test_quine_compares_exact_source_bytes`, `test_quine_verifier_runs_guest_candidate`, `test_quine_requires_halt_and_no_extra_output`, `test_quine_manifest_detects_candidate_mutation`, and negative cases for final-newline mismatch, `MAX_STEPS`, and `WALL_TIMEOUT`.
+- [x] Run: `./tools/build.sh` and `python3 -m unittest tests.test_quine_verifier -v`.
   Expected: FAIL because the candidate verifier is absent.
-- [ ] Implement verification by passing the candidate path directly to `bolge19` through `run_guest`; never read candidate bytes in a host output path.
-- [ ] Run: `python3 -m unittest tests.test_quine_verifier -v`.
+- [x] Implement verification by passing the candidate path directly to `bolge19` through `run_guest`; never read candidate bytes in a host output path.
+- [x] Run: `python3 -m unittest tests.test_quine_verifier -v`.
   Expected: PASS on negative controls; no unverified candidate is marked `DEMONSTRATED`.
 - [ ] Commit with `feat: verify fixed19 quine candidates in guest`.
 

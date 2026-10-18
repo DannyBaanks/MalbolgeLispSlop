@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 from quine.evidence import QuineContract, load_contract
-from quine.search import QuineSearchBudget, iter_candidates, search
+from quine.search import QuineSearchBudget, iter_candidates, parse_halt_steps, search
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -113,6 +113,16 @@ class QuineSearchTests(unittest.TestCase):
 
         self.assertEqual(result.status, "NOT_DEMONSTRATED")
         self.assertEqual(result.bounds["max_nodes"], 8)
+
+    def test_halt_steps_parse_matches_real_bolge19_telemetry(self) -> None:
+        self.assertEqual(
+            parse_halt_steps(b"bolge19: HALT steps=42 c=0 d=1 a=0 elapsed=0s\n"), 42
+        )
+        self.assertEqual(parse_halt_steps(b"HALT steps=7\n"), 7)
+        self.assertIsNone(
+            parse_halt_steps(b"bolge19: steps=5 c=0 d=1 a=0 overlay=0 elapsed=0s\n")
+        )
+        self.assertIsNone(parse_halt_steps(b""))
 
     def test_seeded_search_order_and_manifest_are_reproducible(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

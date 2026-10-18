@@ -195,8 +195,13 @@ def _json_line(value: object) -> bytes:
     )
 
 
-def _guest_steps(stderr: bytes) -> int | None:
-    match = re.search(rb"(?:^|\n)HALT steps=([0-9]+)(?:\n|$)", stderr)
+def parse_halt_steps(stderr: bytes) -> int | None:
+    """Extract the halt step count from bolge19 telemetry, if present.
+
+    The real VM writes ``bolge19: HALT steps=N c=... d=... a=... elapsed=...s``,
+    so the marker is matched anywhere in the stream, never by line position.
+    """
+    match = re.search(rb"HALT steps=([0-9]+)", stderr)
     return int(match.group(1)) if match is not None else None
 
 
@@ -278,7 +283,7 @@ def search(
                 _write_new(stdout_path, guest.stdout)
                 _write_new(stderr_path, guest.stderr)
                 last_stdout_sha256 = _sha256(guest.stdout)
-                last_steps = _guest_steps(guest.stderr) if guest.status is GuestStatus.HALT else None
+                last_steps = parse_halt_steps(guest.stderr) if guest.status is GuestStatus.HALT else None
                 reason = _candidate_reason(guest.status, guest.stdout, candidate)
                 record = {
                     "node": attempted,
