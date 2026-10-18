@@ -1,0 +1,17 @@
+{
+  "bounds": {
+    "candidate_memory_bytes": 536870912,
+    "candidate_steps": 1000000,
+    "candidate_timeout_seconds": 2.0,
+    "max_candidate_bytes": 100000,
+    "max_nodes": 10000,
+    "wall_seconds": 10.0
+  },
+  "candidate_path": "evidence/quine/20261018T084122Z-seed-0/candidates/002082.mb",
+  "reason": "guest halted but stdout did not match the captured source bytes byte-for-byte",
+  "schema_version": 1,
+  "source_sha256": "42cc4e2a432ce24136c6ae8ad8982d61b92ff983176b503832522bc9448f3627",
+  "status": "NOT_DEMONSTRATED",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "steps": 1
+}

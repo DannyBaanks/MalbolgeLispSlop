@@ -159,11 +159,21 @@ classification, even when the child had already exited. So a candidate whose
 truncated budget is ~0 can be recorded inconclusive (`WALL_TIMEOUT`, which the
 verifier maps to `BUDGET_EXHAUSTED`) instead of `HALT`. It cannot be a quine
 in this run (empty stdout against a 4-byte source), and it was excluded from
-the verification pass; a future campaign should re-attempt wall-boundary
-candidates under a fresh budget before drawing conclusions. The runner's
-precedence behavior is shared with the synthesis-backend track and was not
-modified here; the record is preserved exactly as written, and this section
-is the correction.
+the verification pass. The record is preserved exactly as written; this
+section is the correction.
+
+Follow-up (2026-10-18): the runner was fixed so `WALL_TIMEOUT` is reported
+only when the deadline actually terminated the guest; a guest that exited on
+its own is classified from its exit code and telemetry even if the deadline
+check fires while draining (commit `7960802 fix: classify completed guests
+before wall timeout`, deterministic regression tests in
+`tests/test_guest_runner.py`). The boundary candidate was then re-verified
+standalone under the full declared budget: `NOT_DEMONSTRATED` — the guest
+halted at step 1 with empty stdout against the 4-byte source (report
+`evidence/quine/20261018T091529Z-boundary-2082-reverify/report.json`, SHA-256
+`debb017e3d622b579708d1888c156f09f04abf814b5b2c3635965e9ca5142971`). With the
+fix, future campaigns classify such completed boundary guests as `HALT` and
+include them in the byte-exact comparison.
 
 ## Run history
 
