@@ -1,0 +1,74 @@
+{
+  "schema": "specimen100.m1.upstream.v1",
+  "generated_utc": "2026-10-18T10:12:25Z",
+  "repo": "https://github.com/iczelia/malbolge-lisp",
+  "pinned_commit": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+  "clone": {
+    "path": "/tmp/opencode/malbolgelisp-upstream-0dc37eb1",
+    "depth": 1,
+    "head": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "head_matches_pin": true
+  },
+  "local_mirror": {
+    "path": "/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/malbolge-lisp-master/malbolge-lisp-master",
+    "tree_identical_to_clone": true
+  },
+  "recipe": {
+    "documented_at": "README.md l.78-81",
+    "commands": [
+      "unzip lisp.zip",
+      "cat init_module.mb core.mb > lisp.mb",
+      "./fast20 lisp.mb"
+    ],
+    "applied_in_scratch": true
+  },
+  "verdicts": {
+    "lisp.zip": {
+      "verdict": "REPRODUCED_BYTE_EXACT",
+      "sha256": "b2e6edffee2cc92328a9b2a0fcae9abf95989c430e078c158a06142099124c88",
+      "canonical": "b2e6edffee2cc92328a9b2a0fcae9abf95989c430e078c158a06142099124c88",
+      "method": "comiteado en repo upstream @ pin; sha256 coincide con copia local",
+      "match": true
+    },
+    "MalbolgeLisp.pdf": {
+      "verdict": "REPRODUCED_BYTE_EXACT",
+      "sha256": "51e035351b3a8155cfe00cf10e7cac106e881381f1199fd540100fb381c9d105",
+      "canonical": "51e035351b3a8155cfe00cf10e7cac106e881381f1199fd540100fb381c9d105",
+      "method": "comiteado en repo upstream @ pin; sha256 coincide con copia local",
+      "match": true
+    },
+    "core.mb": {
+      "verdict": "REPRODUCED_BYTE_EXACT",
+      "sha256": "70e9155bbe44b58a0a44795cf0c614b214c8f31f82270f4913394e07f1f3e53a",
+      "canonical": "70e9155bbe44b58a0a44795cf0c614b214c8f31f82270f4913394e07f1f3e53a",
+      "method": "miembro del lisp.zip comiteado",
+      "match": true
+    },
+    "init_module.mb": {
+      "verdict": "REPRODUCED_BYTE_EXACT",
+      "sha256": "4b3080fd250a4193030ec647e6c496f90540c1546f717b923284ea31b411e812",
+      "canonical": "4b3080fd250a4193030ec647e6c496f90540c1546f717b923284ea31b411e812",
+      "method": "miembro del lisp.zip comiteado",
+      "match": true
+    },
+    "init_module.license": {
+      "verdict": "REPRODUCED_BYTE_EXACT",
+      "sha256": "07c4319b1515896d95375832211f0d645120dde81374b4fb20722828efad6730",
+      "canonical": "07c4319b1515896d95375832211f0d645120dde81374b4fb20722828efad6730",
+      "method": "miembro del lisp.zip comiteado",
+      "match": true
+    },
+    "lisp.mb": {
+      "verdict": "REPRODUCED_BYTE_EXACT",
+      "sha256": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+      "canonical": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+      "method": "receta documentada upstream README.md ('cat init_module.mb core.mb > lisp.mb'), ejecutada en scratch desde miembros del clone; cmp IDENTICAL contra runtime local",
+      "match": true
+    }
+  },
+  "notes": [
+    "El repo upstream NO contiene lisp.mb: es derivado documentado (init_module.mb ++ core.mb); el orden del README confirma la correccion de M0 (init PRIMERO).",
+    "fast20.c (3144 B) esta en el repo upstream -> fuente para build en M3.",
+    "README l.3: 'Core (core.mb) to the public domain, the entire program is governed by the GNU GPLv3 license' -- discrepancia de licencia registrada en RISKS#3; sigue aplicando no redistribuir desde este track hasta resolver."
+  ]
+}
