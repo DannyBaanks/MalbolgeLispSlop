@@ -88,6 +88,28 @@ class SynthesisManifestTests(unittest.TestCase):
                     program_path=PROGRAM,
                 )
 
+    def test_manifest_rejects_unrecognized_semantic_proof(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifact = root / "guest.mb"
+            artifact.write_bytes(b"ubO")
+            manifest_data = self.build(artifact.read_bytes())
+            validation = manifest_data["validation"]
+            assert isinstance(validation, dict)
+            validation["semantic_proof"] = "unverified-observational-candidate"
+            manifest = root / "guest.manifest.json"
+            manifest.write_bytes(manifest_bytes(manifest_data))
+
+            with self.assertRaisesRegex(
+                ValueError, "unrecognized semantic lowering proof"
+            ):
+                verify_manifest(
+                    manifest,
+                    artifact,
+                    profile_path=PROFILE,
+                    program_path=PROGRAM,
+                )
+
     def test_cli_outputs_are_reproducible_and_existing_paths_are_refused(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

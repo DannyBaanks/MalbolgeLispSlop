@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .search import SemanticProof
+
 
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
@@ -125,8 +127,9 @@ def verify_manifest(
         raise ValueError("manifest does not record a passing guest validation")
     if manifest.get("synthesis_status") != "FOUND":
         raise ValueError("manifest does not record a FOUND synthesis result")
-    if not isinstance(validation.get("semantic_proof"), str) or not validation[
-        "semantic_proof"
-    ]:
+    semantic_proof = validation.get("semantic_proof")
+    if not isinstance(semantic_proof, str) or not semantic_proof:
         raise ValueError("manifest does not record a semantic lowering proof")
+    if semantic_proof not in {proof.value for proof in SemanticProof}:
+        raise ValueError("manifest records an unrecognized semantic lowering proof")
     return manifest
