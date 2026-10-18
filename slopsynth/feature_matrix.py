@@ -6,6 +6,27 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 INVENTORY = ROOT / "spec/lisp-inventory-v1.json"
 STATES = ("DECLARED", "SPECIFIED", "IMPLEMENTED", "DEMONSTRATED")
+REQUIRED_SEMANTIC_IDS = frozenset({
+    "semantics:global-lookup-shadowing",
+    "semantics:lexical-closure-lifetime",
+    "semantics:equality-structural-and-identity",
+    "semantics:argument-evaluation-order",
+    "semantics:let-binding-order",
+    "semantics:macro-argument-evaluation",
+    "semantics:lazy-force-and-memoization",
+    "semantics:short-circuit",
+    "semantics:synthetic-value-printing",
+    "semantics:reader-token-boundaries",
+    "semantics:invalid-type-combinations",
+    "semantics:eof",
+    "semantics:error-termination-or-continuation",
+    "semantics:unknown-dot-command",
+    "semantics:repl-persistence-reset",
+    "semantics:state-export-import-validation",
+    "semantics:resource-limits",
+    "semantics:numeric-boundaries",
+    "semantics:recursion",
+})
 
 
 def validate_matrix(matrix, *, require_complete=False, verify_guest_evidence=None):
@@ -15,6 +36,10 @@ def validate_matrix(matrix, *, require_complete=False, verify_guest_evidence=Non
     if matrix.get("inventory_sha256") != hashlib.sha256(raw).hexdigest():
         raise ValueError("inventory digest mismatch")
     inventory = {f["id"]: f for f in json.loads(raw)["features"]}
+    semantic_ids = {feature_id for feature_id, feature in inventory.items()
+                    if feature.get("category") == "semantic"}
+    if not REQUIRED_SEMANTIC_IDS <= semantic_ids:
+        raise ValueError("frozen inventory omits required cross-cutting semantics")
     rows = matrix.get("features")
     if not isinstance(rows, list):
         raise ValueError("features must be a list")

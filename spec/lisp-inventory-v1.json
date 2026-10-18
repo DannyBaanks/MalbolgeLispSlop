@@ -721,6 +721,120 @@
       "surface": ".I"
     },
     {
+      "category": "semantic",
+      "id": "semantics:global-lookup-shadowing",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "global lookup and shadowing"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:lexical-closure-lifetime",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "lexical scope and closure lifetime"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:equality-structural-and-identity",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "structural equality and identity"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:argument-evaluation-order",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "function argument evaluation order"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:let-binding-order",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "let binding evaluation and scope order"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:macro-argument-evaluation",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "macro argument evaluation"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:lazy-force-and-memoization",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "lazy forcing and memoization"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:short-circuit",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "conditional short-circuit and effects"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:synthetic-value-printing",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "printing synthetic values"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:reader-token-boundaries",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "reader token boundaries and malformed forms"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:invalid-type-combinations",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "invalid operand type combinations"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:eof",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "reader behavior at end of input"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:error-termination-or-continuation",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "language error termination or continuation"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:unknown-dot-command",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "unknown dot-command behavior"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:repl-persistence-reset",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "REPL persistence and reset"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:state-export-import-validation",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "state export and import validation"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:resource-limits",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "memory, stack, and execution limit behavior"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:numeric-boundaries",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "numeric bounds and arithmetic edge cases"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:recursion",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "recursive and mutually recursive definitions"
+    },
+    {
       "category": "error",
       "id": "error:E000",
       "source": "manual error table; gaps retained, condition/case binding pending",

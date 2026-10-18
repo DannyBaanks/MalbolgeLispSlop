@@ -19,10 +19,10 @@ proof that an expression is undefined.
 - `+` and `+'` return the sum modulo `2^26`. Both returned `0` for
   `67,108,863 + 1` in the reference runs.
 - `-` and `-'` return the nonnegative modular difference in the same domain.
-  This is the target contract choice so every numeric operation has bounded,
-  defined results. The reference underflow probes `(- 0 1)` and `(-' 0 1)` did
-  not finish within 240 seconds / 15,000,000,000 VM steps; their language
-  behavior remains `NOT_DEMONSTRATED` against the reference.
+  This is the target contract choice for subtraction. It does not define other
+  partial operations such as division by zero. The reference underflow probes
+  `(- 0 1)` and `(-' 0 1)` did not finish within 240 seconds / 15,000,000,000
+  VM steps; their behavior remains `NOT_DEMONSTRATED` against the reference.
 - Numeric equality and inequality, numeric ordering, and `~` return `0` for
   false and `1` for true. The reference returned the expected values for
   `=`, `/=`, `~`, `<`, and `>` in the cases below. This fixes result encoding;
@@ -56,7 +56,9 @@ apparent result.
 ## Still unresolved before the guest-language gate
 
 - Semantics and evaluation order for every overload, including list equality,
-  variadic arithmetic, `gcd`, `lcm`, `bind'`, and stateful operators.
+  arithmetic arity and error cases, `gcd`, `lcm`, `bind'`, and stateful
+  operators. Documented binary arithmetic operators take two operands; unary
+  operators such as `!` and `~` take one. No variadic extension is assumed.
 - Lexical shadowing, closures after creator return, recursion, macro expansion,
   short-circuiting and lazy memoization, checked against minimal original cases.
 - Reader and printer edge cases, numeric token overflow, malformed forms,

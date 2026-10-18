@@ -29,6 +29,68 @@ class MatrixTests(unittest.TestCase):
         self.assertNotIn("E033", errors)
         self.assertTrue({"E000", "E076", "E077", "E104"} <= errors)
 
+    def test_cross_cutting_semantics_are_required_inventory_rows(self):
+        from slopsynth.feature_matrix import REQUIRED_SEMANTIC_IDS
+
+        matrix = self.matrix()
+        semantics = {f["id"] for f in matrix["features"] if f["category"] == "semantic"}
+        required = {
+            "semantics:global-lookup-shadowing",
+            "semantics:lexical-closure-lifetime",
+            "semantics:equality-structural-and-identity",
+            "semantics:argument-evaluation-order",
+            "semantics:let-binding-order",
+            "semantics:macro-argument-evaluation",
+            "semantics:lazy-force-and-memoization",
+            "semantics:short-circuit",
+            "semantics:synthetic-value-printing",
+            "semantics:reader-token-boundaries",
+            "semantics:invalid-type-combinations",
+            "semantics:eof",
+            "semantics:error-termination-or-continuation",
+            "semantics:unknown-dot-command",
+            "semantics:repl-persistence-reset",
+            "semantics:state-export-import-validation",
+            "semantics:resource-limits",
+            "semantics:numeric-boundaries",
+            "semantics:recursion",
+        }
+        self.assertEqual(REQUIRED_SEMANTIC_IDS, required)
+        self.assertEqual(semantics, required)
+        self.assertTrue(all(
+            row["state"] == "DECLARED"
+            for row in matrix["features"]
+            if row["category"] == "semantic"
+        ))
+        self.api()(matrix)
+
+    def test_refrozen_inventory_cannot_drop_a_required_semantic_row(self):
+        import hashlib
+        from tempfile import TemporaryDirectory
+        from unittest.mock import patch
+
+        from slopsynth.feature_matrix import REQUIRED_SEMANTIC_IDS
+
+        matrix = self.matrix()
+        inventory = json.loads((ROOT / "spec/lisp-inventory-v1.json").read_text())
+        inventory["features"] = [
+            row for row in inventory["features"]
+            if row["id"] != "semantics:lexical-closure-lifetime"
+        ]
+        matrix["features"] = [
+            row for row in matrix["features"]
+            if row["id"] != "semantics:lexical-closure-lifetime"
+        ]
+        self.assertIn("semantics:lexical-closure-lifetime", REQUIRED_SEMANTIC_IDS)
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "inventory.json"
+            raw = json.dumps(inventory).encode()
+            path.write_bytes(raw)
+            matrix["inventory_sha256"] = hashlib.sha256(raw).hexdigest()
+            with patch("slopsynth.feature_matrix.INVENTORY", path):
+                with self.assertRaisesRegex(ValueError, "required cross-cutting"):
+                    self.api()(matrix)
+
     def test_duplicate_or_missing_promised_surface_is_rejected(self):
         matrix = self.matrix()
         with self.assertRaises(ValueError):

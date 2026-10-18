@@ -3,7 +3,7 @@
 ## Checklist
 
 - [x] Task 1: contract, dependencies, persistent plan
-- [ ] Task 2: compatibility inventory and checker
+- [x] Task 2: compatibility inventory and checker
 - [ ] Task 3: semantic contract and original-profile probes
 - [ ] Task 4: exact symbolic transition model
 - [ ] Task 5: synthesized reusable blocks/bootstrap
@@ -42,13 +42,19 @@ Ruling: task 4 depends on the frozen machine profile, not language tasks 2/3;
 its implementation may progress while those contracts are being audited, but
 no guest Lisp code starts until tasks 5/6 are demonstrated.
 
-Task 2: inventory frozen, closure gate still open. The manual union currently
-contains 224 rows (80 builtins, 104 errors, 13 syntax forms, 13 types, 7
-overload rows, 7 commands). The inventory includes the `.F` omissions `quote`,
-`gcd`, `lcm`, and `bind'`; E033 is absent from the source error table. The
-validator catches holes, duplicates, stale identity/digest, and premature
-guest-evidence claims. All rows remain DECLARED because exact guest fixtures
-and implementations do not exist. Local reference: `/home/danny/Development/ISyCo Git/malbolge-lisp/MalbolgeLisp.pdf`; it is not copied.
+Task 2: compatibility inventory frozen; closure gate remains open. The manual
+union contains 224 rows (80 builtins, 104 errors, 13 syntax forms, 13 types, 7
+overloads, 7 commands). Nineteen additional mandatory cross-cutting semantic
+rows cover scope/lifetime, evaluation, equality, macros/laziness, reader and
+printer behavior, errors, REPL state, bounds, and recursion: 243 rows total.
+The inventory includes the `.F` omissions `quote`, `gcd`, `lcm`, and `bind'`;
+E033 is absent from the source error table. The validator also refuses a
+refrozen inventory that omits any required semantic row, and retains the gates
+for completeness, identities, digests, and guest evidence. All 243 rows remain
+DECLARED because exact guest fixtures and implementations do not exist. Local
+reference: `/home/danny/Development/ISyCo Git/malbolge-lisp/MalbolgeLisp.pdf`;
+it is not copied. Independent review found this coverage gap before it was
+closed; the reviewer confirmed the expanded inventory remains unimplemented.
 
 Task 3: in progress. `tools/probe_language_contract.py` writes immutable bounded
 sessions against `/tmp/opencode/specimen100-m1-lisp.mb` with the raw loader and
