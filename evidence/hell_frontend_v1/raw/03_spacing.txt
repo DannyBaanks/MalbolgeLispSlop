@@ -1,0 +1,60 @@
+leg spacing — same program, two loaders
+  input 33
+    plain     canonical rc=0 stdout=33
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=51 elapsed=0s
+    plain     raw       rc=0 stdout=33
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=51 elapsed=0s
+    formatted canonical rc=0 stdout=33
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=51 elapsed=0s
+    formatted raw       rc=0 stdout=-
+      bolge19: AVISO raw/images/30_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode
+bolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]
+bolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s
+  input 41
+    plain     canonical rc=0 stdout=41
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=65 elapsed=0s
+    plain     raw       rc=0 stdout=41
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=65 elapsed=0s
+    formatted canonical rc=0 stdout=41
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=65 elapsed=0s
+    formatted raw       rc=0 stdout=-
+      bolge19: AVISO raw/images/31_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode
+bolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]
+bolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s
+  input 00
+    plain     canonical rc=0 stdout=00
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=0 elapsed=0s
+    plain     raw       rc=0 stdout=00
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=0 elapsed=0s
+    formatted canonical rc=0 stdout=00
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=0 elapsed=0s
+    formatted raw       rc=0 stdout=-
+      bolge19: AVISO raw/images/32_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode
+bolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]
+bolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s
+  input ff
+    plain     canonical rc=0 stdout=ff
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=255 elapsed=0s
+    plain     raw       rc=0 stdout=ff
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=255 elapsed=0s
+    formatted canonical rc=0 stdout=ff
+      bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]
+bolge19: HALT steps=566 c=566 d=566 a=255 elapsed=0s
+    formatted raw       rc=0 stdout=-
+      bolge19: AVISO raw/images/33_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode
+bolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]
+bolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s
+  formatted_is_neutral_under_canonical = True
+  formatted_is_corrupting_under_raw    = True
+  plain_is_unchanged_under_raw         = True

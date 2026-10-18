@@ -1,0 +1,18 @@
+leg negative_controls — our walk against the VM
+  non_dispatchable_byte: b'ub!'
+    walk accepted=False reason=byte 33 at offset 2 decodes to opcode 35, which is not dispatchable
+    vm rc=2 bolge19: caracter invalido byte=2 v=33 instr=35
+    agree=True
+  out_of_range_byte: b'ubO\x00'
+    walk accepted=False reason=byte 0 at offset 3 is outside the printable range [33, 127)
+    vm rc=2 bolge19: caracter invalido byte=3 v=0 instr=3
+    agree=True
+  leading_non_dispatchable: b'!bO'
+    walk accepted=False reason=byte 33 at offset 0 decodes to opcode 33, which is not dispatchable
+    vm rc=2 bolge19: caracter invalido byte=0 v=33 instr=33
+    agree=True
+  spacing_only: b'u b\nO'
+    walk accepted=True reason=None
+    vm rc=0 bolge19: imagen=3 celdas zona=[65533,131066) pat=[71,581130718,77...]
+bolge19: HALT steps=2 c=2 d=2 a=51 elapsed=0s
+    agree=True

@@ -1,0 +1,7 @@
+; relocation: the first cell lands past one 564-byte position cycle
+name offset
+loop:
+at 564
+read
+write
+halt

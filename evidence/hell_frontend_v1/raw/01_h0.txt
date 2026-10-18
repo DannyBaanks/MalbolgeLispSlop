@@ -1,0 +1,8 @@
+leg h0 — text guest vs JSON contract
+  ir_equal = True
+  text_image_hex = 75624f
+  json_image_hex = 75624f
+  byte_identical = True
+  image_sha256 = 681f8033410df7a4a5d7eaa3f8c730929459de77ed4fd27cac02cd813ab36c0c
+  inputs: examples/echo.slop sha 84332be41b8428b23766b27876fdfddfbb08148a161df90ebe29250d77dc8acc
+          examples/echo.json sha c547964b7a29d7e6f7a7d26fbe2d6a61e9906417b29f0fe0dc73583db5d507eb

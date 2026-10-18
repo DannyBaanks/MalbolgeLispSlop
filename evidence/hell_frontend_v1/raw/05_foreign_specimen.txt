@@ -1,0 +1,8 @@
+leg foreign_specimen — our accept rule on MALDOOM artifact.mu
+  specimen_bytes = 2888171
+  our_rule_accepted_cells = 2888169
+  our_rule_accepted = True
+  vm_sealed_cells_in_L1 = 2888169
+  agree = True
+  first_32_opcodes = [4, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 4, 68, 68, 68, 4, 62, 68]
+  sealed_capture_sha256 = 101814556f62b2707234e64dedd9fb8752e6c8988ebfda7892982dcba1d3f9f7

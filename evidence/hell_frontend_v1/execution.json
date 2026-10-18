@@ -1,0 +1,307 @@
+{
+ "artifact_mu_sha256": "3b9bdf37eb708ec751d10f0dea32edde4375e526ce56fd2dd440f5a22819ba10",
+ "gate": "H1",
+ "host": {
+  "machine": "x86_64",
+  "python": "3.12.3",
+  "release": "7.0.0-38-generic",
+  "system": "Linux",
+  "vm_sha256": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e"
+ },
+ "legs": {
+  "foreign_specimen": {
+   "agree": true,
+   "first_32_opcodes": [
+    4,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    68,
+    4,
+    68,
+    68,
+    68,
+    4,
+    62,
+    68
+   ],
+   "our_rule_accepted": true,
+   "our_rule_accepted_cells": 2888169,
+   "sealed_capture_sha256": "101814556f62b2707234e64dedd9fb8752e6c8988ebfda7892982dcba1d3f9f7",
+   "specimen_bytes": 2888171,
+   "vm_sealed_cells_in_L1": 2888169
+  },
+  "h0": {
+   "byte_identical": true,
+   "image_sha256": "681f8033410df7a4a5d7eaa3f8c730929459de77ed4fd27cac02cd813ab36c0c",
+   "ir_equal": true,
+   "json_image_hex": "75624f",
+   "text_image_hex": "75624f"
+  },
+  "negative_controls": {
+   "leading_non_dispatchable": {
+    "agree": true,
+    "image_hex": "21624f",
+    "vm_returncode": 2,
+    "vm_stderr": "bolge19: caracter invalido byte=0 v=33 instr=33",
+    "walk_accepted": false,
+    "walk_reason": "byte 33 at offset 0 decodes to opcode 33, which is not dispatchable",
+    "walk_rejected_offset": 0
+   },
+   "non_dispatchable_byte": {
+    "agree": true,
+    "image_hex": "756221",
+    "vm_returncode": 2,
+    "vm_stderr": "bolge19: caracter invalido byte=2 v=33 instr=35",
+    "walk_accepted": false,
+    "walk_reason": "byte 33 at offset 2 decodes to opcode 35, which is not dispatchable",
+    "walk_rejected_offset": 2
+   },
+   "out_of_range_byte": {
+    "agree": true,
+    "image_hex": "75624f00",
+    "vm_returncode": 2,
+    "vm_stderr": "bolge19: caracter invalido byte=3 v=0 instr=3",
+    "walk_accepted": false,
+    "walk_reason": "byte 0 at offset 3 is outside the printable range [33, 127)",
+    "walk_rejected_offset": 3
+   },
+   "spacing_only": {
+    "agree": true,
+    "image_hex": "7520620a4f",
+    "vm_returncode": 0,
+    "vm_stderr": "bolge19: imagen=3 celdas zona=[65533,131066) pat=[71,581130718,77...]\nbolge19: HALT steps=2 c=2 d=2 a=51 elapsed=0s",
+    "walk_accepted": true,
+    "walk_reason": null,
+    "walk_rejected_offset": null
+   }
+  },
+  "relocation": {
+   "formatted_bytes": 596,
+   "formatted_equals_plain_without_spacing": true,
+   "guest": "offset",
+   "image_cells": 567,
+   "label_loop_cell": 564,
+   "layout_addresses": [
+    564,
+    565,
+    566
+   ],
+   "padded_nop_cells": 564,
+   "plain_bytes": 567,
+   "prefix_is_564_nop_cells": true,
+   "tail_is_certified_ubO": true,
+   "walk_opcodes_equal": true,
+   "whitespace_bytes_added": 29
+  },
+  "spacing": {
+   "canonical_stderr_first": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=51 elapsed=0s",
+   "canonical_stdout": [
+    "33",
+    "41",
+    "00",
+    "ff"
+   ],
+   "formatted_is_corrupting_under_raw": true,
+   "formatted_is_neutral_under_canonical": true,
+   "plain_is_unchanged_under_raw": true,
+   "raw_formatted_first": {
+    "image": "raw/images/30_formatted_raw.mb",
+    "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+    "loader": "raw",
+    "returncode": 0,
+    "stderr": "bolge19: AVISO raw/images/30_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode\nbolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]\nbolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s",
+    "stdin_hex": "33",
+    "stdout_hex": ""
+   },
+   "runs": {
+    "canonical": {
+     "formatted": [
+      {
+       "image": "raw/images/30_formatted_canonical.mb",
+       "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+       "loader": "canonical",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=51 elapsed=0s",
+       "stdin_hex": "33",
+       "stdout_hex": "33"
+      },
+      {
+       "image": "raw/images/31_formatted_canonical.mb",
+       "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+       "loader": "canonical",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=65 elapsed=0s",
+       "stdin_hex": "41",
+       "stdout_hex": "41"
+      },
+      {
+       "image": "raw/images/32_formatted_canonical.mb",
+       "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+       "loader": "canonical",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=0 elapsed=0s",
+       "stdin_hex": "00",
+       "stdout_hex": "00"
+      },
+      {
+       "image": "raw/images/33_formatted_canonical.mb",
+       "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+       "loader": "canonical",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=255 elapsed=0s",
+       "stdin_hex": "ff",
+       "stdout_hex": "ff"
+      }
+     ],
+     "plain": [
+      {
+       "image": "raw/images/30_plain_canonical.mb",
+       "image_sha256": "fd70e654667c475b190017b46b2e53b6add23a4d586e21f16a815ba249f51735",
+       "loader": "canonical",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=51 elapsed=0s",
+       "stdin_hex": "33",
+       "stdout_hex": "33"
+      },
+      {
+       "image": "raw/images/31_plain_canonical.mb",
+       "image_sha256": "fd70e654667c475b190017b46b2e53b6add23a4d586e21f16a815ba249f51735",
+       "loader": "canonical",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=65 elapsed=0s",
+       "stdin_hex": "41",
+       "stdout_hex": "41"
+      },
+      {
+       "image": "raw/images/32_plain_canonical.mb",
+       "image_sha256": "fd70e654667c475b190017b46b2e53b6add23a4d586e21f16a815ba249f51735",
+       "loader": "canonical",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=0 elapsed=0s",
+       "stdin_hex": "00",
+       "stdout_hex": "00"
+      },
+      {
+       "image": "raw/images/33_plain_canonical.mb",
+       "image_sha256": "fd70e654667c475b190017b46b2e53b6add23a4d586e21f16a815ba249f51735",
+       "loader": "canonical",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=255 elapsed=0s",
+       "stdin_hex": "ff",
+       "stdout_hex": "ff"
+      }
+     ]
+    },
+    "raw": {
+     "formatted": [
+      {
+       "image": "raw/images/30_formatted_raw.mb",
+       "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+       "loader": "raw",
+       "returncode": 0,
+       "stderr": "bolge19: AVISO raw/images/30_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode\nbolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]\nbolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s",
+       "stdin_hex": "33",
+       "stdout_hex": ""
+      },
+      {
+       "image": "raw/images/31_formatted_raw.mb",
+       "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+       "loader": "raw",
+       "returncode": 0,
+       "stderr": "bolge19: AVISO raw/images/31_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode\nbolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]\nbolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s",
+       "stdin_hex": "41",
+       "stdout_hex": ""
+      },
+      {
+       "image": "raw/images/32_formatted_raw.mb",
+       "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+       "loader": "raw",
+       "returncode": 0,
+       "stderr": "bolge19: AVISO raw/images/32_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode\nbolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]\nbolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s",
+       "stdin_hex": "00",
+       "stdout_hex": ""
+      },
+      {
+       "image": "raw/images/33_formatted_raw.mb",
+       "image_sha256": "59ecd0ee2032c962b7f0c860f1e155a36a27d90293853d40fcb7a8de0be5a86e",
+       "loader": "raw",
+       "returncode": 0,
+       "stderr": "bolge19: AVISO raw/images/33_formatted_raw.mb: 29 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode\nbolge19: imagen=596 celdas zona=[64940,129880) pat=[581130762,19,581130771...]\nbolge19: HALT steps=273 c=273 d=273 a=581130733 elapsed=0s",
+       "stdin_hex": "ff",
+       "stdout_hex": ""
+      }
+     ],
+     "plain": [
+      {
+       "image": "raw/images/30_plain_raw.mb",
+       "image_sha256": "fd70e654667c475b190017b46b2e53b6add23a4d586e21f16a815ba249f51735",
+       "loader": "raw",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=51 elapsed=0s",
+       "stdin_hex": "33",
+       "stdout_hex": "33"
+      },
+      {
+       "image": "raw/images/31_plain_raw.mb",
+       "image_sha256": "fd70e654667c475b190017b46b2e53b6add23a4d586e21f16a815ba249f51735",
+       "loader": "raw",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=65 elapsed=0s",
+       "stdin_hex": "41",
+       "stdout_hex": "41"
+      },
+      {
+       "image": "raw/images/32_plain_raw.mb",
+       "image_sha256": "fd70e654667c475b190017b46b2e53b6add23a4d586e21f16a815ba249f51735",
+       "loader": "raw",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=0 elapsed=0s",
+       "stdin_hex": "00",
+       "stdout_hex": "00"
+      },
+      {
+       "image": "raw/images/33_plain_raw.mb",
+       "image_sha256": "fd70e654667c475b190017b46b2e53b6add23a4d586e21f16a815ba249f51735",
+       "loader": "raw",
+       "returncode": 0,
+       "stderr": "bolge19: imagen=567 celdas zona=[64969,129938) pat=[71,581130718,77...]\nbolge19: HALT steps=566 c=566 d=566 a=255 elapsed=0s",
+       "stdin_hex": "ff",
+       "stdout_hex": "ff"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "pins": {
+  "examples/echo.json": "c547964b7a29d7e6f7a7d26fbe2d6a61e9906417b29f0fe0dc73583db5d507eb",
+  "examples/echo.slop": "84332be41b8428b23766b27876fdfddfbb08148a161df90ebe29250d77dc8acc",
+  "examples/offset.slop": "8fb70d5965b9cd85645cd05299b8e51ec20ea2a988edb2370d34c7af3ac022fd",
+  "profiles/fixed19.json": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+  "src/bolge19.zig": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3"
+ },
+ "schema": "hell_frontend_v1.execution.v1",
+ "utc": "2026-10-18T16:32:16+00:00",
+ "verdict": "PASS"
+}

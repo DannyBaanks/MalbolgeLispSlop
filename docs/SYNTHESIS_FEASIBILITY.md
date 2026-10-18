@@ -96,6 +96,18 @@ the compiler route needs its own licensing and reproduction decision first
 (LMFAO is GPLv3, ELVM is MIT, this repository is MIT, and the workspace rule is
 copy-and-revalidate, never import).
 
+[Gate H1](../evidence/hell_frontend_v1/protocol.md) took that decision the same
+day, in the direction that needs no import: `slopsynth/lang.py` is a textual
+`.slop` front-end of our own over the IR and encoder that already existed, and
+`slopsynth/assemble.py` relocates a guest to an absolute cell address and refuses
+to emit any image the canonical loader would reject. It certifies two guests —
+the echo text reaching `ubO` byte-identically, and a guest placed at cells
+564–566 that runs under `--loader canonical` and breaks under `raw`. That is a
+compiler route with nothing GPLv3 in it, but its emitted language is still the
+three-opcode straight-line subset: the search lowering this table measures has
+not gained branch, memory, arithmetic, loops or calls, and the compiler route
+gains them no faster until a lowering for control flow exists (H2, not claimed).
+
 ## Reproduction
 
 Run from the repository root:

@@ -1,0 +1,5 @@
+; echo guest, textual form of examples/echo.json (H0)
+name echo
+read
+write
+halt

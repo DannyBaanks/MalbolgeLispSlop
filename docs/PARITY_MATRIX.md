@@ -39,3 +39,25 @@ agreement` row above stays `[NOT_DEMONSTRATED]` for MalbolgeLISP semantics, and
 `Lisp semantics in guest` is unchanged. What the gate does establish is that the
 fixed-3^19 VM is not what blocks a guest program: a *compiled* image already
 runs on it.
+
+## Assembler gate H1 (2026-10-18)
+
+[Gate H1](../evidence/hell_frontend_v1/protocol.md) closes the authoring side of
+that opening. `slopsynth/lang.py`, `slopsynth/canonical.py` and
+`slopsynth/assemble.py` add a textual `.slop` front-end, relocation of a guest to
+an absolute cell address with `nop` padding, and a loader-side walk of the
+canonical accept set that gates every emitted image. Two guests are certified:
+`examples/echo.slop` reaches the same bytes as `examples/echo.json` (`ubO`), and
+`examples/offset.slop` lands `read/write/halt` at cells 564–566 — the first image
+this repository emitted past one full 564-cell position cycle — which echoes four
+inputs under `--loader canonical` and comes out empty under `raw`, where its own
+29 spacing bytes become cells. The accept rule was falsified against a specimen
+we did not author: it independently predicts the 2,888,169 cells the VM sealed in
+gate L1 for `artifact.mu`.
+
+No row of the table above moves. Control flow still has no lowering
+(`jump`/`brz`/`ld`/`st`/`add`/`sub` parse, and the assembler refuses to emit
+them), so `Lisp semantics in guest` and `Independent backend agreement` stay
+`[NOT_DEMONSTRATED]`. What changed is that the compiled route now has a tool of
+ours at the front of it, MIT-licensed and profile-driven, instead of depending on
+someone else's HeLL or LMFAO.

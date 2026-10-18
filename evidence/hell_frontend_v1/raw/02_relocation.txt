@@ -1,0 +1,14 @@
+leg relocation — offset.slop, first cell at 564
+  guest = offset
+  layout_addresses = [564, 565, 566]
+  label_loop_cell = 564
+  padded_nop_cells = 564
+  image_cells = 567
+  plain_bytes = 567
+  formatted_bytes = 596
+  whitespace_bytes_added = 29
+  formatted_equals_plain_without_spacing = True
+  walk_opcodes_equal = True
+  tail_is_certified_ubO = True
+  prefix_is_564_nop_cells = True
+  walk accepted_cells = 567

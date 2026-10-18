@@ -1,0 +1,102 @@
+{
+ "schema": "hell_frontend_v1.claims.v1",
+ "date": "2026-10-18",
+ "gate": "H1",
+ "null_hypotheses": [
+  "H0: a guest written as text cannot be lowered to the bytes the certified JSON->IR->encoder path produces",
+  "H1: we cannot place a guest at an arbitrary cell address, wrap the 564-cell position cycle, and predict with our own rule which images the canonical loader accepts"
+ ],
+ "outcome": "H0_REJECTED_AND_H1_REJECTED",
+ "execution": {
+  "path": "evidence/hell_frontend_v1/execution.json",
+  "sha256": "85e5b41326a20c6b41070e62a8484472dd4484be6589a847296c08c8f83cb24f"
+ },
+ "claims": [
+  {
+   "id": "H0-TEXT-IR-IDENTITY",
+   "status": "DEMONSTRATED",
+   "claim": "examples/echo.slop parses to a Program equal to the one examples/echo.json loads to, and both encode to the byte-identical image 75624f (ubO, sha 681f8033...)",
+   "evidence": [
+    "raw/01_h0.txt",
+    "execution.json"
+   ],
+   "sha256": "85e5b41326a20c6b41070e62a8484472dd4484be6589a847296c08c8f83cb24f"
+  },
+  {
+   "id": "H0-ROUND-TRIP",
+   "status": "DEMONSTRATED",
+   "claim": "format_placed re-renders every example and re-parsing the rendering yields the identical IR object",
+   "evidence": [
+    "tests/test_lang.py",
+    "raw/01_h0.txt"
+   ],
+   "sha256": "85e5b41326a20c6b41070e62a8484472dd4484be6589a847296c08c8f83cb24f"
+  },
+  {
+   "id": "H1-RELOCATION-PAST-POSITION-CYCLE",
+   "status": "DEMONSTRATED",
+   "claim": "the assembler places read/write/halt at absolute cells 564/565/566, pads 564 nop cells, resolves label loop to cell 564, and the emitted tail is the certified ubO again: the 564-cell position cycle wraps and returns to phase 0",
+   "evidence": [
+    "raw/02_relocation.txt",
+    "raw/images/30_plain_canonical.mb",
+    "execution.json"
+   ],
+   "sha256": "85e5b41326a20c6b41070e62a8484472dd4484be6589a847296c08c8f83cb24f"
+  },
+  {
+   "id": "H1-LOADER-DISCRIMINATION",
+   "status": "DEMONSTRATED",
+   "claim": "our formatted image (596 bytes, 29 spacing bytes) loads at 567 cells and echoes four inputs under --loader canonical, while the raw loader counts 596 cells, seeds pat=[581130762,19,581130771...], warns, and produces empty stdout for all four inputs",
+   "evidence": [
+    "raw/03_spacing.txt",
+    "execution.json"
+   ],
+   "sha256": "85e5b41326a20c6b41070e62a8484472dd4484be6589a847296c08c8f83cb24f"
+  },
+  {
+   "id": "H1-ACCEPT-RULE-AGREES-WITH-VM",
+   "status": "DEMONSTRATED_SCOPED",
+   "claim": "walk_canonical and bolge19 --loader canonical agree on the accept verdict and aborting offset for four hand-corrupted images, and the rule independently predicts the 2888169 cells the VM sealed in gate L1 for the foreign artifact.mu",
+   "evidence": [
+    "raw/04_negative_controls.txt",
+    "raw/05_foreign_specimen.txt",
+    "execution.json"
+   ],
+   "scope": "one profile (fixed19), one VM build, one foreign specimen, four corrupted images",
+   "sha256": "85e5b41326a20c6b41070e62a8484472dd4484be6589a847296c08c8f83cb24f"
+  },
+  {
+   "id": "H1-REFUSAL-IS-BEFORE-WRITE",
+   "status": "DEMONSTRATED",
+   "claim": "assemble() raises AssemblyError instead of writing an image the canonical walk would reject, and refuses control flow and non-A registers before emitting any byte",
+   "evidence": [
+    "tests/test_canonical.py",
+    "raw/04_negative_controls.txt"
+   ],
+   "sha256": "85e5b41326a20c6b41070e62a8484472dd4484be6589a847296c08c8f83cb24f"
+  },
+  {
+   "id": "H2-CONTROL-FLOW-LOWERING",
+   "status": "NOT_DEMONSTRATED",
+   "claim": "jump/brz/ld/st/add/sub parse into the typed IR but nothing lowers them to cells; labels resolve to addresses that nothing consumes yet",
+   "evidence": [
+    "tests/test_canonical.py::RelocationTests::test_control_flow_is_refused_rather_than_invented"
+   ]
+  },
+  {
+   "id": "L1-LISP-GUEST",
+   "status": "UNCHANGED_NOT_DEMONSTRATED",
+   "claim": "the guest class demonstrated is still the echo class at a chosen address; no MalbolgeLISP-shaped guest is produced by this gate"
+  },
+  {
+   "id": "L1-MALBOLGELISP-CONFORMANCE",
+   "status": "UNCHANGED_NOT_DEMONSTRATED",
+   "claim": "passing the canonical accept rule means the loader can read an image, not that the image is MalbolgeLISP; core.mb and lisp.mb are still refused by that loader"
+  },
+  {
+   "id": "L1-SEARCH-GATES",
+   "status": "UNCHANGED_NOT_DEMONSTRATED",
+   "claim": "the bounded-search capability gates stay where gate L1 left them; this gate adds an authoring route, not a search result"
+  }
+ ]
+}

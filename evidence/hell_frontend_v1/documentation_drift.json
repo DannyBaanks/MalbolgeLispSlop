@@ -1,0 +1,24 @@
+{
+ "date": "2026-10-18",
+ "drift_vs_m6_pins": [
+  {
+   "on_disk_now": "4437c8a84942d6524933ca870970730feb30fcf21c753a493c608e73329ad4c3",
+   "path": "README.md",
+   "sealed_in_m6": "87c30dd72e5a1831bbd244e8fa12cde6217c272f07b153fb55a5cad26ea62da9"
+  },
+  {
+   "on_disk_now": "e34c8bae95a734c0a8ea72b001339d7fdc008aeabf2f0513ec53eff4ad8571e2",
+   "path": "docs/PARITY_MATRIX.md",
+   "sealed_in_m6": "f447643dfa449fbff341949062f9ab9ed47ce1d096084eaf2877f377f664edea"
+  }
+ ],
+ "note": "Gate H1 edited README.md and docs/PARITY_MATRIX.md again on top of the edits gate L1 already recorded, so the hashes in evidence/loader_gate_v1/documentation_drift.json are themselves now historical. Nothing sealed was rewritten: evidence/specimen100/m6/documentation_hashes.json and evidence/loader_gate_v1/documentation_drift.json are left exactly as published, and this file is the append-only correction for the current tree.",
+ "schema": "hell_frontend_v1.documentation_drift.v1",
+ "still_matching_m6_pins": [
+  "docs/BASELINE.md",
+  "docs/RISKS.md",
+  "docs/SPECIMEN100.md"
+ ],
+ "supersedes": "evidence/loader_gate_v1/documentation_drift.json (read-only; its two paths moved again)",
+ "warning": "Do not run evidence/specimen100/m6/finalize.py against this HEAD: it would compare against documentation_hashes.json and silently re-seal the drift above."
+}
