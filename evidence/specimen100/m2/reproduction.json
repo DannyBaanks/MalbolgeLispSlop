@@ -1,0 +1,56 @@
+{
+  "schema": "specimen100.m2.reproduction.v1",
+  "generated_utc": "2026-10-18T10:34:09Z",
+  "vm": "build/bolge19 (repo slop, Zig 0.16.0, tools/build.sh)",
+  "image": "lisp.mb sha256 092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256 (copia scratch; byte-exacta en M1)",
+  "canonical_run": "full_run2",
+  "input_hex": "282b20312032290d0a",
+  "input_note": "Hallazgo forense: el input historico era CRLF (consola Windows). Con LF solo el HALT da 2401426208 (delta -6820173); con CRLF da paridad exacta en TODOS los checkpoints y en el HALT. Las diferencias de timing de bytes no afectan el conteo (read bloqueante).",
+  "checks": {
+    "stdout_sha_run2": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+    "stdout_sha_run3": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+    "stdout_eq_historical": true,
+    "halt_run2": [
+      "2408246381",
+      "581143360",
+      "581861866",
+      "10"
+    ],
+    "halt_run3": [
+      "2408246381",
+      "581143360",
+      "581861866",
+      "10"
+    ],
+    "halt_historical": [
+      "2408246381",
+      "581143360",
+      "581861866",
+      "10"
+    ],
+    "halt_eq_historical": true,
+    "overlay_run2": 468760,
+    "overlay_historical": 468760,
+    "overlay_eq": true,
+    "checkpoints_run2_eq_historical": true,
+    "run2_eq_run3_stdout": true,
+    "run2_eq_run3_halt": true,
+    "run2_eq_run3_checkpoints": true,
+    "lf_near_miss": {
+      "input": "LF",
+      "halt_steps": 2401426208,
+      "delta_vs_historical": -6820173
+    }
+  },
+  "all_ok": true,
+  "historical": {
+    "stderr_sha256": "1ce90ee3a128e35b88e6c10e99ada6c68b5ada31eb75dc58d76d0c2ff2685253",
+    "stdout_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+    "halt_steps": 2408246381
+  },
+  "timing": {
+    "linux_wall_s": 36,
+    "windows_historical_elapsed_s": 75
+  },
+  "note_oom": "oom_run1.* documenta el bloqueo por RAM del primer intento (OOM global, anon-rss 1.57GB); full_run1..3 corrieron con 2.5GiB disponibles y guarda oom_score_adj=800."
+}

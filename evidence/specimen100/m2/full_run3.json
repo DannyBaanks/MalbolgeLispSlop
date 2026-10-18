@@ -1,0 +1,37 @@
+{
+  "generated_utc": "2026-10-18T10:33:13Z",
+  "cmd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19 /tmp/opencode/specimen100-m1-lisp.mb",
+  "rc": 0,
+  "wall_s": 38.9,
+  "stdout_bytes": 291,
+  "stdout_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+  "stderr_bytes": 1313,
+  "stderr_sha256": "9c04a4d5c562df6126779b5e6aa30a13bf758fc7abd3026f9e762a13d29186b8",
+  "halt": {
+    "steps": 2408246381,
+    "c": 581143360,
+    "d": 581861866,
+    "a": 10,
+    "elapsed_s": 36
+  },
+  "last_telemetry_overlay": 468760,
+  "historical": {
+    "stdout_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+    "stderr_sha256": "1ce90ee3a128e35b88e6c10e99ada6c68b5ada31eb75dc58d76d0c2ff2685253",
+    "halt_steps": 2408246381,
+    "halt_c": 581143360,
+    "halt_d": 581861866,
+    "halt_a": 10,
+    "last_telemetry_overlay": 468760
+  },
+  "log": [
+    "# m2 driver: bolge19=/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19 img=/tmp/opencode/specimen100-m1-lisp.mb t_start_utc=2026-10-18T10:33:13Z",
+    "# cmd=/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19 /tmp/opencode/specimen100-m1-lisp.mb",
+    "[18.6s] prompt_a=SI",
+    "[18.6s] enviado b'(+ 1 2)\\r\\n'",
+    "[37.9s] resultado_3=SI",
+    "[37.9s] prompt_b=SI",
+    "[37.9s] stdin cerrado (EOF)",
+    "[38.9s] PROC EXITED rc=0"
+  ]
+}
