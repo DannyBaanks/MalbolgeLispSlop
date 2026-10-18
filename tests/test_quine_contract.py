@@ -112,6 +112,22 @@ class QuineContractTests(unittest.TestCase):
                 reason="bounded search completed without a quine",
             )
 
+    def test_report_allows_zero_node_budget_to_record_exhaustion(self) -> None:
+        bounds = dict(BOUNDS)
+        bounds["max_nodes"] = 0
+
+        report = QuineReport(
+            status="BUDGET_EXHAUSTED",
+            candidate_path=None,
+            source_sha256=None,
+            stdout_sha256=None,
+            steps=None,
+            bounds=bounds,
+            reason="no candidate node could be explored",
+        )
+
+        self.assertEqual(report.bounds["max_nodes"], 0)
+
     def test_report_rejects_global_no_quine_status(self) -> None:
         with self.assertRaisesRegex(ValueError, "status"):
             QuineReport(
@@ -135,6 +151,19 @@ class QuineContractTests(unittest.TestCase):
                 bounds=BOUNDS,
                 reason="invalid mismatch",
             )
+
+    def test_demonstrated_report_allows_steps_to_be_unavailable(self) -> None:
+        report = QuineReport(
+            status="DEMONSTRATED",
+            candidate_path="candidates/0001.mb",
+            source_sha256="a" * 64,
+            stdout_sha256="a" * 64,
+            steps=None,
+            bounds=BOUNDS,
+            reason="guest halted and stdout matched source bytes exactly",
+        )
+
+        self.assertEqual(report.status, "DEMONSTRATED")
 
 
 if __name__ == "__main__":

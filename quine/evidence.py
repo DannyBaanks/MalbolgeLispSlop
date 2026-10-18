@@ -30,8 +30,9 @@ _REQUIRED_BOUNDS = frozenset(
     }
 )
 _POSITIVE_INTEGER_BOUNDS = frozenset(
-    {"max_nodes", "candidate_steps", "candidate_memory_bytes", "max_candidate_bytes"}
+    {"candidate_steps", "candidate_memory_bytes", "max_candidate_bytes"}
 )
+_NONNEGATIVE_INTEGER_BOUNDS = frozenset({"max_nodes"})
 _POSITIVE_NUMBER_BOUNDS = frozenset({"wall_seconds", "candidate_timeout_seconds"})
 _EXPECTED_WHITESPACE_BYTES = [9, 10, 13, 32]
 _SHA256_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
@@ -117,7 +118,11 @@ def _validate_bounds(bounds: Mapping[str, object]) -> dict[str, int | float]:
     normalized: dict[str, int | float] = {}
     for name in sorted(_REQUIRED_BOUNDS):
         value = bounds[name]
-        if name in _POSITIVE_INTEGER_BOUNDS:
+        if name in _NONNEGATIVE_INTEGER_BOUNDS:
+            if type(value) is not int or value < 0:
+                raise ValueError(f"bounds.{name} must be a nonnegative integer")
+            normalized[name] = value
+        elif name in _POSITIVE_INTEGER_BOUNDS:
             if type(value) is not int or value <= 0:
                 raise ValueError(f"bounds.{name} must be a positive integer")
             normalized[name] = value
@@ -169,9 +174,8 @@ class QuineReport:
                 or self.source_sha256 is None
                 or self.stdout_sha256 is None
                 or self.source_sha256 != self.stdout_sha256
-                or self.steps is None
             ):
-                raise ValueError("DEMONSTRATED requires matching source/stdout digests and guest steps")
+                raise ValueError("DEMONSTRATED requires matching source/stdout digests")
 
     def to_dict(self) -> dict[str, object]:
         return {

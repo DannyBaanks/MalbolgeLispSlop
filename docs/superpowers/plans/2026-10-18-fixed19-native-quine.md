@@ -45,13 +45,13 @@
 - Statuses are `DEMONSTRATED`, `NOT_DEMONSTRATED`, and `BUDGET_EXHAUSTED`; never emit a global `NO_QUINE` status.
 - The contract fixes whether the source file has a final newline and which whitespace the canonical loader discards. The emitted bytes still include exactly the declared source bytes.
 
-- [ ] Write tests for fixed-3^19 profile validation, newline policy, report serialization, and required search-bound fields.
-- [ ] Run: `python3 -m unittest tests.test_quine_contract -v`.
+- [x] Write tests for fixed-3^19 profile validation, newline policy, report serialization, and required search-bound fields.
+- [x] Run: `python3 -m unittest tests.test_quine_contract -v`.
   Expected: FAIL because the quine contract and report types are absent.
-- [ ] Implement the JSON contract loader and versioned evidence schema; reject unknown profiles and missing search bounds.
-- [ ] Run: `python3 -m unittest tests.test_quine_contract -v`.
+- [x] Implement the JSON contract loader and versioned evidence schema; reject unknown profiles and missing search bounds.
+- [x] Run: `python3 -m unittest tests.test_quine_contract -v`.
   Expected: PASS; `contract.json` names `fixed-3^19`, canonical loading, and byte-exact output comparison.
-- [ ] Commit with `docs: define fixed19 quine contract`.
+- [x] Commit with `docs: define fixed19 quine contract` (`9507d8e`).
 
 ### Task 2: Implement a bounded candidate search driver
 
@@ -62,17 +62,17 @@
 
 **Interfaces:**
 - Consume the fixed-3^19 profile and guest runner from the synthesis-backend plan. Define a separate `QuineSearchBudget` so it cannot be confused with the synthesizer's `SearchBudget`.
-- Produce `search(contract: QuineContract, budget: QuineSearchBudget, output_dir: Path) -> QuineReport` and `verify_candidate(source: Path, contract: QuineContract, budget: QuineSearchBudget) -> QuineReport`.
+- Produce `search(contract: QuineContract, budget: QuineSearchBudget, output_dir: Path) -> QuineReport`. Task 3 owns `verify_candidate(...)` in `quine/verify.py` so there is one canonical verifier.
 - `QuineSearchBudget` contains `max_nodes`, `wall_seconds`, `candidate_steps`, `candidate_timeout_seconds`, `candidate_memory_bytes`, and `max_candidate_bytes`.
 - Implement `iter_candidates(contract: QuineContract, budget: QuineSearchBudget)`, a deterministic bounded enumerator that derives printable candidate images from search state and profile constraints; it must not load a candidate corpus or embed instruction strings. If this candidate space proves too large, retain the search harness and report its bounds as `NOT_DEMONSTRATED`.
 - Search is deterministic for a declared seed and method. Each candidate is generated from search state; candidate bytes are not pasted into source code or copied from a file.
 - The harness records the exact algorithm, seed, node/time/address/step budgets, candidates attempted, and a digest for every retained candidate.
 
-- [ ] Write `test_quine_budget_exhaustion_is_not_unsat`, `test_completed_empty_search_is_not_demonstrated`, and `test_seeded_search_order_and_manifest_are_reproducible`.
-- [ ] Run: `python3 -m unittest tests.test_quine_search -v`.
+- [x] Write `test_quine_budget_exhaustion_is_not_unsat`, `test_completed_empty_search_is_not_demonstrated`, and `test_seeded_search_order_and_manifest_are_reproducible`.
+- [x] Run: `python3 -m unittest tests.test_quine_search -v`.
   Expected: FAIL because the search driver is absent.
-- [ ] Implement the deterministic search loop using only generated candidates and the synthesis API; maintain candidate files under a new run directory.
-- [ ] Run: `python3 -m unittest tests.test_quine_search -v`.
+- [x] Implement the deterministic search loop using only profile-derived candidates and the guest runner; candidates are dispatch-name products encoded by the synthesis API and retained in a new run directory.
+- [x] Run: `python3 -m unittest tests.test_quine_search -v`.
   Expected: PASS; reports distinguish budget exhaustion from a fully explored bounded space.
 - [ ] Commit with `feat: add bounded fixed19 quine search driver`.
 
