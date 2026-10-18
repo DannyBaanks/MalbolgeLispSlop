@@ -3,7 +3,16 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from slopsynth.ir import BasicBlock, Function, Halt, Module, ModuleCase, ReadA, WriteA
+from slopsynth.ir import (
+    BasicBlock,
+    BranchZero,
+    Function,
+    Halt,
+    Module,
+    ModuleCase,
+    ReadA,
+    WriteA,
+)
 from slopsynth.ir_json import load_module
 from slopsynth.profile import load_profile
 from slopsynth.search import SearchBudget, SynthesisStatus, compile_module
@@ -29,6 +38,7 @@ class Fixed19CapabilityGateTests(unittest.TestCase):
         self.assertEqual(result.explored_nodes, CAPABILITY_BUDGET.max_nodes)
         self.assertEqual(result.bounds, CAPABILITY_BUDGET)
         self.assertIsNotNone(result.last_candidate)
+        self.assertIsNone(result.semantic_proof)
 
     def test_branch_zero_remains_not_demonstrated_without_lowering(self) -> None:
         self.assert_not_demonstrated("branch_zero")
@@ -40,10 +50,47 @@ class Fixed19CapabilityGateTests(unittest.TestCase):
         self.assert_not_demonstrated("add_sub")
 
     def test_countdown_loop_remains_not_demonstrated(self) -> None:
+        module = load_module(ROOT / "examples" / "countdown.json")
+        self.assertEqual(
+            tuple(case.stdout for case in module.cases),
+            (b"\x00", b"\x01\x00", b"\x03\x02\x01\x00"),
+        )
         self.assert_not_demonstrated("countdown")
 
     def test_call_return_remains_not_demonstrated(self) -> None:
         self.assert_not_demonstrated("call_return")
+
+    def test_trace_lookalike_is_not_accepted_without_semantic_lowering(self) -> None:
+        module = Module(
+            name="branch-lookalike",
+            entry_function="main",
+            functions=(
+                Function(
+                    "main",
+                    (),
+                    "entry",
+                    (
+                        BasicBlock(
+                            "entry", (BranchZero(0, "zero", "nonzero"),)
+                        ),
+                        BasicBlock("zero", (Halt(),)),
+                        BasicBlock("nonzero", (Halt(),)),
+                    ),
+                ),
+            ),
+            # These observations cannot distinguish the IR's two branch arms.
+            cases=(ModuleCase(b"\x00", b""), ModuleCase(b"\xff", b"")),
+        )
+        budget = SearchBudget(
+            max_cells=5, max_nodes=5_000, max_steps=128, max_address=64
+        )
+
+        result = compile_module(module, self.profile, budget)
+
+        self.assertEqual(result.status, SynthesisStatus.BUDGET_EXHAUSTED)
+        self.assertIsNone(result.image)
+        self.assertIsNone(result.semantic_proof)
+        self.assertIsNotNone(result.observational_candidate)
 
     def test_zero_node_budget_is_exhausted_not_unsatisfiable(self) -> None:
         module = load_module(ROOT / "examples" / "branch_zero.json")
@@ -78,6 +125,7 @@ class Fixed19CapabilityGateTests(unittest.TestCase):
 
         self.assertEqual(result.status, SynthesisStatus.FOUND)
         self.assertEqual(result.image, b"ubO")
+        self.assertEqual(result.semantic_proof.value, "direct-m1-lowering-v1")
         self.assertEqual(result.bounds, CAPABILITY_BUDGET)
 
     def test_m1_module_case_mismatch_rejects_candidate(self) -> None:

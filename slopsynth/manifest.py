@@ -125,4 +125,8 @@ def verify_manifest(
         raise ValueError("manifest does not record a passing guest validation")
     if manifest.get("synthesis_status") != "FOUND":
         raise ValueError("manifest does not record a FOUND synthesis result")
+    if not isinstance(validation.get("semantic_proof"), str) or not validation[
+        "semantic_proof"
+    ]:
+        raise ValueError("manifest does not record a semantic lowering proof")
     return manifest

@@ -60,7 +60,11 @@ def _run_target(
     profile = load_profile(profile_path)
     module = load_module(module_path)
     synthesis = compile_module(module, profile, budget)
-    candidate = synthesis.image or synthesis.last_candidate
+    candidate = (
+        synthesis.image
+        or synthesis.observational_candidate
+        or synthesis.last_candidate
+    )
     target_dir = run_dir / name
     target_dir.mkdir()
 
@@ -136,12 +140,28 @@ def _run_target(
             }
         )
 
-    demonstrated = synthesis.status is SynthesisStatus.FOUND and all_cases_match
+    demonstrated = (
+        synthesis.status is SynthesisStatus.FOUND
+        and synthesis.image is not None
+        and synthesis.semantic_proof is not None
+        and all_cases_match
+    )
+    if synthesis.image is not None and synthesis.semantic_proof is not None:
+        candidate_role = "certified_candidate"
+    elif synthesis.observational_candidate is not None:
+        candidate_role = "unverified_observational_candidate"
+    elif candidate is not None:
+        candidate_role = "last_explored_candidate"
+    else:
+        candidate_role = "none"
     return {
         "target": name,
         "status": "DEMONSTRATED" if demonstrated else "NOT_DEMONSTRATED",
         "synthesis_status": synthesis.status.value,
-        "search_method": "ordered enumeration of canonical dispatch streams plus semantic trace guards",
+        "search_method": (
+            "ordered enumeration of canonical dispatch streams; I/O cases and "
+            "structural trace guards filter observational candidates only"
+        ),
         "bounds": {
             "max_cells": budget.max_cells,
             "max_nodes": budget.max_nodes,
@@ -149,18 +169,19 @@ def _run_target(
             "max_address_inclusive": budget.max_address,
         },
         "explored_nodes": synthesis.explored_nodes,
-        "candidate_role": (
-            "accepted_candidate"
-            if synthesis.image is not None
-            else "last_explored_candidate"
-            if candidate is not None
-            else "none"
+        "candidate_role": candidate_role,
+        "semantic_proof": (
+            synthesis.semantic_proof.value
+            if synthesis.semantic_proof is not None
+            else None
         ),
         "candidate_path": f"{name}/candidate.mb" if candidate_path else None,
         "generated_image_sha256": candidate_digest,
         "vm_result": (
             "NOT_RUN_NO_CANDIDATE"
             if candidate is None
+            else "ALL_CASES_MATCH_UNCERTIFIED"
+            if all_cases_match and synthesis.semantic_proof is None
             else "ALL_CASES_MATCH_HALT"
             if all_cases_match
             else "CASES_DID_NOT_ALL_MATCH"

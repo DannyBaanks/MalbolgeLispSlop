@@ -16,6 +16,7 @@
           {"op": "branch_zero", "value": "n", "zero_target": "done", "nonzero_target": "step"}
         ]},
         {"name": "step", "operations": [
+          {"op": "write_a", "value": "n"},
           {"op": "sub", "destination": "n", "left": "n", "right": 1},
           {"op": "jump", "target": "test"}
         ]},
@@ -28,7 +29,7 @@
   ],
   "cases": [
     {"stdin_hex": "00", "stdout_hex": "00"},
-    {"stdin_hex": "01", "stdout_hex": "00"},
-    {"stdin_hex": "03", "stdout_hex": "00"}
+    {"stdin_hex": "01", "stdout_hex": "0100"},
+    {"stdin_hex": "03", "stdout_hex": "03020100"}
   ]
 }

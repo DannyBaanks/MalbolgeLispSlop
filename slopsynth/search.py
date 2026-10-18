@@ -34,6 +34,12 @@ class SynthesisStatus(str, Enum):
     BUDGET_EXHAUSTED = "BUDGET_EXHAUSTED"
 
 
+class SemanticProof(str, Enum):
+    """Implemented lowering contracts that permit a candidate to be accepted."""
+
+    DIRECT_M1_LOWERING_V1 = "direct-m1-lowering-v1"
+
+
 @dataclass(frozen=True, slots=True)
 class SearchBudget:
     max_cells: int
@@ -68,6 +74,8 @@ class SynthesisResult:
     explored_nodes: int
     bounds: SearchBudget
     last_candidate: bytes | None = None
+    observational_candidate: bytes | None = None
+    semantic_proof: SemanticProof | None = None
 
 
 def _interpret(program: Program, stdin: bytes, profile: Profile) -> bytes:
@@ -146,7 +154,12 @@ def synthesize_program(
             )
 
     return SynthesisResult(
-        SynthesisStatus.FOUND, candidate, explored, budget, candidate
+        SynthesisStatus.FOUND,
+        candidate,
+        explored,
+        budget,
+        candidate,
+        semantic_proof=SemanticProof.DIRECT_M1_LOWERING_V1,
     )
 
 
@@ -175,9 +188,12 @@ def compile_module(
     """Compile direct M1 modules or search bounded dispatch streams for others.
 
     Advanced candidates are enumerated in increasing cell count and profile
-    dispatch order. A successful result matches every declared I/O case and
-    carries the structural trace checks for the requested IR features. Search
-    exhaustion is not a proof that no Malbolge implementation exists.
+    dispatch order. I/O cases and structural trace guards are candidate
+    filters only: they cannot certify that a candidate implements the IR
+    semantics. Until a feature-specific lowering supplies a semantic proof,
+    advanced matches are retained as observational candidates and never
+    returned as FOUND. Search exhaustion is not a proof that no Malbolge
+    implementation exists.
     """
     if budget.max_address >= profile.end:
         raise ValueError("max_address must be below the profile end value")
@@ -237,6 +253,7 @@ def compile_module(
 
     explored = 0
     last_candidate: bytes | None = None
+    observational_candidate: bytes | None = None
     for cell_count in range(1, budget.max_cells + 1):
         for sequence in product(dispatch_names, repeat=cell_count):
             if explored >= budget.max_nodes:
@@ -246,6 +263,7 @@ def compile_module(
                     explored,
                     budget,
                     last_candidate,
+                    observational_candidate,
                 )
             candidate = encode_dispatch_sequence(sequence, profile)
             explored += 1
@@ -280,9 +298,8 @@ def compile_module(
                 requires_loop=requires_loop,
             ):
                 continue
-            return SynthesisResult(
-                SynthesisStatus.FOUND, candidate, explored, budget, candidate
-            )
+            if observational_candidate is None:
+                observational_candidate = candidate
 
     return SynthesisResult(
         SynthesisStatus.NOT_FOUND_WITHIN_BOUNDS,
@@ -290,6 +307,7 @@ def compile_module(
         explored,
         budget,
         last_candidate,
+        observational_candidate,
     )
 
 

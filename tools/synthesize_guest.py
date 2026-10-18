@@ -133,7 +133,11 @@ def main() -> int:
         parser.error(str(exc))
 
     synthesis = synthesize_program(program, profile, budget)
-    if synthesis.status is not SynthesisStatus.FOUND or synthesis.image is None:
+    if (
+        synthesis.status is not SynthesisStatus.FOUND
+        or synthesis.image is None
+        or synthesis.semantic_proof is None
+    ):
         print(
             json.dumps(
                 {
@@ -192,6 +196,8 @@ def main() -> int:
     validation = {
         "status": "PASS" if validation_passed else "FAIL",
         "guest_status": "HALT" if validation_passed else "NOT_ALL_CASES_HALTED",
+        "synthesis_status": synthesis.status.value,
+        "semantic_proof": synthesis.semantic_proof.value,
         "cases": validation_cases,
         "loader": run_config.loader,
         "max_steps": run_config.max_steps,
@@ -230,6 +236,7 @@ def main() -> int:
                 "artifact": str(output_path),
                 "artifact_sha256": manifest["artifact_sha256"],
                 "manifest": str(manifest_path),
+                "semantic_proof": synthesis.semantic_proof.value,
                 "validation": validation["status"],
                 "guest_status": validation["guest_status"],
             },

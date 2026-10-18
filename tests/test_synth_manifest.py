@@ -30,7 +30,12 @@ class SynthesisManifestTests(unittest.TestCase):
                 "max_address": 8,
             },
             explored_nodes=1,
-            validation={"status": "PASS", "guest_status": "HALT"},
+            validation={
+                "status": "PASS",
+                "guest_status": "HALT",
+                "synthesis_status": "FOUND",
+                "semantic_proof": "direct-m1-lowering-v1",
+            },
         )
 
     def test_repeated_manifest_is_byte_deterministic(self) -> None:
@@ -56,6 +61,26 @@ class SynthesisManifestTests(unittest.TestCase):
             artifact.write_bytes(b"ubP")
 
             with self.assertRaisesRegex(ValueError, "artifact SHA-256"):
+                verify_manifest(
+                    manifest,
+                    artifact,
+                    profile_path=PROFILE,
+                    program_path=PROGRAM,
+                )
+
+    def test_manifest_requires_semantic_lowering_proof(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifact = root / "guest.mb"
+            artifact.write_bytes(b"ubO")
+            manifest_data = self.build(artifact.read_bytes())
+            validation = manifest_data["validation"]
+            assert isinstance(validation, dict)
+            validation.pop("semantic_proof")
+            manifest = root / "guest.manifest.json"
+            manifest.write_bytes(manifest_bytes(manifest_data))
+
+            with self.assertRaisesRegex(ValueError, "semantic lowering proof"):
                 verify_manifest(
                     manifest,
                     artifact,
@@ -112,6 +137,10 @@ class SynthesisManifestTests(unittest.TestCase):
             self.assertEqual(manifests[0], manifests[1])
             manifest_data = json.loads(manifests[0])
             self.assertEqual(manifest_data["validation"]["status"], "PASS")
+            self.assertEqual(
+                manifest_data["validation"]["semantic_proof"],
+                "direct-m1-lowering-v1",
+            )
             assert first_output is not None and first_manifest is not None
             verified = subprocess.run(
                 [
