@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "profile": "fixed-3^19",
+  "loader": "canonical",
+  "newline_policy": "no-final-newline",
+  "ignored_loader_bytes": [9, 10, 13, 32],
+  "stdout_comparison": "byte-exact",
+  "required_guest_status": "HALT"
+}
