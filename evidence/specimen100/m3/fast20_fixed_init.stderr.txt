@@ -1,0 +1,13 @@
+DBG [0.0s] start argc=2 argv1=/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/runtime/init_module.mb
+DBG [0.0s] reserve done mem=0x7542e4e53000
+DBG [0.0s] heartbeat DISABLED
+DBG [0.0s] fopen=0x5feba6bed2a0 argv1=/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/runtime/init_module.mb errno=0
+DBG [0.0s] filesize=19392
+DBG [0.0s] pre-mpstb szR=20480
+DBG [0.0s] post-mpstb
+DBG [0.0s] iter#0 am=19392
+DBG [0.0s] load-done off=19392 iters=1
+DBG [0.0s] fill-done
+DBG [0.0s] pattern-done, dispatching
+DBG mprotect FAIL r=-1 errno=12
+timeout: la orden monitorizada ha volcado un 'core'

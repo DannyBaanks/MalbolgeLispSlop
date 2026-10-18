@@ -1,0 +1,5 @@
+pagesize=4096
+reserve=0x70c9b1053000
+flip-fixed r=0x70c9b1053000
+write-through ok mem[65535]=65535
+DONE

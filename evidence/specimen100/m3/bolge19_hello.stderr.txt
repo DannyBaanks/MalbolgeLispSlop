@@ -1,0 +1,2 @@
+bolge19: imagen=64 celdas zona=[65472,130944) pat=[581130652,99,581130661...]
+bolge19: HALT steps=39 c=39 d=65 a=33 elapsed=0s

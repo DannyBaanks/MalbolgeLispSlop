@@ -1,0 +1,16 @@
+DBG [0.0s] start argc=2 argv1=/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/specimens/hello.malbolge
+DBG [0.0s] reserve done mem=0x71ed75c53000
+DBG [0.0s] heartbeat DISABLED
+DBG [0.0s] fopen=0x5aa3839912a0 argv1=/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/specimens/hello.malbolge errno=0
+DBG [0.0s] filesize=64
+DBG [0.0s] pre-mpstb szR=4096
+DBG [0.0s] post-mpstb
+DBG [0.0s] iter#0 am=64
+DBG [0.0s] load-done off=64 iters=1
+DBG [0.0s] fill-done
+DBG [0.0s] pattern-done, dispatching
+DBG [0.0s] first putchar ENTERING
+DBG [0.0s] putchar #1 done a=72
+DBG [0.0s] putchar #2 done a=451990558
+DBG [0.0s] putchar #3 done a=451990565
+DBG HALT steps=4135 c=39 d=65 a=33

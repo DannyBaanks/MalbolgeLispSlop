@@ -1,0 +1,9 @@
+reserved 4649045868 bytes at 0x7286aae53000 (page=4096)
+seq1 mprotect(81920 @+0): r=0 errno=0 (ok)
+touch 81920 bytes: ok w[20479]=20479
+seq2 mprotect(+81920): r=0 errno=0 (ok)
+seq2 mprotect(+1MB): r=0 errno=0 (ok)
+seq2 mprotect(+40MB): r=0 errno=0 (ok)
+seq2 mprotect(+1GB): r=0 errno=0 (ok)
+seq2 mprotect(+end-page): r=-1 errno=22 (Invalid argument)
+seq3 mmap MAP_FIXED 1MB @+2MB: r=0x7286ab053000 errno=0 (ok)

@@ -1,0 +1,5 @@
+Linux (Ubuntu 24.04); core_pattern = apport pipe (no core files en repo/worktree);
+Mem 15205MB usado 12886MB disponible 2319MB al momento de la bateria; swap 4095MB llena;
+vm.overcommit_memory=0; CommitLimit 11979768 kB; Committed_AS 25312572 kB;
+engine: clang -O2; fast20-linux = clang -O3 -march=native (upstream fast20.c);
+historico: experiments0000/MalbolgeLisp Vs Isyco/evidence/showdown/* (Windows 2026-08-25)

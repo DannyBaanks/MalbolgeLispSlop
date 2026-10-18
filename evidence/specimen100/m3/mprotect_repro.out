@@ -1,0 +1,3 @@
+reserved 4649045868 bytes at 0x716088a53000
+mprotect(81920): r=0 errno=0 (ok)
+mprotect(4096): r=0 errno=0 (ok)

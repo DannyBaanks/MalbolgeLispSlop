@@ -1,0 +1,198 @@
+{
+  "schema": "specimen100.m3.differential.v1",
+  "generated_utc": "2026-10-18T10:40:42Z",
+  "platform": "Linux x86_64 (Ubuntu 24.04)",
+  "specimens": {
+    "hello_classic": {
+      "sha256": "956c134aa67fa3fc049bda71406673050b64b18663ee603b16c7b694e13fe6c1",
+      "bytes": 64
+    },
+    "init_module_19t": {
+      "sha256": "4b3080fd250a4193030ec647e6c496f90540c1546f717b923284ea31b411e812",
+      "bytes": 19392
+    },
+    "lisp_19t": {
+      "sha256": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+      "bytes": 371331415
+    }
+  },
+  "rows": [
+    {
+      "engine": "oracle_py_ref(3^10)",
+      "specimen": "hello_classic",
+      "fresh": {
+        "out": "Hello World!",
+        "steps": 40,
+        "halt_reason": "halt_opcode",
+        "a": 33,
+        "c": 39,
+        "d": 65
+      },
+      "historical": {
+        "out": "Hello World!",
+        "steps": 40,
+        "halt_reason": "halt_opcode"
+      },
+      "verdict": "REPRODUCED"
+    },
+    {
+      "engine": "oracle_py_ref(3^10)",
+      "specimen": "init_module_19t",
+      "fresh": {
+        "out": "",
+        "halted": false,
+        "reason": "max_steps",
+        "steps": 2000000,
+        "a": 29564,
+        "c": 9804,
+        "d": 29502
+      },
+      "historical": {
+        "out": "",
+        "halted": false,
+        "reason": "max_steps",
+        "steps": 2000000
+      },
+      "verdict": "REPRODUCED"
+    },
+    {
+      "engine": "toolkit_py_3e10",
+      "specimen": "hello_classic",
+      "fresh": {
+        "steps": 40,
+        "halt_reason": "halt_opcode",
+        "last_jump_target": 56,
+        "cycle_detected": false
+      },
+      "historical": {
+        "steps": 40,
+        "halt_reason": "halt_opcode",
+        "last_jump_target": 56
+      },
+      "verdict": "REPRODUCED"
+    },
+    {
+      "engine": "toolkit_py_3e10",
+      "specimen": "init_module_19t",
+      "fresh": {
+        "error": "Unsupported opcode 'l'",
+        "rc": 1
+      },
+      "historical": {
+        "error": "Unsupported opcode 'l'",
+        "rc": 1
+      },
+      "verdict": "REPRODUCED"
+    },
+    {
+      "engine": "bolge19-linux(19t)",
+      "specimen": "hello_classic",
+      "fresh": {
+        "halt_steps": 39,
+        "c": 39,
+        "d": 65,
+        "a": 33,
+        "stdout_bytes": 12,
+        "stdout_sha256": "2778bce7fa64fd5abc0ca2f8ef5536fc09cf17e7dccaf1cb6a8f4e95cec8edf9"
+      },
+      "historical": null,
+      "verdict": "NEW_ROW",
+      "note": "variante 19t con loader raw; salida binaria distinta de Hello World (esperado)"
+    },
+    {
+      "engine": "fast20-linux(19t upstream)",
+      "specimen": "hello_classic",
+      "fresh": {
+        "rc": 0,
+        "stdout_bytes": 12,
+        "stdout_eq_bolge19": true
+      },
+      "historical": null,
+      "verdict": "NEW_ROW_CONSISTENT",
+      "note": "dos motores 19t independientes coinciden byte a byte en hello"
+    },
+    {
+      "engine": "fast20-linux(19t upstream)",
+      "specimen": "init_module_19t",
+      "fresh": {
+        "rc": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "historical": null,
+      "verdict": "NEW_ROW"
+    },
+    {
+      "engine": "fast20-linux(19t upstream)",
+      "specimen": "lisp_19t",
+      "fresh": {
+        "stdout_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+        "stdout_bytes": 291
+      },
+      "historical": {
+        "stdout_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea"
+      },
+      "verdict": "REPRODUCED_BYTE_EXACT",
+      "note": "run1=run2=historico; ver fast20_repl_run*.json"
+    },
+    {
+      "engine": "fast20_fixed-linux(mprotect fix)",
+      "specimen": "init_module_19t",
+      "fresh": {
+        "rc": 139,
+        "signal": "SIGSEGV",
+        "first_fail": "mprotect ENOMEM(errno=12) sobre pagina fuera de la reserva",
+        "dbg_last_si": "0x5a2973a03b13",
+        "dbg_mem": "0x700910453000",
+        "dbg_memend": "0x700a255fff6c"
+      },
+      "historical": null,
+      "verdict": "BROKEN_ON_LINUX",
+      "note": "~65 page-fills OK; luego acceso salvaje fuera de reserva; causa exacta a nivel fuente NOT_DEMONSTRATED"
+    },
+    {
+      "engine": "fast20_fixed-linux(mprotect fix)",
+      "specimen": "hello_classic",
+      "fresh": {
+        "rc": 139,
+        "signal": "SIGSEGV"
+      },
+      "historical": null,
+      "verdict": "BROKEN_ON_LINUX"
+    }
+  ],
+  "mprotect_findings": {
+    "clean_process_offsets_ok": [
+      "+81920",
+      "+1MB",
+      "+40MB",
+      "+1GB"
+    ],
+    "end_probe": "EINVAL por 4*END no multiplo de pagina (artefacto del probe)",
+    "mmap_repro_historico_en_linux": "flip-fixed MAP_FIXED OK; write-through OK -> Linux acepta la ruta upstream",
+    "interpretacion": "ambas primitivas funcionan aisladas; fast20_fixed diverge en su estado de dispatch/fill (memoria del sistema muy comprometida: Committed_AS 25.3GB > CommitLimit 12.0GB)"
+  },
+  "historical_harness_artifacts": {
+    "bolge19_19t__*": "VOID: invocado sin especimen (salida de uso, argv1=(none))",
+    "fast20fixed_19t__*": "VOID: ABORT_NULL_FILE rc=3 (argc=1, sin archivo)",
+    "autobolge_zig__*": "VOID: necesita in.bin/out.bin (usage)"
+  },
+  "historical_only_rows": {
+    "engine_3e10(Windows exe)": {
+      "hello_classic": {
+        "steps": 40,
+        "out": "Hello World!"
+      },
+      "init_module_19t": {
+        "steps": 9707,
+        "out_bytes": 2
+      }
+    }
+  },
+  "conclusions": [
+    "Controles 3^10 (oracle independiente + toolkit) reproducen exacto en Linux.",
+    "Los dos motores 19t de Linux (bolge19 propio y fast20 upstream) coinciden entre si en hello; fast20 reproduce la sesion lisp byte-exacta.",
+    "El parche historico fast20_fixed (Cygwin) no es portable a Linux (SIGSEGV en dispatch); la ruta upstream fast20.c si corre en Linux.",
+    "Filas de showdown para bolge19_19t y fast20fixed_19t eran void por bug del harness (sin argumento de especimen); no deben citarse como evidencia."
+  ]
+}

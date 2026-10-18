@@ -1,0 +1,1 @@
+{"spec": "hello.malbolge", "halted": true, "reason": "halt_opcode", "steps": 40, "output_repr": "'Hello World!'", "a": 33, "c": 39, "d": 65}
