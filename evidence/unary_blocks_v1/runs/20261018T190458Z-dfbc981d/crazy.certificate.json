@@ -1,0 +1,642 @@
+{
+  "artifacts": {
+    "dependency_lock_sha256": "ccf5e2be5a69a15eafda6b6b3504d1cb3ed52ac4125c265abff68c1fa8fe300e",
+    "generator_sha256": "e1ee60dde260045eb6ce8d89c7eac9701635aa6a303cacd9608874130d11291b",
+    "profile_sha256": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+    "proof_engine_sha256": "cb82bdcb439112cfaf61171380ea0ad6cead9d36505107c13c0e2af056656966",
+    "symbolic_model_sha256": "addbc2435e5a4c7622dae05e46f4a56f903deefd8d0f9e19d8c7d64eac99672e",
+    "vm_sha256": "4b975160c45a39294df4177f519a72ea812decd7206f5e3e52d9851534d3bc2b",
+    "vm_source_sha256": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3"
+  },
+  "block": {
+    "code_hex": "4a6d",
+    "entry": 82,
+    "sha256": "8eb662ff794be3f0a42771d917d03373a8c01a2be8afb2b18e55f6ce8ccdfe4c"
+  },
+  "layout": {
+    "data_address": 500,
+    "exit_address": 700,
+    "installed_landing_word": 141
+  },
+  "limits": {
+    "placement_max_queries": 100,
+    "placement_resource_limit": 100000,
+    "placement_timeout_ms": 5000,
+    "proof_resource_limit": 1000000,
+    "proof_timeout_ms": 5000
+  },
+  "not_demonstrated": [
+    "canonical bootstrap",
+    "general control-flow compiler",
+    "guest Lisp"
+  ],
+  "operation": "crazy",
+  "proof": {
+    "feasibility_sha256": "95cb9a102e7a3e0504906fea08e4f94c5b265a579db1032bfa74aada5a637875",
+    "feasibility_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_entry_a () Int)\n(declare-fun unary_entry_word () Int)\n(assert\n (>= unary_entry_a 0))\n(assert\n (< unary_entry_a 1162261467))\n(assert\n (>= unary_entry_word 0))\n(assert\n (< unary_entry_word 1162261467))\n(check-sat)\n",
+    "feasibility_witnesses": {
+      "a": 0,
+      "word": 0
+    },
+    "phase": "violation",
+    "query_sha256": "faadc05e9f4a9d43dde8c9c7f84756644a8bbb68f7621afa648be75a7aaaa442",
+    "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_entry_a () Int)\n(declare-fun unary_entry_word () Int)\n(declare-fun unary_other_memory () (Array Int Int))\n(assert\n (>= unary_entry_a 0))\n(assert\n (< unary_entry_a 1162261467))\n(assert\n (>= unary_entry_word 0))\n(assert\n (< unary_entry_word 1162261467))\n(assert\n (let (($let_0 ((as const (Array Int Int)) 0)))\n(let (($let_1 (= $let_0 $let_0)))\n(let (($let_2 (= 0 0)))\n(let (($let_3 (= 3 3)))\n(let (($let_4 (not false)))\n(let (($let_5 (mod (div unary_entry_a 387420489) 3)))\n(let (($let_6 (= $let_5 0)))\n(let (($let_7 (ite (= (mod (div unary_entry_word 387420489) 3) 1) (ite $let_6 1 (ite (= $let_5 1) 0 2)) (ite (= $let_5 2) 1 2))))\n(let (($let_8 (ite (= (mod (div unary_entry_word 387420489) 3) 0) (ite $let_6 1 0) $let_7)))\n(let (($let_9 (* 387420489 $let_8)))\n(let (($let_10 (mod (div unary_entry_a 129140163) 3)))\n(let (($let_11 (= $let_10 0)))\n(let (($let_12 (ite (= (mod (div unary_entry_word 129140163) 3) 1) (ite $let_11 1 (ite (= $let_10 1) 0 2)) (ite (= $let_10 2) 1 2))))\n(let (($let_13 (ite (= (mod (div unary_entry_word 129140163) 3) 0) (ite $let_11 1 0) $let_12)))\n(let (($let_14 (* 129140163 $let_13)))\n(let (($let_15 (mod (div unary_entry_a 43046721) 3)))\n(let (($let_16 (= $let_15 0)))\n(let (($let_17 (ite (= (mod (div unary_entry_word 43046721) 3) 1) (ite $let_16 1 (ite (= $let_15 1) 0 2)) (ite (= $let_15 2) 1 2))))\n(let (($let_18 (ite (= (mod (div unary_entry_word 43046721) 3) 0) (ite $let_16 1 0) $let_17)))\n(let (($let_19 (* 43046721 $let_18)))\n(let (($let_20 (mod (div unary_entry_a 14348907) 3)))\n(let (($let_21 (= $let_20 0)))\n(let (($let_22 (ite (= (mod (div unary_entry_word 14348907) 3) 1) (ite $let_21 1 (ite (= $let_20 1) 0 2)) (ite (= $let_20 2) 1 2))))\n(let (($let_23 (ite (= (mod (div unary_entry_word 14348907) 3) 0) (ite $let_21 1 0) $let_22)))\n(let (($let_24 (* 14348907 $let_23)))\n(let (($let_25 (mod (div unary_entry_a 4782969) 3)))\n(let (($let_26 (= $let_25 0)))\n(let (($let_27 (ite (= (mod (div unary_entry_word 4782969) 3) 1) (ite $let_26 1 (ite (= $let_25 1) 0 2)) (ite (= $let_25 2) 1 2))))\n(let (($let_28 (ite (= (mod (div unary_entry_word 4782969) 3) 0) (ite $let_26 1 0) $let_27)))\n(let (($let_29 (* 4782969 $let_28)))\n(let (($let_30 (mod (div unary_entry_a 1594323) 3)))\n(let (($let_31 (= $let_30 0)))\n(let (($let_32 (ite (= (mod (div unary_entry_word 1594323) 3) 1) (ite $let_31 1 (ite (= $let_30 1) 0 2)) (ite (= $let_30 2) 1 2))))\n(let (($let_33 (ite (= (mod (div unary_entry_word 1594323) 3) 0) (ite $let_31 1 0) $let_32)))\n(let (($let_34 (* 1594323 $let_33)))\n(let (($let_35 (mod (div unary_entry_a 531441) 3)))\n(let (($let_36 (= $let_35 0)))\n(let (($let_37 (ite (= (mod (div unary_entry_word 531441) 3) 1) (ite $let_36 1 (ite (= $let_35 1) 0 2)) (ite (= $let_35 2) 1 2))))\n(let (($let_38 (ite (= (mod (div unary_entry_word 531441) 3) 0) (ite $let_36 1 0) $let_37)))\n(let (($let_39 (* 531441 $let_38)))\n(let (($let_40 (mod (div unary_entry_a 177147) 3)))\n(let (($let_41 (= $let_40 0)))\n(let (($let_42 (ite (= (mod (div unary_entry_word 177147) 3) 1) (ite $let_41 1 (ite (= $let_40 1) 0 2)) (ite (= $let_40 2) 1 2))))\n(let (($let_43 (ite (= (mod (div unary_entry_word 177147) 3) 0) (ite $let_41 1 0) $let_42)))\n(let (($let_44 (* 177147 $let_43)))\n(let (($let_45 (mod (div unary_entry_a 59049) 3)))\n(let (($let_46 (= $let_45 0)))\n(let (($let_47 (ite (= (mod (div unary_entry_word 59049) 3) 1) (ite $let_46 1 (ite (= $let_45 1) 0 2)) (ite (= $let_45 2) 1 2))))\n(let (($let_48 (ite (= (mod (div unary_entry_word 59049) 3) 0) (ite $let_46 1 0) $let_47)))\n(let (($let_49 (* 59049 $let_48)))\n(let (($let_50 (mod (div unary_entry_a 19683) 3)))\n(let (($let_51 (= $let_50 0)))\n(let (($let_52 (ite (= (mod (div unary_entry_word 19683) 3) 1) (ite $let_51 1 (ite (= $let_50 1) 0 2)) (ite (= $let_50 2) 1 2))))\n(let (($let_53 (ite (= (mod (div unary_entry_word 19683) 3) 0) (ite $let_51 1 0) $let_52)))\n(let (($let_54 (* 19683 $let_53)))\n(let (($let_55 (mod (div unary_entry_a 6561) 3)))\n(let (($let_56 (= $let_55 0)))\n(let (($let_57 (ite (= (mod (div unary_entry_word 6561) 3) 1) (ite $let_56 1 (ite (= $let_55 1) 0 2)) (ite (= $let_55 2) 1 2))))\n(let (($let_58 (ite (= (mod (div unary_entry_word 6561) 3) 0) (ite $let_56 1 0) $let_57)))\n(let (($let_59 (* 6561 $let_58)))\n(let (($let_60 (mod (div unary_entry_a 2187) 3)))\n(let (($let_61 (= $let_60 0)))\n(let (($let_62 (ite (= (mod (div unary_entry_word 2187) 3) 1) (ite $let_61 1 (ite (= $let_60 1) 0 2)) (ite (= $let_60 2) 1 2))))\n(let (($let_63 (ite (= (mod (div unary_entry_word 2187) 3) 0) (ite $let_61 1 0) $let_62)))\n(let (($let_64 (* 2187 $let_63)))\n(let (($let_65 (mod (div unary_entry_a 729) 3)))\n(let (($let_66 (= $let_65 0)))\n(let (($let_67 (ite (= (mod (div unary_entry_word 729) 3) 1) (ite $let_66 1 (ite (= $let_65 1) 0 2)) (ite (= $let_65 2) 1 2))))\n(let (($let_68 (ite (= (mod (div unary_entry_word 729) 3) 0) (ite $let_66 1 0) $let_67)))\n(let (($let_69 (* 729 $let_68)))\n(let (($let_70 (mod (div unary_entry_a 243) 3)))\n(let (($let_71 (= $let_70 0)))\n(let (($let_72 (ite (= (mod (div unary_entry_word 243) 3) 1) (ite $let_71 1 (ite (= $let_70 1) 0 2)) (ite (= $let_70 2) 1 2))))\n(let (($let_73 (ite (= (mod (div unary_entry_word 243) 3) 0) (ite $let_71 1 0) $let_72)))\n(let (($let_74 (* 243 $let_73)))\n(let (($let_75 (mod (div unary_entry_a 81) 3)))\n(let (($let_76 (= $let_75 0)))\n(let (($let_77 (ite (= (mod (div unary_entry_word 81) 3) 1) (ite $let_76 1 (ite (= $let_75 1) 0 2)) (ite (= $let_75 2) 1 2))))\n(let (($let_78 (ite (= (mod (div unary_entry_word 81) 3) 0) (ite $let_76 1 0) $let_77)))\n(let (($let_79 (* 81 $let_78)))\n(let (($let_80 (mod (div unary_entry_a 27) 3)))\n(let (($let_81 (= $let_80 0)))\n(let (($let_82 (ite (= (mod (div unary_entry_word 27) 3) 1) (ite $let_81 1 (ite (= $let_80 1) 0 2)) (ite (= $let_80 2) 1 2))))\n(let (($let_83 (ite (= (mod (div unary_entry_word 27) 3) 0) (ite $let_81 1 0) $let_82)))\n(let (($let_84 (* 27 $let_83)))\n(let (($let_85 (mod (div unary_entry_a 9) 3)))\n(let (($let_86 (= $let_85 0)))\n(let (($let_87 (ite (= (mod (div unary_entry_word 9) 3) 1) (ite $let_86 1 (ite (= $let_85 1) 0 2)) (ite (= $let_85 2) 1 2))))\n(let (($let_88 (ite (= (mod (div unary_entry_word 9) 3) 0) (ite $let_86 1 0) $let_87)))\n(let (($let_89 (* 9 $let_88)))\n(let (($let_90 (mod (div unary_entry_a 3) 3)))\n(let (($let_91 (= $let_90 0)))\n(let (($let_92 (ite (= (mod (div unary_entry_word 3) 3) 1) (ite $let_91 1 (ite (= $let_90 1) 0 2)) (ite (= $let_90 2) 1 2))))\n(let (($let_93 (ite (= (mod (div unary_entry_word 3) 3) 0) (ite $let_91 1 0) $let_92)))\n(let (($let_94 (* 3 $let_93)))\n(let (($let_95 (mod unary_entry_a 3)))\n(let (($let_96 (= $let_95 0)))\n(let (($let_97 (ite (= (mod unary_entry_word 3) 1) (ite $let_96 1 (ite (= $let_95 1) 0 2)) (ite (= $let_95 2) 1 2))))\n(let (($let_98 (ite (= (mod unary_entry_word 3) 0) (ite $let_96 1 0) $let_97)))\n(let (($let_99 (+ $let_98 $let_94 $let_89 $let_84 $let_79 $let_74 $let_69 $let_64 $let_59 $let_54 $let_49 $let_44 $let_39 $let_34 $let_29 $let_24 $let_19 $let_14 $let_9)))\n(let (($let_100 (store (store unary_other_memory 82 74) 83 109)))\n(let (($let_101 (store (store (store $let_100 500 unary_entry_word) 501 82) 502 699)))\n(let (($let_102 (store $let_101 699 141)))\n(let (($let_103 (store (store (store unary_other_memory 83 109) 501 82) 502 699)))\n(let (($let_104 (store $let_103 699 141)))\n(let (($let_105 (store (store $let_104 500 $let_99) 82 74)))\n(let (($let_106 (= $let_105 (store $let_102 500 $let_99))))\n(let (($let_107 (= 503 503)))\n(let (($let_108 (= 700 700)))\n(let (($let_109 (= $let_99 $let_99)))\n(not (and $let_109 $let_108 $let_107 $let_106 $let_4 $let_4 $let_3 $let_2 $let_2 $let_1)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))\n(check-sat)\n",
+    "reason": "",
+    "resource_limit": 1000000,
+    "status": "VERIFIED",
+    "timeout_ms": 5000,
+    "witnesses": {},
+    "z3_version": "4.16.0"
+  },
+  "schema_version": 1,
+  "scope": "reusable three-cycle OPR/ROT primitive with preinstalled code, records, and landing pad",
+  "search": {
+    "queries": 83,
+    "status": "FOUND",
+    "transcript": [
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "c4ef3f83a1c258c713de773e1e585c6f94acb3f3dd787f8571f67328ef82511e",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 0))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "2b1173c092837a2e09b44b6c571ee356aa5ea00f1eb7e1ca8e9248593528eff5",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 1))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "cb4e0b3ce55f1480f59c6c1967c826e0cec19c5ef542619731dae8126a35f608",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 2))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "c7b2645c88b8f6599e3703889c08f4d7644725ca5b2727e6b7f92eb7dfd2ff46",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 3))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "66c10b6f9486ee25e7cc15ddbb04fb466064c5bb0bdca5216c758a060ac75c87",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 4))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "a7818656b4ca6d139233f40bce7115dcf22d3787bc7493d42ccc0d0ef920aa87",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 5))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "5f69054bc1d92bfd689a42a02b342ec6510c96285743709fe981855ced9a99e9",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 6))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "e90087586d1befe5e1a3c9ac7c0863c0665e9be98bfc5857f72225494ca6d8e8",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 7))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "1e04ccd2df14ea40d0889d5d9aee13ada2a861707b949c95cbb909de3ad090db",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 8))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "1f15d6bd7d826d068d4bcf5b9453ffc5e9dfe0fc4f7f7fd985bfdc5d30d65067",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 9))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "88bc0d0e3bc427052d58477a348fa281e4b3d6d69dd27f78337d978474832e86",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 10))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "61fb8d96a4da090c3fc0dcab71350ce9943da76bfe47852b788ac7bf81939456",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 11))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "3027ad1a7aec8fb5f6910880c1f94178998bf11517b787c188a73376db3250c6",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 12))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "19417d9c1a335c0b3ac8f2ad715e99e6e091be13f5848043624497ac1f65bf2f",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 13))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "46440b2fab36b06b3a66ec14d0137b8f8e2c05a620f2d0342b4bd460bca9ae30",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 14))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "05c209d41ddace62be17bb6e8d27ad216009e7c87259beea63a392413f1bd0d3",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 15))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "f374fb2ecba987e01bfc386987ea730e9fcedf3a951a4f6341dd7d6f4618e9bf",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 16))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "18447c89d021ee5352dd4e6c9d5d27ddcc75768a0a26c384af6c74eab16c0e7f",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 17))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "8333c8676c8ca246fe9011292d8ce7bbae0a6ea583635e9be46a11613c0ec7e5",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 18))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "f6973bde38adba9dfc504d36d7256c79111b106d27bdafae429d4c3b206bfbaf",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 19))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "c168cae18be1933d142a43a91ebeb3f8e6a74cdc7c4630f22379774f2ad1bcb2",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 20))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "b2b8f09746414e065bc000b11d6dc3a39906b2bbd76d636e5e026c272129614d",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 21))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "43cfe3d32e905a63ea9740db6069c67194e2bf765eb40e96acc0911b0e52ea64",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 22))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "710ef6350f27a052a857c55dc174cf6afd26afd7577db5e61c6947d22e9dfe23",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 23))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "3f7e38c4021d5bb4abe4dec4281bf54b644c1b8cee336d35fae7afde208683f1",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 24))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "6f167692dc6952fbe8ade6e8f3f3dd41981107d35e0df75e551f5c3c96017e97",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 25))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "d6f6ccc4d2692fb7997af4761bdea117087cb3051e6bae022f05a6a298830d0a",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 26))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "b00dd912f0479b67b369dbbec1a6c443b3dc04161ddcddc4a49c97e3b32c29bc",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 27))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "aa26d5a84109fb738260ede5cacd2ec76e3b989783f1bb0a005ef78d4644b2b3",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 28))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "6794510b05c55122af7b847d02122018dc528d72b8fd1eb7385446558b6e2fd3",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 29))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "6c99a8686e73955effdde7cad07c4090c661b8d27def97c98378e35562614b33",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 30))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "1152f8019740fff3aff5cf27cde7ee0a140cd20de40e8c55f11237cedddca5e6",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 31))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "ee53601b706084fb0e244f3422750426abeee4d2234186bea1a5f250fd553703",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 32))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "1aab4970cca9cf0b4519ac9d1bdccd519e68249f3ac9744c39023ae183d9931f",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 33))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "e6b83b401bfc8b4624c198632d2e18731ced700f6adeaae74fb13815eac379f3",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 34))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "ebe04123194e1ed03775ab5f1b63c2957bb52a9e05c14e961c725ac1414abe9d",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 35))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "3a1270cca36267fea3b9b0ca4ada0a54b2f474a36e0702033cd94eb91fd5ef78",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 36))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "9c9e18ad9ff084ce8346a202a4c1a3df0fb43c0c2908c4090585596821a83b83",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 37))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "6f91ef9532f8de706829e72ee08b8eadd62119ccbf70b9bfa9d1040bc9de6785",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 38))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "b09171b9df5bfafc71987abe5c7be915397feac84eea6660b435564d6ca7accd",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 39))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "17549a7d3e62b12bb028b16e6de48b4cd7539ae56351aae1ab830c65da5c03e0",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 40))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "16d6edebc81bbe5cae6ee0c36a729a3be0be45e8e0964883e621d83908d03c6b",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 41))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "d5439645d60b51b23b0c65418b1bb6855dc6ce80e657551e9086ce976562b484",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 42))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "e7482ced73b79162f1dd4a93fb825e31294b16d8053e204e1d044e157767dc92",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 43))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "8b623df1aa1a79259cf26deead26a1f870f9e2e090548f9aa24f950ef50b3e99",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 44))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "1d7ec3e44022740296ab03727344b65196c9b0a43eba97f4181486e46b43997c",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 45))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "23ecd4c1c3dc97b5076ad7d463896ca6784e3f9abb50033a1c9a4aa2cad0d41a",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 46))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "0b2c3fde42e35cfdd86843d31163a811248db16acef0eabdae5b81a4bfa16ea0",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 47))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "3c65edf1e7b034c51cbd4696fda0a128be5601932a3a9d540fa342f2addb7a8b",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 48))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "2f7788e96cfad68feebd99dcb42380dfab1664e2c1142f23633751a509bb316e",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 49))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "051fbdf42267abec36662686c752696b30e109efb934263feb08b532f99a4a74",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 50))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "229567fa44ee4da62e3c2748b29941903c6221e07f9f03f3fc539b4edd47dc7a",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 51))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "47eabb9c65c49d47f90e355bd5121610fcacb9d5657e16574f1ad1102f2ff3de",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 52))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "944c7be74648ee7e9032e9d5b5802464d93cfef91e6fc9d7d4408b7524a34a5e",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 53))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "4be825894048135afa109f7794da05a540db0f0c94b98719fb90faaea3ef787f",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 54))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "f3c5e9bbb5dc8f9d9f6e26e2e6ccecbfb9c2761eb8d824630dd0739efcf67da9",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 55))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "d199723b25456e56fa3c0d258602e103be2c726b8f3b9b1d42a703ce34bb93f3",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 56))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "4a7d08a9252f2878fca1ec3641d18bdfd1cf8b5f7d7fc4ee5fc07df49182ccd7",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 57))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "dbe9422c01dc3fa703e0b1927920b9a4d5cac2bf03a0c3634e96ce2bd49ee953",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 58))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "97556cc34734f7ba4bd17237fed2d3cd983672e6d689c5325250ab9f98f9abff",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 59))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "4e1f93386a1a87ee2c36f1259ae37f1971f7e27d0cddd72a511129d8b8fe83a1",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 60))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "958d88e4cd966152470cf858bf4a37d18c3401240ad0a51074896cd42b4bd444",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 61))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "2aed9d761d936fe18a995c15a10b6236305ed4331a6f0522c57cdfa3c75091e2",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 62))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "d6b995d7c833c3d50977f320cd7e3a13cb45dfd03d66ecc33a1b052596e586d0",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 63))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "72100a6f981dcae0e7f61540a681a1aabe8cb055a6a4ebe584cb733a73e93b93",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 64))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "1dcbd2b7e241074ef8da7eb0e1e56ebfb2c458a5f37276848eb4217f053a5ca6",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 65))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "8d62b0ee679b9e6458427e32d578493d61268a97e18d408ac9b340be4a2c71db",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 66))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "17d652f5991efbc7aae726c0aeac1e5ffbfee2fd28f96152b15d524ab1a3ddcd",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 67))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "7d5f87c358dd9d86d4ecad1f8ae945c24f6975f8c8b7bde340d6195a8e2dcf6e",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 68))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "467fb52ef6964bf11d15ecec185eb2bac3686679df030489243a34191e48e577",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 69))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "bffa4f05d958add7aadaf5849afa5673cf6e2837b17b45427f64e14a93249653",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 70))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "fa1c18850742491ec6278d4eb4e8757cd29dc8edbe40357ac118b2cb0297798b",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 71))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "9f9f346ba51e0fce5b38d9f60e7ddcedb0056fa715e3d5d190604b0ad1a568f6",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 72))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "1a5ea15e0e5009577f3355047d292f634b5dd07c3746f1c0cf2c3cb57072b25f",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 73))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "da1f3cc48018ff2adc88a186fd5e9977f33814a861f9d1ad2be1ca781c051ca1",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 74))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "532b515d0adb1b07ecb3c32038850b93c36e4d947bae6f66bebe2c4b12e3da61",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 75))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "bc0a922c1b4d205242cd4edb81b3ebfce89cd4885cf97329845256b681338f75",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 76))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "1b398f79ca8b3eda8c08af966c9be63cb315c68f6af3787b6c48a3db0a165d85",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 77))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "663efbe3cd57cd3848f128df65c7d723388cf88ac0140d87648a65d8a8f91ced",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 78))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "ac9609527193b0e0b8e3501313f9a18c4a04eaffa8222f1162ce6c23d79c7ce1",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 79))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "c67e152ed06c7486060d9a1e0fa43a80323023e364b7e82b5dfdac583c54e4d5",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 80))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": null,
+        "candidate_entry": null,
+        "query_sha256": "43374d180b6d8ac9cace570af807cbe3a2f4850cb96143063516705d56ccd1cc",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 81))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "UNSAT"
+      },
+      {
+        "candidate_byte": 74,
+        "candidate_entry": 82,
+        "query_sha256": "5f51b54d50a67fb3860f0eca264268ca51711fc8681281d9a164962996b3a0d1",
+        "query_smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unary_placement_c () Int)\n(declare-fun unary_placement_byte () Int)\n(assert\n (= unary_placement_c 82))\n(assert\n (>= unary_placement_byte 33))\n(assert\n (< unary_placement_byte 127))\n(assert\n (= (mod (+ unary_placement_byte unary_placement_c) 94) 62))\n(assert\n (or (= unary_placement_byte 70) (= unary_placement_byte 74)))\n(check-sat)\n",
+        "status": "SAT"
+      }
+    ]
+  },
+  "status": "VERIFIED_BLOCK",
+  "z3_version": "4.16.0"
+}

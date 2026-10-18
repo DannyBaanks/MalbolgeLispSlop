@@ -1,0 +1,20 @@
+bolge19: AVISO /tmp/opencode/specimen100-m1-lisp.mb: 1 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode
+bolge19: imagen=371331415 celdas zona=[61097,122194) pat=[81,581130652,81...]
+bolge19: steps=200000000 c=81 d=581130749 a=0 overlay=179417 elapsed=1s
+bolge19: steps=400000000 c=581130696 d=19 a=581307880 overlay=230196 elapsed=3s
+bolge19: steps=600000000 c=61 d=581130745 a=0 overlay=280799 elapsed=5s
+bolge19: steps=800000000 c=83 d=581130751 a=581130733 overlay=331406 elapsed=7s
+bolge19: steps=1000000000 c=64 d=581130706 a=86240159 overlay=382118 elapsed=9s
+bolge19: steps=1200000000 c=82 d=8 a=581130733 overlay=432697 elapsed=11s
+bolge19: steps=1400000000 c=581137464 d=582284501 a=581130733 overlay=468667 elapsed=14s
+bolge19: steps=1600000000 c=581331761 d=582263750 a=581130733 overlay=468692 elapsed=18s
+bolge19: steps=1800000000 c=581136613 d=582284443 a=0 overlay=468706 elapsed=23s
+bolge19: steps=2000000000 c=581136429 d=582284899 a=387420488 overlay=468725 elapsed=28s
+bolge19: steps=2200000000 c=581137181 d=582284482 a=444816207 overlay=468733 elapsed=32s
+bolge19: steps=2400000000 c=581143356 d=582284872 a=581130732 overlay=468745 elapsed=36s
+bolge19: steps=2600000000 c=581172616 d=582253590 a=581130733 overlay=468762 elapsed=40s
+bolge19: steps=2800000000 c=581140001 d=582284662 a=581130733 overlay=468779 elapsed=44s
+bolge19: steps=3000000000 c=581136618 d=582284447 a=581130732 overlay=468792 elapsed=48s
+bolge19: steps=3200000000 c=581136241 d=582284992 a=387420488 overlay=468812 elapsed=52s
+bolge19: steps=3400000000 c=581137557 d=582284101 a=774309537 overlay=468825 elapsed=57s
+bolge19: HALT steps=3537984381 c=581143360 d=582087400 a=10 elapsed=60s

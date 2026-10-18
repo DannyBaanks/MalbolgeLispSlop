@@ -1,0 +1,7 @@
+(scan 10 + '(1 2))
+(scan 10 + null)
+(fold 20 - '(3 2))
+(fold' - '(20 3 2))
+(fold' + null)
+(scan' + null)
+(off)

@@ -1,10 +1,35 @@
-# LispSlop Language Specification v1.0
+# MalbolgeLISP v1.2 / LispSlop Language Contract
 
-## 1. Overview and Target Machine
+**Status:** working freeze; this document defines both the external reference boundaries from MalbolgeLISP v1.2 and the internal native language definition for LispSlop on `fixed-3^19`. Unresolved features remain `DECLARED` in `lisp-feature-matrix.json`.
 
-LispSlop is a functional Lisp dialect designed to execute natively in a fixed rotation-width 19-trit Malbolge Unshackled machine (`fixed-3^19`, $END = 3^{19} = 1,162,261,467$). Unlike bloated Brainfuck-emulated Malbolge interpreters that require hundreds of megabytes of unrolled tape instructions, LispSlop synthesizes compact, native Malbolge instructions where single 19-trit cells natively represent pointers and 26-bit integers.
+The reference executable is `/tmp/opencode/specimen100-m1-lisp.mb`, run by the same fixed19 VM with the raw loader. Every result below has immutable request, input, output, result and hash files under `evidence/language_contract_v1/`. Supervisor timeout and VM step exhaustion are observations, not Lisp errors or proof that an expression is undefined.
 
-## 2. Value Representation and Type Tags
+## 1. Fixed Target Choices
+
+- Lisp integers are unsigned 26-bit values: `0 <= n < 2^26` (`2^26 = 67,108,864`). This language domain is narrower than the VM word domain `0 .. 3^19-1`.
+- `+` and `+'` return the sum modulo `2^26`. Both returned `0` for `67,108,863 + 1` in the reference runs.
+- `-` and `-'` return the nonnegative modular difference in the same domain. This is the target contract choice for subtraction. It does not define other partial operations such as division by zero. The reference underflow probes `(- 0 1)` and `(-' 0 1)` did not finish within 240 seconds / 15,000,000,000 VM steps; their behavior remains `NOT_DEMONSTRATED` against the reference.
+- Numeric equality and inequality, numeric ordering, and `~` return `0` for false and `1` for true. The reference returned the expected values for `=`, `/=`, `~`, `<`, and `>` in the cases below. This fixes result encoding; truth tests for nonnumeric Lisp values are still open.
+
+These arithmetic choices are part of our fixed19 profile. They are not a claim that the original MalbolgeLISP image implements 26-bit modular semantics for all inputs. Any additional confirmed difference will be recorded beside its fixture before the feature row advances.
+
+## 2. Captured Reference Cases
+
+| Input | Output | Evidence | Result |
+|---|---:|---|---|
+| `(+ 2 1)` | `3` | `runs/20261018T-safe-arithmetic/` | `MAX_STEPS` after later input; this row was emitted |
+| `(* 3 3)` | `9` | `runs/20261018T-safe-arithmetic/` | `MAX_STEPS` after later input; this row was emitted |
+| `(% 5 2)` | `1` | `runs/20261018T-safe-arithmetic/` | `MAX_STEPS` after later input; this row was emitted |
+| `(> 5 6)` / `(< 5 6)` | `0` / `1` | `runs/20261018T-safe-arithmetic/` | `MAX_STEPS` after later input |
+| `(= 6 6)` | `1` | `runs/20261018T-safe-arithmetic/` | `MAX_STEPS` after later input |
+| `(= 6 7)` / `(= 6 6)` | `0` / `1` | `runs/20261018T-equality-truth/` | `HALT`, 6,934,983,070 VM steps |
+| `(/= 6 7)` / `(/= 6 6)` | `1` / `0` | `runs/20261018T-equality-truth/` | `HALT`, 6,934,983,070 VM steps |
+| `(~ 0)` / `(~ 1)` | `1` / `0` | `runs/20261018T-equality-truth/` | `HALT`, 6,934,983,070 VM steps |
+| `(+' 67108863 1)` | `0` | `runs/20261018T1840Z-numbers-primed/` | `WALL_TIMEOUT` during the following underflow form |
+| `(+ 67108863 1)` | `0` | `runs/20261018T1840Z-numbers-bounded/` | `WALL_TIMEOUT` during the following underflow form |
+| `(scan + 10 '(1 2))` | `E095` | `runs/20261018T1828Z-semantics-01/` | `HALT`; this was the first form, later forms did not run |
+
+## 3. Value Representation and Type Tags
 
 Every Lisp value in the runtime is an atom represented as a tagged union. In the native machine, a value is represented by a cell or pointer with an explicit tag:
 
@@ -24,7 +49,7 @@ Every Lisp value in the runtime is an atom represented as a tagged union. In the
 | `11` | Lazy | Lazily evaluated expression with captured environment. |
 | `12` | Null | Empty list / nil (`null`, `()`, `'()`). |
 
-## 3. Syntax and Reader Grammar
+## 4. Syntax and Reader Grammar
 
 ```
 toplevel      = s_expr / dot_command
@@ -55,20 +80,6 @@ Square bracket lists `[a f b ...]` transform at parse-time into prefix lists `(f
 
 ### Fork Transformation
 Curly brace lists `{f g h}` transform into `(fork f g h)`.
-
-## 4. REPL Protocol and Progress Membrane
-
-The interactive REPL presents a progress membrane:
-1. Displays the startup banner:
-   ```
-   MALBOLGELISPSLOP V1.0 (2026, DANNY & ANTIGRAVITY)
-   DOT COMMANDS: .F(eatures) .A(uthor) .R(eset) .M(emory) .S(ymbols) .E(xport) .I(mport)
-   % 
-   ```
-2. For each expression read, the parser emits a dot `.` per parsed character/token.
-3. Upon finishing parsing, a pipe `|` is emitted.
-4. During evaluation, a dot `.` is emitted for each evaluation step.
-5. The evaluated result is formatted and printed, followed by a newline and the `% ` prompt.
 
 ## 5. Builtin Feature Inventory (76 Builtins)
 
@@ -143,3 +154,12 @@ fold' scan' uniq off +' -' fork lazy lift bruijn
 - `.S`: Prints the interned global symbols.
 - `.E`: Exports memory state to Base64 ASCII dump.
 - `.I`: Imports memory state from Base64 ASCII dump.
+
+## 7. Unresolved Before Guest-Language Gate
+
+- Semantics and evaluation order for every overload, including list equality, arithmetic arity and error cases, `gcd`, `lcm`, `bind'`, and stateful operators. Documented binary arithmetic operators take two operands; unary operators such as `!` and `~` take one. No variadic extension is assumed.
+- Lexical shadowing, closures after creator return, recursion, macro expansion, short-circuiting and lazy memoization, checked against minimal original cases.
+- Reader and printer edge cases, numeric token overflow, malformed forms, language error continuation, EOF, and all `.F/.A/.R/.M/.S/.E/.I/off` behaviors.
+- Whether the original reaches different results if given more than the explicit step and wall budgets. Current timeouts do not answer that.
+
+No guest code may consume this document as a substitute for the missing cases. Each row remains `DECLARED` until the feature matrix has exact positive and negative fixtures; implementation and demonstration need separate guest tests and replayed evidence.

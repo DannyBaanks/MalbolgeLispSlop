@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "purpose": "native VM evidence for a reusable unary block",
+  "run_id": "mutated-rotate",
+  "operation": "rotate",
+  "mutated_byte_address": 59,
+  "mutation": "xor 1",
+  "image_sha256": "c230b38c8350837a61370de18bdd74f0de1874b77a35f4478dc0cf011b4a0860",
+  "vm_sha256": "4b975160c45a39294df4177f519a72ea812decd7206f5e3e52d9851534d3bc2b",
+  "vm_source_sha256": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+  "profile_sha256": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+  "stdin_hex": "7f",
+  "expected_stdout_hex": "dee8",
+  "config": {
+    "loader": "raw",
+    "max_steps": 32,
+    "timeout_seconds": 5,
+    "address_space_bytes": 536870912,
+    "output_bytes": 8
+  },
+  "exact_command": [
+    "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop-complete/build/bolge19",
+    "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop-complete/evidence/unary_blocks_v1/runs/20261018T190458Z-dfbc981d/native_vm/mutated-rotate.mb",
+    "--loader",
+    "raw",
+    "--max-steps",
+    "32"
+  ]
+}

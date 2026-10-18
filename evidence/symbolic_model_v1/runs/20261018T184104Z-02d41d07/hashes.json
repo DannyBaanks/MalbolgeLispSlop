@@ -1,0 +1,8 @@
+{
+  "normal.stderr": "c33a593fe2970f40bde09f0a9cb4e4079daa7b1f0c04d867a4e9658462ef15fb",
+  "normal.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "optimized.stderr": "5acdc2c884c4b06d6314e1c5cb364abc2fc31a5e328418a6ad64cfc700c60544",
+  "optimized.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "orientation.json": "b3623bbfe7abedf05d9e2ddc83cfc6b246a8cc1a7119a6c58f85111abd5092b7",
+  "report.json": "f2f3d1181574e462d1364cc85bc047b015fca11dc7abe81be0971a056f2a0a41"
+}

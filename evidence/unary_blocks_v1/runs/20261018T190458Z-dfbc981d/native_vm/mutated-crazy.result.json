@@ -1,0 +1,7 @@
+{
+  "status": "HALT",
+  "returncode": 0,
+  "stdout_hex": "7f7f",
+  "reference_stdout_hex": "7776",
+  "negative_control_changed": true
+}

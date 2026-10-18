@@ -42,9 +42,10 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
   [protocol](evidence/loader_gate_v1/protocol.md)
 - Front-end gate H1, our own `.slop` text to canonical image:
   [protocol](evidence/hell_frontend_v1/protocol.md)
-- Native branch gate H2, zero stops / nonzero echoes the next byte:
-  [protocol](evidence/h2_branch_v1/protocol.md), [Spanish guide](GUIA.md).
-  This is a scoped 259-cell lowering, not general control flow or a Lisp guest.
+- Native branch gate H2 has two fixed 259-cell templates: zero-stop/nonzero-
+  echo and zero-double-read/nonzero-echo. See the [original protocol](evidence/h2_branch_v1/protocol.md),
+  [both-arms protocol](evidence/both_arms_branch_v1/protocol.md), and [Spanish guide](GUIA.md).
+  These remain scoped lowerings, not general control flow or a Lisp guest.
 - Native loop gate H3, iterative loop with native control flow:
   [protocol](evidence/h3_loop_v1/protocol.md).
   This is a scoped 259-cell lowering, not general loops or a Lisp guest.

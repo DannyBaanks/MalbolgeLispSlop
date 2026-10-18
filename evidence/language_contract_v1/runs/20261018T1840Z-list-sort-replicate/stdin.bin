@@ -1,0 +1,7 @@
+(sort > '(3 1 2))
+(sort < '(3 1 2))
+(replicate 2 hello)
+(replicate 2 null)
+(replicate '(2) '(4 5))
+(replicate '(1 2) '(4))
+(off)

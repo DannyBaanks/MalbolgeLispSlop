@@ -1,11 +1,11 @@
 """Textual front-end for the fixed-3^19 guest language.
 
 Two shapes parse. A *straight-line guest* is the subset the certified lowering
-actually emits today: ``read``, ``write`` and ``halt``, optionally annotated with
-labels and absolute-address anchors. A *module* carries control flow: it parses
-into the same typed IR the search back-end uses. The CLI now lowers one H2
-shape (zero stops, nonzero reads and echoes another byte) through
-:mod:`slopsynth.branch`; every other module remains unsupported.
+emits today: ``read``, ``write`` and ``halt``, optionally annotated with labels
+and absolute-address anchors. A *module* carries control flow: it parses into
+the same typed IR the search back-end uses. :mod:`slopsynth.branch` lowers two
+narrow fixed19 branch shapes (zero-stop/nonzero-echo and
+zero-double-read/nonzero-echo); arbitrary CFGs remain unsupported.
 """
 
 from __future__ import annotations

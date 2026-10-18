@@ -1,0 +1,1476 @@
+{
+  "features": [
+    {
+      "category": "builtin",
+      "id": "builtin:!",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "!"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:%",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "%"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:&",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "&"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:*",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "*"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:+",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "+"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:+'",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "+'"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:-",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "-"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:-'",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "-'"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:/",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "/"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:/=",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "/="
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:<",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "<"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:<=",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "<="
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:=",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "="
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:>",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": ">"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:>=",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": ">="
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:^",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "^"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:any",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "any"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:append",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "append"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:append'",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "append'"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:atom",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "atom"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:atop",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "atop"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:bind",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "bind"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:bind'",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "bind'"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:bruijn",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "bruijn"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:car",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "car"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:cdr",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "cdr"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:commute",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "commute"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:cond",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "cond"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:cons",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "cons"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:count",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "count"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:def",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "def"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:defmacro",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "defmacro"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:defun",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "defun"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:drop",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "drop"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:drop'",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "drop'"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:dyad",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "dyad"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:eval",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "eval"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:every",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "every"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:filter",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "filter"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:flatmap",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "flatmap"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:flatten",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "flatten"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:fold",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "fold"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:fold'",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "fold'"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:fork",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "fork"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:gcd",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "gcd"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:id",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "id"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:if",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "if"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:intersperse",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "intersperse"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:iota",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "iota"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:iterate",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "iterate"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:iterateN",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "iterateN"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:lambda",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "lambda"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:lazy",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "lazy"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:lcm",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "lcm"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:let",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "let"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:lift",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "lift"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:map",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "map"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:max",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "max"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:min",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "min"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:monad",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "monad"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:nth",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "nth"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:off",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "off"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:print",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "print"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:quote",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "quote"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:replicate",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "replicate"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:rev",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "rev"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:scan",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "scan"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:scan'",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "scan'"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:selfie",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "selfie"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:size",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "size"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:sort",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "sort"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:take",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "take"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:take'",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "take'"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:tie",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "tie"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:uniq",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "uniq"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:where",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "where"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:zip",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "zip"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:zipwith",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "zipwith"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:|",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "|"
+    },
+    {
+      "category": "builtin",
+      "id": "builtin:~",
+      "source": "manual chapters 2/3; .F union, not .F alone",
+      "surface": "~"
+    },
+    {
+      "category": "overload",
+      "id": "overload:rev:list",
+      "source": "manual chapter 3; checked overload contract required",
+      "surface": "rev:list"
+    },
+    {
+      "category": "overload",
+      "id": "overload:rev:number,list",
+      "source": "manual chapter 3; checked overload contract required",
+      "surface": "rev:number,list"
+    },
+    {
+      "category": "overload",
+      "id": "overload:sort:list",
+      "source": "manual chapter 3; checked overload contract required",
+      "surface": "sort:list"
+    },
+    {
+      "category": "overload",
+      "id": "overload:sort:callable,list",
+      "source": "manual chapter 3; checked overload contract required",
+      "surface": "sort:callable,list"
+    },
+    {
+      "category": "overload",
+      "id": "overload:replicate:list,list",
+      "source": "manual chapter 3; checked overload contract required",
+      "surface": "replicate:list,list"
+    },
+    {
+      "category": "overload",
+      "id": "overload:replicate:number,list",
+      "source": "manual chapter 3; checked overload contract required",
+      "surface": "replicate:number,list"
+    },
+    {
+      "category": "overload",
+      "id": "overload:replicate:number,atom",
+      "source": "manual chapter 3; checked overload contract required",
+      "surface": "replicate:number,atom"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:symbol",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "symbol"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:unsigned-decimal",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "unsigned-decimal"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:null",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "null"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:empty-list",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "empty-list"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:paren-list",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "paren-list"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:square-infix",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "square-infix"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:fork-braces",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "fork-braces"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:quote-prefix",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "quote-prefix"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:lazy-prefix",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "lazy-prefix"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:nth-prefix",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "nth-prefix"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:tack-prefix",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "tack-prefix"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:comment",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "comment"
+    },
+    {
+      "category": "syntax",
+      "id": "syntax:dot-command",
+      "source": "manual chapter 2 grammar and evaluation; malformed cases must be specified",
+      "surface": "dot-command"
+    },
+    {
+      "category": "type",
+      "id": "type:0:number",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "0:number"
+    },
+    {
+      "category": "type",
+      "id": "type:1:symbol",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "1:symbol"
+    },
+    {
+      "category": "type",
+      "id": "type:2:list",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "2:list"
+    },
+    {
+      "category": "type",
+      "id": "type:3:closure",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "3:closure"
+    },
+    {
+      "category": "type",
+      "id": "type:4:macro",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "4:macro"
+    },
+    {
+      "category": "type",
+      "id": "type:5:bind",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "5:bind"
+    },
+    {
+      "category": "type",
+      "id": "type:6:reverse-bind",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "6:reverse-bind"
+    },
+    {
+      "category": "type",
+      "id": "type:7:composition",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "7:composition"
+    },
+    {
+      "category": "type",
+      "id": "type:8:fork",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "8:fork"
+    },
+    {
+      "category": "type",
+      "id": "type:9:nth",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "9:nth"
+    },
+    {
+      "category": "type",
+      "id": "type:10:tack",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "10:tack"
+    },
+    {
+      "category": "type",
+      "id": "type:11:lazy",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "11:lazy"
+    },
+    {
+      "category": "type",
+      "id": "type:12:null",
+      "source": "manual chapter 2 type-tag table",
+      "surface": "12:null"
+    },
+    {
+      "category": "command",
+      "id": "command:.F",
+      "source": "manual chapter 2 dot commands; checked state format differs intentionally",
+      "surface": ".F"
+    },
+    {
+      "category": "command",
+      "id": "command:.A",
+      "source": "manual chapter 2 dot commands; checked state format differs intentionally",
+      "surface": ".A"
+    },
+    {
+      "category": "command",
+      "id": "command:.R",
+      "source": "manual chapter 2 dot commands; checked state format differs intentionally",
+      "surface": ".R"
+    },
+    {
+      "category": "command",
+      "id": "command:.M",
+      "source": "manual chapter 2 dot commands; checked state format differs intentionally",
+      "surface": ".M"
+    },
+    {
+      "category": "command",
+      "id": "command:.S",
+      "source": "manual chapter 2 dot commands; checked state format differs intentionally",
+      "surface": ".S"
+    },
+    {
+      "category": "command",
+      "id": "command:.E",
+      "source": "manual chapter 2 dot commands; checked state format differs intentionally",
+      "surface": ".E"
+    },
+    {
+      "category": "command",
+      "id": "command:.I",
+      "source": "manual chapter 2 dot commands; checked state format differs intentionally",
+      "surface": ".I"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:global-lookup-shadowing",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "global lookup and shadowing"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:lexical-closure-lifetime",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "lexical scope and closure lifetime"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:equality-structural-and-identity",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "structural equality and identity"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:argument-evaluation-order",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "function argument evaluation order"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:let-binding-order",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "let binding evaluation and scope order"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:macro-argument-evaluation",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "macro argument evaluation"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:lazy-force-and-memoization",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "lazy forcing and memoization"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:short-circuit",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "conditional short-circuit and effects"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:synthetic-value-printing",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "printing synthetic values"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:reader-token-boundaries",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "reader token boundaries and malformed forms"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:invalid-type-combinations",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "invalid operand type combinations"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:eof",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "reader behavior at end of input"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:error-termination-or-continuation",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "language error termination or continuation"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:unknown-dot-command",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "unknown dot-command behavior"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:repl-persistence-reset",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "REPL persistence and reset"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:state-export-import-validation",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "state export and import validation"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:resource-limits",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "memory, stack, and execution limit behavior"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:numeric-boundaries",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "numeric bounds and arithmetic edge cases"
+    },
+    {
+      "category": "semantic",
+      "id": "semantics:recursion",
+      "source": "required cross-cutting v1.2 behavior; agreed plan tasks 3 and 7-10",
+      "surface": "recursive and mutually recursive definitions"
+    },
+    {
+      "category": "error",
+      "id": "error:E000",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E000"
+    },
+    {
+      "category": "error",
+      "id": "error:E001",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E001"
+    },
+    {
+      "category": "error",
+      "id": "error:E002",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E002"
+    },
+    {
+      "category": "error",
+      "id": "error:E003",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E003"
+    },
+    {
+      "category": "error",
+      "id": "error:E004",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E004"
+    },
+    {
+      "category": "error",
+      "id": "error:E005",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E005"
+    },
+    {
+      "category": "error",
+      "id": "error:E006",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E006"
+    },
+    {
+      "category": "error",
+      "id": "error:E007",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E007"
+    },
+    {
+      "category": "error",
+      "id": "error:E008",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E008"
+    },
+    {
+      "category": "error",
+      "id": "error:E009",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E009"
+    },
+    {
+      "category": "error",
+      "id": "error:E010",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E010"
+    },
+    {
+      "category": "error",
+      "id": "error:E011",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E011"
+    },
+    {
+      "category": "error",
+      "id": "error:E012",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E012"
+    },
+    {
+      "category": "error",
+      "id": "error:E013",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E013"
+    },
+    {
+      "category": "error",
+      "id": "error:E014",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E014"
+    },
+    {
+      "category": "error",
+      "id": "error:E015",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E015"
+    },
+    {
+      "category": "error",
+      "id": "error:E016",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E016"
+    },
+    {
+      "category": "error",
+      "id": "error:E017",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E017"
+    },
+    {
+      "category": "error",
+      "id": "error:E018",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E018"
+    },
+    {
+      "category": "error",
+      "id": "error:E019",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E019"
+    },
+    {
+      "category": "error",
+      "id": "error:E020",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E020"
+    },
+    {
+      "category": "error",
+      "id": "error:E021",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E021"
+    },
+    {
+      "category": "error",
+      "id": "error:E022",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E022"
+    },
+    {
+      "category": "error",
+      "id": "error:E023",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E023"
+    },
+    {
+      "category": "error",
+      "id": "error:E024",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E024"
+    },
+    {
+      "category": "error",
+      "id": "error:E025",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E025"
+    },
+    {
+      "category": "error",
+      "id": "error:E026",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E026"
+    },
+    {
+      "category": "error",
+      "id": "error:E027",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E027"
+    },
+    {
+      "category": "error",
+      "id": "error:E028",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E028"
+    },
+    {
+      "category": "error",
+      "id": "error:E029",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E029"
+    },
+    {
+      "category": "error",
+      "id": "error:E030",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E030"
+    },
+    {
+      "category": "error",
+      "id": "error:E031",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E031"
+    },
+    {
+      "category": "error",
+      "id": "error:E032",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E032"
+    },
+    {
+      "category": "error",
+      "id": "error:E034",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E034"
+    },
+    {
+      "category": "error",
+      "id": "error:E035",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E035"
+    },
+    {
+      "category": "error",
+      "id": "error:E036",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E036"
+    },
+    {
+      "category": "error",
+      "id": "error:E037",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E037"
+    },
+    {
+      "category": "error",
+      "id": "error:E038",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E038"
+    },
+    {
+      "category": "error",
+      "id": "error:E039",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E039"
+    },
+    {
+      "category": "error",
+      "id": "error:E040",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E040"
+    },
+    {
+      "category": "error",
+      "id": "error:E041",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E041"
+    },
+    {
+      "category": "error",
+      "id": "error:E042",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E042"
+    },
+    {
+      "category": "error",
+      "id": "error:E043",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E043"
+    },
+    {
+      "category": "error",
+      "id": "error:E044",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E044"
+    },
+    {
+      "category": "error",
+      "id": "error:E045",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E045"
+    },
+    {
+      "category": "error",
+      "id": "error:E046",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E046"
+    },
+    {
+      "category": "error",
+      "id": "error:E047",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E047"
+    },
+    {
+      "category": "error",
+      "id": "error:E048",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E048"
+    },
+    {
+      "category": "error",
+      "id": "error:E049",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E049"
+    },
+    {
+      "category": "error",
+      "id": "error:E050",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E050"
+    },
+    {
+      "category": "error",
+      "id": "error:E051",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E051"
+    },
+    {
+      "category": "error",
+      "id": "error:E052",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E052"
+    },
+    {
+      "category": "error",
+      "id": "error:E053",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E053"
+    },
+    {
+      "category": "error",
+      "id": "error:E054",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E054"
+    },
+    {
+      "category": "error",
+      "id": "error:E055",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E055"
+    },
+    {
+      "category": "error",
+      "id": "error:E056",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E056"
+    },
+    {
+      "category": "error",
+      "id": "error:E057",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E057"
+    },
+    {
+      "category": "error",
+      "id": "error:E058",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E058"
+    },
+    {
+      "category": "error",
+      "id": "error:E059",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E059"
+    },
+    {
+      "category": "error",
+      "id": "error:E060",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E060"
+    },
+    {
+      "category": "error",
+      "id": "error:E061",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E061"
+    },
+    {
+      "category": "error",
+      "id": "error:E062",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E062"
+    },
+    {
+      "category": "error",
+      "id": "error:E063",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E063"
+    },
+    {
+      "category": "error",
+      "id": "error:E064",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E064"
+    },
+    {
+      "category": "error",
+      "id": "error:E065",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E065"
+    },
+    {
+      "category": "error",
+      "id": "error:E066",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E066"
+    },
+    {
+      "category": "error",
+      "id": "error:E067",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E067"
+    },
+    {
+      "category": "error",
+      "id": "error:E068",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E068"
+    },
+    {
+      "category": "error",
+      "id": "error:E069",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E069"
+    },
+    {
+      "category": "error",
+      "id": "error:E070",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E070"
+    },
+    {
+      "category": "error",
+      "id": "error:E071",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E071"
+    },
+    {
+      "category": "error",
+      "id": "error:E072",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E072"
+    },
+    {
+      "category": "error",
+      "id": "error:E073",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E073"
+    },
+    {
+      "category": "error",
+      "id": "error:E074",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E074"
+    },
+    {
+      "category": "error",
+      "id": "error:E075",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E075"
+    },
+    {
+      "category": "error",
+      "id": "error:E076",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E076"
+    },
+    {
+      "category": "error",
+      "id": "error:E077",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E077"
+    },
+    {
+      "category": "error",
+      "id": "error:E078",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E078"
+    },
+    {
+      "category": "error",
+      "id": "error:E079",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E079"
+    },
+    {
+      "category": "error",
+      "id": "error:E080",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E080"
+    },
+    {
+      "category": "error",
+      "id": "error:E081",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E081"
+    },
+    {
+      "category": "error",
+      "id": "error:E082",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E082"
+    },
+    {
+      "category": "error",
+      "id": "error:E083",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E083"
+    },
+    {
+      "category": "error",
+      "id": "error:E084",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E084"
+    },
+    {
+      "category": "error",
+      "id": "error:E085",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E085"
+    },
+    {
+      "category": "error",
+      "id": "error:E086",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E086"
+    },
+    {
+      "category": "error",
+      "id": "error:E087",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E087"
+    },
+    {
+      "category": "error",
+      "id": "error:E088",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E088"
+    },
+    {
+      "category": "error",
+      "id": "error:E089",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E089"
+    },
+    {
+      "category": "error",
+      "id": "error:E090",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E090"
+    },
+    {
+      "category": "error",
+      "id": "error:E091",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E091"
+    },
+    {
+      "category": "error",
+      "id": "error:E092",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E092"
+    },
+    {
+      "category": "error",
+      "id": "error:E093",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E093"
+    },
+    {
+      "category": "error",
+      "id": "error:E094",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E094"
+    },
+    {
+      "category": "error",
+      "id": "error:E095",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E095"
+    },
+    {
+      "category": "error",
+      "id": "error:E096",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E096"
+    },
+    {
+      "category": "error",
+      "id": "error:E097",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E097"
+    },
+    {
+      "category": "error",
+      "id": "error:E098",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E098"
+    },
+    {
+      "category": "error",
+      "id": "error:E099",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E099"
+    },
+    {
+      "category": "error",
+      "id": "error:E100",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E100"
+    },
+    {
+      "category": "error",
+      "id": "error:E101",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E101"
+    },
+    {
+      "category": "error",
+      "id": "error:E102",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E102"
+    },
+    {
+      "category": "error",
+      "id": "error:E103",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E103"
+    },
+    {
+      "category": "error",
+      "id": "error:E104",
+      "source": "manual error table; gaps retained, condition/case binding pending",
+      "surface": "E104"
+    }
+  ],
+  "inventory_notes": [
+    ".F prose count is not used as canonical count.",
+    "quote is canonical; apostrophe is a separate reader syntax.",
+    "gcd,lcm,bind-prime,quote are documented outside .F.",
+    "No E033 was added.",
+    "Unspecified extra dot command is excluded."
+  ],
+  "reference": "MalbolgeLISP v1.2 documented surface; no runtime implementation claim",
+  "schema_version": 1,
+  "source_digests": {
+    "malbolge-lisp/manual-src/content/chapter2.tex": "78cf791001e44a06fac87435e575dddcf68d8eaba14e40615c529b50a69164b8",
+    "malbolge-lisp/manual-src/content/chapter3.tex": "12b3a2cc9c647337a1bddb1e78e7eb0e9922c28454921f21d551965b36dcc1ea",
+    "malbolge-lisp/manual-src/content/error_table.tex": "dd4101d35dcd990607856168a4a0b16dc23f6cbe75a5fef14a871ff840bdf021"
+  }
+}

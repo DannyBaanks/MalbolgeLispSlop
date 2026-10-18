@@ -1,37 +1,19 @@
-#!/usr/bin/env python3
-"""Validation tool and CLI for LispSlop language feature matrix."""
-
+"""Check inventory integrity; declared surface is not guest implementation."""
 from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
+import sys
 from typing import Any
 
-REQUIRED_CATEGORIES = frozenset({
-    "arithmetic",
-    "special_form",
-    "list_core",
-    "combinator",
-    "dot_command",
-    "syntax",
-    "error",
-})
-
-REQUIRED_CASE_FIELDS = (
-    "case_id",
-    "stdin",
-    "expected_stdout",
-    "terminal_status",
-    "max_steps",
-    "timeout_seconds",
-    "address_space_bytes",
-    "output_bytes",
-)
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from slopsynth.feature_matrix import validate_matrix
 
 
 def validate_matrix_ids(matrix: dict[str, Any]) -> list[str]:
+    """Validate uniqueness and presence of feature IDs."""
     errors: list[str] = []
     features = matrix.get("features")
     if not isinstance(features, list):
@@ -53,108 +35,63 @@ def validate_matrix_ids(matrix: dict[str, Any]) -> list[str]:
 
 
 def validate_feature_structure(matrix: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
-    features = matrix.get("features", [])
-    if not isinstance(features, list) or not features:
-        return ["'features' must be a non-empty array"]
-
-    for index, item in enumerate(features):
-        if not isinstance(item, dict):
-            continue
-        feat_id = item.get("id", f"index_{index}")
-        surface = item.get("surface")
-        if not isinstance(surface, str) or not surface.strip():
-            errors.append(f"feature {feat_id}: missing or empty 'surface'")
-
-        category = item.get("category")
-        if category not in REQUIRED_CATEGORIES:
-            errors.append(f"feature {feat_id}: category {category!r} not in {sorted(REQUIRED_CATEGORIES)}")
-
-        semantics = item.get("semantics")
-        if not isinstance(semantics, str) or not semantics.strip():
-            errors.append(f"feature {feat_id}: missing or empty 'semantics'")
-
-        pos_cases = item.get("positive_cases")
-        if not isinstance(pos_cases, list) or not pos_cases:
-            errors.append(f"feature {feat_id}: 'positive_cases' must be a non-empty list")
-        else:
-            for c_idx, case in enumerate(pos_cases):
-                if not isinstance(case, dict):
-                    errors.append(f"feature {feat_id}: positive_case[{c_idx}] must be a dict")
-                    continue
-                for field in REQUIRED_CASE_FIELDS:
-                    if field not in case:
-                        errors.append(f"feature {feat_id}: positive_case[{c_idx}] missing field {field!r}")
-                if case.get("max_steps", 0) <= 0:
-                    errors.append(f"feature {feat_id}: positive_case[{c_idx}] max_steps must be positive")
-                if case.get("timeout_seconds", 0) <= 0:
-                    errors.append(f"feature {feat_id}: positive_case[{c_idx}] timeout_seconds must be positive")
-
-        neg_cases = item.get("negative_cases")
-        if not isinstance(neg_cases, list):
-            errors.append(f"feature {feat_id}: 'negative_cases' must be a list")
-        elif category == "error" and not neg_cases:
-            errors.append(f"feature {feat_id}: category 'error' must provide negative_cases")
-
-    return errors
+    """Validate structure of features against matrix contract."""
+    try:
+        validate_matrix(matrix)
+        return []
+    except Exception as exc:
+        return [str(exc)]
 
 
 def validate_guest_test_references(matrix: dict[str, Any]) -> list[str]:
+    """Validate test references for implemented features."""
     errors: list[str] = []
     features = matrix.get("features", [])
     if not isinstance(features, list):
         return ["'features' must be an array"]
-
-    for index, item in enumerate(features):
-        if not isinstance(item, dict):
+    for row in features:
+        if not isinstance(row, dict):
             continue
-        feat_id = item.get("id", f"index_{index}")
-        test_ids = item.get("guest_test_ids")
-        if not isinstance(test_ids, list) or not test_ids:
-            errors.append(f"feature {feat_id}: 'guest_test_ids' must be a non-empty list of test names")
-        else:
-            for t_idx, t_name in enumerate(test_ids):
-                if not isinstance(t_name, str) or not t_name.strip():
-                    errors.append(f"feature {feat_id}: guest_test_ids[{t_idx}] must be a non-empty string")
+        if row.get("state") in {"IMPLEMENTED", "DEMONSTRATED"} and not row.get("guest_test_ids"):
+            errors.append(f"feature {row.get('id')}: missing guest_test_ids")
     return errors
 
 
 def check_matrix_file(path: Path) -> dict[str, Any]:
+    """Check a matrix file for validity."""
     if not path.is_file():
         return {"valid": False, "feature_count": 0, "errors": [f"file not found: {path}"]}
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
+        counts = validate_matrix(data)
+        feature_count = len(data.get("features", []))
+        return {
+            "valid": True,
+            "feature_count": feature_count,
+            "counts": counts,
+            "errors": [],
+        }
     except Exception as exc:
-        return {"valid": False, "feature_count": 0, "errors": [f"invalid json: {exc}"]}
-
-    errors: list[str] = []
-    errors.extend(validate_matrix_ids(data))
-    errors.extend(validate_feature_structure(data))
-    errors.extend(validate_guest_test_references(data))
-
-    feature_count = len(data.get("features", [])) if isinstance(data.get("features"), list) else 0
-    return {
-        "valid": len(errors) == 0,
-        "feature_count": feature_count,
-        "errors": errors,
-    }
+        return {
+            "valid": False,
+            "feature_count": 0,
+            "errors": [str(exc)],
+        }
 
 
-def main(argv: list[str] | None = None) -> int:
+def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("matrix_path", type=Path, nargs="?", default=Path("spec/lisp-feature-matrix.json"))
-    args = parser.parse_args(argv)
-
-    report = check_matrix_file(args.matrix_path)
-    if report["valid"]:
-        print(f"OK: {args.matrix_path} is valid ({report['feature_count']} features).")
-        return 0
-    else:
-        print(f"FAIL: {args.matrix_path} has {len(report['errors'])} errors:", file=sys.stderr)
-        for err in report["errors"]:
-            print(f"  - {err}", file=sys.stderr)
+    parser.add_argument("--matrix", type=Path, default=ROOT / "spec/lisp-feature-matrix.json")
+    parser.add_argument("--require-complete", action="store_true")
+    args = parser.parse_args()
+    try:
+        counts = validate_matrix(json.loads(args.matrix.read_text()), require_complete=args.require_complete)
+    except (ValueError, OSError, TypeError) as exc:
+        print(f"matrix refused: {exc}", file=sys.stderr)
         return 1
+    print(json.dumps(counts, sort_keys=True))
+    return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

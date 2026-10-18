@@ -1,0 +1,7 @@
+{
+  "status": "HALT",
+  "returncode": 0,
+  "stdout_hex": "0000",
+  "expected_stdout_hex": "0000",
+  "steps_marker": true
+}

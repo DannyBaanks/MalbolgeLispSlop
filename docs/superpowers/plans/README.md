@@ -1,5 +1,14 @@
 # MalbolgeLispSlop implementation plan set
 
+## Current execution plan (2026-10-18, after H2)
+
+[Complete native Lisp](2026-10-18-complete-native-lisp.md) is the current
+user-approved execution plan. It preserves the v1.2 language surface, permits
+pinned Z3 in development, and separates quine research from Lisp completion.
+See [the persistent ledger](../../IMPLEMENTATION_LEDGER.md). The older plans
+below remain historical design inputs; their stdlib-only/quine-closure wording
+is superseded by the approved SYSTEM_SPEC amendment.
+
 These plans implement the approved [system specification](../../SYSTEM_SPEC.md).
 They are proposals; no runtime or synthesizer work has been performed from
 them yet.

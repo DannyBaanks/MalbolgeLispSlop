@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "timestamp": "2026-10-18T18:58:48.475459+00:00",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "z3_version": "4.16.0",
+  "status": "MODEL_CONFORMANCE_DEMONSTRATED",
+  "scope": "bounded differential model tests, not a proof of the VM implementation",
+  "not_demonstrated": [
+    "general compiler",
+    "bootstrap",
+    "guest Lisp"
+  ],
+  "runs": [
+    {
+      "command": [
+        "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop-complete/build/venv/bin/python",
+        "-m",
+        "unittest",
+        "tests.test_symbolic",
+        "tests.test_proofs",
+        "-q"
+      ],
+      "returncode": 0,
+      "label": "normal"
+    },
+    {
+      "command": [
+        "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop-complete/build/venv/bin/python",
+        "-O",
+        "-m",
+        "unittest",
+        "tests.test_symbolic",
+        "tests.test_proofs",
+        "-q"
+      ],
+      "returncode": 0,
+      "label": "optimized"
+    }
+  ],
+  "sources": {
+    "tools/verify_symbolic_model.py": "68e1fb95d09165e1fdc8dffc32fb9998a37c5d3e8efb57f1e12f1a73ba0d82fc",
+    "slopsynth/symbolic.py": "addbc2435e5a4c7622dae05e46f4a56f903deefd8d0f9e19d8c7d64eac99672e",
+    "slopsynth/proofs.py": "cb82bdcb439112cfaf61171380ea0ad6cead9d36505107c13c0e2af056656966",
+    "slopsynth/model.py": "9e043c17f3c71340c0d15f180717c774e412cfe9792d0fb7d6d6b07d0fa9fb4c",
+    "slopsynth/canonical.py": "32acccd6851972c4fe8750ac1bcfbf7a00bb4f5a587254fcdd97903c0fd3b8c5",
+    "slopsynth/profile.py": "68e5bf72ffc4e3458e182b88ba743735d6b6a4605383eb238d687b752d781931",
+    "tests/test_symbolic.py": "de7c14e956dc477bb4c395a353627919f9fb63e36aa18e0101d2a185921b2a4a",
+    "tests/test_proofs.py": "39ca98b8112fc4e19e6e47ce4cbefd670a07cb78165c3a2d2238007017391d1e",
+    "src/bolge19.zig": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+    "build/bolge19": "4b975160c45a39294df4177f519a72ea812decd7206f5e3e52d9851534d3bc2b",
+    "profiles/fixed19.json": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+    "requirements-dev.txt": "ccf5e2be5a69a15eafda6b6b3504d1cb3ed52ac4125c265abff68c1fa8fe300e"
+  },
+  "source_drift": []
+}

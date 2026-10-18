@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "timestamp": "2026-10-18T18:24:52.234402+00:00",
+  "purpose": "reference semantics only; no own guest implementation claim",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "image_path": "/tmp/opencode/specimen100-m1-lisp.mb",
+  "image_sha256": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+  "vm_sha256": "4b975160c45a39294df4177f519a72ea812decd7206f5e3e52d9851534d3bc2b",
+  "vm_source_sha256": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+  "profile_sha256": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+  "config": {
+    "loader": "raw",
+    "max_steps": 12000000000,
+    "timeout_seconds": 180,
+    "address_space_bytes": 2147483648,
+    "output_bytes": 1048576
+  },
+  "exact_command": [
+    "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop-complete/build/bolge19",
+    "/tmp/opencode/specimen100-m1-lisp.mb",
+    "--loader",
+    "raw",
+    "--max-steps",
+    "12000000000"
+  ]
+}

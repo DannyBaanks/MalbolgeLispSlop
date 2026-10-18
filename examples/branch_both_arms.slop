@@ -1,0 +1,22 @@
+; The first byte chooses the path. Zero discards one byte, then echoes the next;
+; nonzero echoes the next byte immediately. EOF is 0xda in the fixed19 profile.
+name conditional_select
+case 00,da
+case 0041,da
+case 004141,41
+case 0141,41
+case 01,da
+case ff41,41
+entry choose
+choose:
+    read
+    brz A, zero, nonzero
+zero:
+    read
+    read
+    write
+    halt
+nonzero:
+    read
+    write
+    halt
