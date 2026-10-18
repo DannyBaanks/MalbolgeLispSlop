@@ -1,18 +1,18 @@
 # MalbolgeLispSlop — System Specification
 
-**Status:** Draft for user review  
-**Approved design direction:** fixed 19-trit Unshackled target; new automatic synthesis backend inspired by BolgeForge  
+**Status:** Approved design; implementation plan in progress  
+**Approved design direction:** fixed `3^19` target; new automatic synthesis backend inspired by BolgeForge  
 **Scope:** product and architecture only. This document does not claim that the proposed runtime or synthesizer exists.
 
 ## 1. Purpose
 
-MalbolgeLispSlop will be an original Lisp system whose evaluator runs inside a generated Malbolge Unshackled guest program using the fixed 19-trit profile. It will include a host-side toolchain, a guest REPL, a conformance suite, reproducible generated source, and a native guest quine.
+MalbolgeLispSlop will be an original Lisp system whose evaluator runs inside a generated Malbolge guest program using the fixed `3^19` profile. It will include a host-side toolchain, a guest REPL, a conformance suite, reproducible generated source, and a native guest quine.
 
 The joke targets manual opcode purism: reviewing an enormous self-modifying instruction stream character by character is a poor way to establish correctness. The project will review the language contract, generator, synthesis evidence, runtime behavior, and reproducible artifacts instead.
 
 ## 2. Target profile and compatibility boundary
 
-- The selected execution profile is fixed-width 19-trit Unshackled, matching the existing project compose and current `bolge19` starting point.
+- The selected execution profile is the fixed-width 19-trit (`3^19`) machine implemented by `bolge19`. The initial compose calls this “Unshackled 19-trit”; this repo will use “fixed-3^19” in claims because current evidence does not establish parity with dynamically widening Unshackled.
 - Classic Malbolge `3^10`, fixed `3^19`, dynamically widening Unshackled, and Malbolge Free remain separate profiles. A result in one profile does not establish a result in another.
 - The existing `bolge19` M1 guest is only an input/output/halt slice. It is not Lisp conformance, a quine, or proof of parity with every Unshackled implementation.
 - MalbolgeLISP v1.2 documentation is a historical feature reference, not code to copy and not an unquestioned oracle. The project will write its own language specification and tests. Compatibility claims will be limited to behaviors demonstrated against those tests.
@@ -23,7 +23,7 @@ The joke targets manual opcode purism: reviewing an enormous self-modifying inst
 The system has four user-visible outputs:
 
 1. A deterministic host toolchain that accepts the project’s Lisp runtime description and emits a Malbolge guest image.
-2. A generated guest interpreter that performs parsing, evaluation, memory management, printing, and REPL behavior inside the selected 19-trit target.
+2. A generated guest interpreter that performs parsing, evaluation, memory management, printing, and REPL behavior inside the selected fixed-3^19 target.
 3. A conformance corpus that runs Lisp inputs through that guest and records exact outputs, termination, resource use, and evidence.
 4. A guest-side quine whose execution emits its own source bytes and halts. A host tool copying the source file is not a quine.
 
@@ -51,7 +51,7 @@ Lisp language specification + readable evaluator IR
        generated Malbolge source + build manifest
                          |
                          v
-       fixed-19-trit guest VM (resource bounded)
+       fixed-3^19 guest VM (resource bounded)
                          |
             guest reader / evaluator / REPL
                          |
