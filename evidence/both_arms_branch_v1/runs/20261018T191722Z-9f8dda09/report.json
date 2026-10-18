@@ -1,0 +1,58 @@
+{
+  "base_revision": "a0a6c3964e786e1cb84ee1499e8644b7011f2604",
+  "claims": {
+    "FIXED19-ZERO-DOUBLE-READ-ELSE-ECHO": "DEMONSTRATED_SCOPED",
+    "GENERAL-BRZ": "NOT_DEMONSTRATED",
+    "GENERAL-CFG-COMPOSITION": "NOT_DEMONSTRATED",
+    "GENERAL-MEMORY-ARITHMETIC-CALLS": "NOT_DEMONSTRATED",
+    "MALBOLGELISP-GUEST": "NOT_DEMONSTRATED"
+  },
+  "command": [
+    "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop-complete/build/venv/bin/python",
+    "tools/verify_both_arms_branch.py"
+  ],
+  "config": {
+    "address_space_bytes": 536870912,
+    "loader": "canonical",
+    "max_steps": 512,
+    "output_bytes": 8,
+    "timeout_seconds": 5
+  },
+  "covered_input_landing_cells": [
+    1,
+    42,
+    96,
+    123,
+    256
+  ],
+  "engine_sha256": "4b975160c45a39294df4177f519a72ea812decd7206f5e3e52d9851534d3bc2b",
+  "failure": null,
+  "image_cells": 259,
+  "image_sha256": "a4d5e19bfa5d0e706ad266ebde06e97d558999372242bdcac6e8cff55eb56c0b",
+  "lowering": "fixed19-zero-double-read-else-echo-v1",
+  "model_payload_patterns_per_selector": 7,
+  "model_selector_domain": 256,
+  "native_vm_exhaustive_cases": 1792,
+  "native_vm_total_runs": 1796,
+  "negative_controls": 2,
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "profile_sha256": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "schema": "fixed19-both-arms-branch-v1",
+  "source_sha256": {
+    "examples/branch_both_arms.slop": "4761e1d12193320739d46f7f9438d5e80aea9e2fccac628ffa12796e1bfdd28c",
+    "profiles/fixed19.json": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+    "slopsynth/branch.py": "5dd3cf913e807b816d79188f89632eddae31d6a42a2b84aabf05369d0c3476fc",
+    "slopsynth/canonical.py": "32acccd6851972c4fe8750ac1bcfbf7a00bb4f5a587254fcdd97903c0fd3b8c5",
+    "slopsynth/encode.py": "04115a499555fd5f25517cc85aeb9c329b89a75b2806f13d1ee62839609d9d6d",
+    "slopsynth/lang.py": "062585c202b2656063eb79a667eb9bd565c00de7c75bdb4b9e6621879d1db111",
+    "slopsynth/model.py": "9e043c17f3c71340c0d15f180717c774e412cfe9792d0fb7d6d6b07d0fa9fb4c",
+    "slopsynth/symbolic.py": "addbc2435e5a4c7622dae05e46f4a56f903deefd8d0f9e19d8c7d64eac99672e",
+    "src/bolge19.zig": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+    "tests/test_branch.py": "313c44377b374ebc5ea7806c1a66fed84c74c2a410d8c5a1282d598c00315d10",
+    "tools/assemble.py": "29194b267fbbfd326acc6f480981e5f556d7a5c24b0ec33c00dfe9d4c9cb0e7d",
+    "tools/guest_runner.py": "5d87ef2916572728156ff92afe85551dcb00985f42fefa67a2024487c86213f1",
+    "tools/verify_both_arms_branch.py": "9a96a02305616256c6ac550c7df4a0c8389e1b38a10564d93385ac932bacc2f3"
+  },
+  "timestamp_utc": "20261018T191722Z"
+}

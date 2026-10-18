@@ -1,4 +1,4 @@
-.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary
+.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms
 
 build:
 	./tools/build.sh
@@ -21,3 +21,6 @@ quine-smoke: build
 
 verify-unary: build
 	build/venv/bin/python tools/verify_unary_blocks.py
+
+verify-both-arms: build
+	build/venv/bin/python -O tools/verify_both_arms_branch.py

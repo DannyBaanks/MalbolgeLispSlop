@@ -20,9 +20,11 @@ round-trip: identical
 wrote build/branch.mb (259 bytes)
 ```
 
-**Regla de oro:** compilar o aceptar una imagen no demuestra Lisp. H2 solo
-implementa el CFG de `examples/branch.slop`: selector cero termina; selector
-no cero lee y devuelve otro byte. No se promete que un `.slop` arbitrario compile.
+**Regla de oro:** compilar o aceptar una imagen no demuestra Lisp. H2 reconoce
+dos plantillas fijas: `examples/branch.slop` (cero termina; no cero lee y
+devuelve otro byte) y `examples/branch_both_arms.slop` (cero descarta un byte y
+devuelve el siguiente; no cero devuelve el siguiente). No se promete que un
+`.slop` arbitrario compile.
 
 Si falta el VM, construirlo con Zig 0.16.0:
 
@@ -60,6 +62,46 @@ EOF: stdout=b'\xda'
 
 El byte cero es binario `00`; el carácter de teclado `0` es `30` y toma la
 rama no cero. EOF vale `3^19 - 1`; su byte bajo en este VM es `da`.
+
+## Rama con trabajo observable en ambos brazos
+
+```sh
+python3 tools/assemble.py examples/branch_both_arms.slop --round-trip --out build/branch-both-arms.mb
+```
+
+Comprueba que ambos caminos hacen trabajo distinto dentro del guest:
+
+```sh
+python3 - <<'PY'
+import subprocess
+for value in (bytes.fromhex('004142'), bytes.fromhex('014142')):
+    result = subprocess.run(
+        ['build/bolge19', 'build/branch-both-arms.mb', '--loader', 'canonical', '--max-steps', '512'],
+        input=value, capture_output=True, check=True,
+    )
+    print(f'{value.hex()}: stdout={result.stdout!r}')
+PY
+```
+
+Salida:
+
+```text
+004142: stdout=b'B'
+014142: stdout=b'A'
+```
+
+La rama cero consume `41` sin imprimirlo y luego devuelve `42`; la rama no cero
+devuelve `41` inmediatamente. Para repetir la matriz de selectores en el modelo
+y el VM real, incluidos EOF, espacios canónicos y controles mutados:
+
+```sh
+python3 -O tools/verify_both_arms_branch.py
+```
+
+`BOTH-ARMS DEMONSTRATED_SCOPED` acredita solo esa plantilla y sus 256 valores
+de selector. El lowering sigue usando un layout fijo; no demuestra composición
+general de bloques, saltos arbitrarios, memoria, llamadas ni un intérprete Lisp.
+El protocolo y resultados quedan en `evidence/both_arms_branch_v1/`.
 
 ## Repetir la batería y verificarla
 

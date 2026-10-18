@@ -96,3 +96,19 @@ block twice under variable byte cases. Normal and `-O` tests pass. Evidence:
 native runs and two mutated-block negative controls. All 30 expected outputs
 matched; both mutations changed or prevented the expected result.
 No bootstrap, general branch/memory/call lowering, or Lisp guest is claimed.
+
+Task 6: one second fixed19 branch template demonstrated; the general module
+compiler remains NOT_DEMONSTRATED. The new source has useful, distinct work on
+both arms: zero consumes and discards one byte before echoing the next, while
+nonzero echoes the next byte. Its lowering is a fixed 259-cell layout, so it
+does not establish arbitrary branch relocation, block composition, data
+memory, arithmetic, loops, or calls. The original H2 image/proof remains a
+separate regression. Evidence:
+`evidence/both_arms_branch_v1/runs/20261018T191951Z-44715b9f/`; 1,792 selector
+and payload VM cases, two spaced-image cases, full-address first-read EOF, and
+two mutant negative controls (1,797 native runs total). All native results
+halt and match the concrete model; both negative controls halt with the
+model-predicted wrong output. Evidence checksums pass and the historical H2
+image digest is unchanged. The gate passed with Python `-O`; all 173 unit tests
+passed normally and with `-O`. Independent review approved this scoped claim.
+General CFG composition and the MalbolgeLISP guest remain NOT_DEMONSTRATED.

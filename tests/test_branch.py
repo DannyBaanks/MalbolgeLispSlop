@@ -25,6 +25,7 @@ read
 write
 halt
 """
+BOTH_ARMS_SOURCE = (ROOT / "examples/branch_both_arms.slop").read_text()
 
 
 class BranchTests(unittest.TestCase):
@@ -104,6 +105,103 @@ class BranchTests(unittest.TestCase):
         self.assertEqual(self.compile().image, self.compile(reordered).image)
         empty = SOURCE.replace("case 0141,41", "case 0041,\ncase ,da")
         self.assertEqual(self.compile().image, self.compile(empty).image)
+
+    def test_both_arms_have_distinct_observable_read_behavior(self):
+        from slopsynth.model import run_model
+
+        built = self.compile(BOTH_ARMS_SOURCE)
+        self.assertEqual(built.lowering, "fixed19-zero-double-read-else-echo-v1")
+        payloads = (b"", b"\x00", b"\x01", b"\xff", b"\x00\x01",
+                    b"\x01\xff", b"\xff\x00")
+        cases = 0
+        for selector in range(256):
+            for rest in payloads:
+                stdin = bytes((selector,)) + rest
+                output_index = 2 if selector == 0 else 1
+                expected = stdin[output_index:output_index + 1] or b"\xda"
+                result = run_model(
+                    built.image, stdin, self.profile, loader="canonical",
+                    max_steps=512, max_address=1024,
+                )
+                self.assertEqual(result.status.value, "HALT", stdin.hex())
+                self.assertEqual(result.stdout, expected, stdin.hex())
+                cases += 1
+        self.assertEqual(cases, 1792)
+
+    def test_both_arm_branch_rejects_false_cases_and_unrecognized_shapes(self):
+        false_case = BOTH_ARMS_SOURCE.replace("case 004141,41", "case 004141,40")
+        unsupported = BOTH_ARMS_SOURCE.replace(
+            "zero:\n    read\n    read", "zero:\n    halt\n    read\n    read"
+        )
+        for source in (false_case, unsupported):
+            with self.subTest(source=source):
+                with self.assertRaises(AssemblyError):
+                    self.compile(source)
+
+    def test_both_arm_paths_execute_in_bolge19(self):
+        from tools.guest_runner import RunConfig, run_guest
+
+        if not (ROOT / "build/bolge19").is_file():
+            self.skipTest("build bolge19 first")
+        built = self.compile(BOTH_ARMS_SOURCE)
+        config = RunConfig("canonical", 512, 5, 512 * 1024 * 1024, 2)
+        cases = (b"\x00\x11\x22", b"\x01\x11\x22", b"\xff\x11\x22",
+                 b"\x00", b"\x01", b"\x29\x00\xff", b"\x2a\x00\xff",
+                 b"\x51\x00\xff", b"\xff\x00\xff")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "both-arms.mb"
+            path.write_bytes(built.image)
+            for stdin in cases:
+                with self.subTest(stdin=stdin.hex()):
+                    output_index = 2 if stdin[:1] == b"\x00" else 1
+                    expected = stdin[output_index:output_index + 1] or b"\xda"
+                    result = run_guest(path, stdin, config)
+                    self.assertEqual(result.status.value, "HALT")
+                    self.assertEqual(result.stdout, expected)
+
+    def test_negative_control_requires_normal_halt_with_wrong_output(self):
+        from tools.guest_runner import GuestResult, GuestStatus
+        from tools.verify_both_arms_branch import negative_control_detected
+
+        self.assertTrue(negative_control_detected(
+            GuestResult(b"A", b"HALT", 0, GuestStatus.HALT), b"B",
+            GuestResult(b"A", b"model halt", 0, GuestStatus.HALT),
+        ))
+        invalid = (
+            (GuestResult(b"B", b"HALT", 0, GuestStatus.HALT),
+             GuestResult(b"A", b"model halt", 0, GuestStatus.HALT)),
+            (GuestResult(b"", b"MAX_STEPS", 0, GuestStatus.MAX_STEPS),
+             GuestResult(b"A", b"model halt", 0, GuestStatus.HALT)),
+            (GuestResult(b"", b"load error", 1, GuestStatus.LOAD_ERROR),
+             GuestResult(b"A", b"model halt", 0, GuestStatus.HALT)),
+            (GuestResult(b"", b"timeout", None, GuestStatus.WALL_TIMEOUT),
+             GuestResult(b"A", b"model halt", 0, GuestStatus.HALT)),
+            (GuestResult(b"C", b"HALT", 0, GuestStatus.HALT),
+             GuestResult(b"A", b"model halt", 0, GuestStatus.HALT)),
+        )
+        for actual, model in invalid:
+            with self.subTest(status=actual.status):
+                self.assertFalse(negative_control_detected(actual, b"B", model))
+
+    def test_both_arm_cli_round_trips_and_refuses_replacement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = ROOT / "examples/branch_both_arms.slop"
+            output = Path(directory) / "branch-both-arms.mb"
+            result = subprocess.run(
+                ["python3", str(ROOT / "tools/assemble.py"), str(source),
+                 "--out", str(output), "--round-trip", "--line-width", "20"],
+                capture_output=True, timeout=10,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr.decode())
+            self.assertEqual(output.read_bytes().replace(b"\n", b""),
+                             self.compile(BOTH_ARMS_SOURCE, profile=self.profile).image)
+            original = output.read_bytes()
+            repeated = subprocess.run(
+                ["python3", str(ROOT / "tools/assemble.py"), str(source), "--out", str(output)],
+                capture_output=True, timeout=10,
+            )
+            self.assertEqual(repeated.returncode, 3)
+            self.assertEqual(output.read_bytes(), original)
 
     def test_cli_emits_module_and_round_trips_it(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -1,9 +1,9 @@
-"""H2: a deliberately narrow, native zero-branch lowering for fixed-3^19.
+"""Narrow native zero-branch lowerings for fixed-3^19.
 
-Supported CFG: read A; brz A, stop, echo; stop: halt;
-echo: read A; write A; halt. This is not a general BRZ implementation.
-The image is derived here from native opcodes and pointer/data constraints;
-no host computation participates once bolge19 starts the guest.
+The H2 regression supports ``read; brz; stop: halt; echo: read; write; halt``.
+An additional composition template gives both arms observable work: zero reads
+and discards one byte before echoing the next, while nonzero echoes the next
+byte immediately. Neither template is a general BRZ or CFG implementation.
 """
 
 from dataclasses import dataclass
@@ -33,7 +33,7 @@ class BranchImage:
 def lower_branch(
     module: Module, profile: Profile, *, line_width: int | None = None,
 ) -> BranchImage:
-    """Lower only the recognized CFG; refuse every other shape and profile.
+    """Lower one of the explicit H2 CFG templates; refuse every other shape.
 
     Cases may falsify a module, but never select its implementation. Renaming,
     reordering blocks, or changing valid cases leaves the image unchanged.
@@ -52,22 +52,40 @@ def lower_branch(
         raise AssemblyError("H2 lowers only read A; brz A, stop, echo")
     branch = entry.operations[1]
     if (branch.value != "A"
-            or len({entry.name, branch.zero_target, branch.nonzero_target}) != 3
-            or blocks[branch.zero_target].operations != (Halt(),)
-            or blocks[branch.nonzero_target].operations != (ReadA(), WriteA(), Halt())):
-        raise AssemblyError("H2 requires zero: halt; nonzero: read A; write A; halt")
+            or len({entry.name, branch.zero_target, branch.nonzero_target}) != 3):
+        raise AssemblyError("H2 requires distinct zero and nonzero targets on A")
+
+    zero_operations = blocks[branch.zero_target].operations
+    nonzero_operations = blocks[branch.nonzero_target].operations
+    if (zero_operations == (Halt(),)
+            and nonzero_operations == (ReadA(), WriteA(), Halt())):
+        lowering = "fixed19-zero-stop-else-echo-v1"
+        first_zero_instruction = "halt"
+    elif (zero_operations == (ReadA(), ReadA(), WriteA(), Halt())
+            and nonzero_operations == (ReadA(), WriteA(), Halt())):
+        lowering = "fixed19-zero-double-read-else-echo-v1"
+        first_zero_instruction = "input"
+    else:
+        raise AssemblyError(
+            "fixed19 branch templates require either zero: halt, nonzero: read/write/halt "
+            "or zero: read/read/write/halt, nonzero: read/write/halt"
+        )
     for case in module.cases:
-        expected = (b"" if case.stdin[:1] == b"\x00" else
-                    case.stdin[1:2] or bytes((profile.eof_value & 255,)))
+        if lowering == "fixed19-zero-stop-else-echo-v1":
+            expected = (b"" if case.stdin[:1] == b"\x00" else
+                        case.stdin[1:2] or bytes((profile.eof_value & 255,)))
+        else:
+            value_index = 2 if case.stdin[:1] == b"\x00" else 1
+            expected = case.stdin[value_index:value_index + 1] or bytes((profile.eof_value & 255,))
         if case.stdout != expected:
-            raise AssemblyError("declared case contradicts the H2 branch semantics")
+            raise AssemblyError(f"declared case contradicts {lowering} semantics")
 
     # Start at 99, outside the first landing interval. After the bootstrap,
     # all its instructions on the second landing path decode as no-ops,
     # except ROT at 104: its encrypted byte decodes as HALT.
     native = ["nop"] * 259
     instructions = {
-        0: "jump", 1: "halt",
+        0: "jump", 1: first_zero_instruction,
         42: "input", 43: "output", 44: "halt",
         96: "input", 97: "output",
         100: "move", 101: "move", 102: "move", 103: "move",
@@ -95,4 +113,5 @@ def lower_branch(
         formatted, walk,
         ((entry.name, (105,)), (branch.zero_target, (1,)),
          (branch.nonzero_target, (42, 96, 123, 256))),
+        lowering=lowering,
     )
