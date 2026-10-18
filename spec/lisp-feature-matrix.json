@@ -1,0 +1,2236 @@
+{
+  "schema_version": 1,
+  "name": "lispslop-feature-matrix",
+  "description": "Exhaustive specification matrix for LispSlop on fixed-3^19",
+  "features": [
+    {
+      "id": "arith_add",
+      "surface": "+",
+      "category": "arithmetic",
+      "semantics": "Unsigned bounded addition modulo 2^26",
+      "positive_cases": [
+        {
+          "case_id": "add_basic",
+          "stdin": "(+ 1 2)\n",
+          "expected_stdout": "3\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "add_large",
+          "stdin": "(+ 100 250)\n",
+          "expected_stdout": "350\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_add"
+      ]
+    },
+    {
+      "id": "arith_add_unbounded",
+      "surface": "+'",
+      "category": "arithmetic",
+      "semantics": "Unbounded addition modulo 3^19 in fixed19",
+      "positive_cases": [
+        {
+          "case_id": "add_unbounded_basic",
+          "stdin": "(+' 10 20)\n",
+          "expected_stdout": "30\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_add_unbounded"
+      ]
+    },
+    {
+      "id": "arith_sub",
+      "surface": "-",
+      "category": "arithmetic",
+      "semantics": "Unsigned bounded subtraction modulo 2^26",
+      "positive_cases": [
+        {
+          "case_id": "sub_basic",
+          "stdin": "(- 10 4)\n",
+          "expected_stdout": "6\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_sub"
+      ]
+    },
+    {
+      "id": "arith_sub_unbounded",
+      "surface": "-'",
+      "category": "arithmetic",
+      "semantics": "Unbounded subtraction modulo 3^19 in fixed19",
+      "positive_cases": [
+        {
+          "case_id": "sub_unbounded_basic",
+          "stdin": "(-' 50 25)\n",
+          "expected_stdout": "25\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_sub_unbounded"
+      ]
+    },
+    {
+      "id": "arith_mul",
+      "surface": "*",
+      "category": "arithmetic",
+      "semantics": "Unsigned bounded multiplication modulo 2^26",
+      "positive_cases": [
+        {
+          "case_id": "mul_basic",
+          "stdin": "(* 3 7)\n",
+          "expected_stdout": "21\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_mul"
+      ]
+    },
+    {
+      "id": "arith_div",
+      "surface": "/",
+      "category": "arithmetic",
+      "semantics": "Integer division truncated towards zero",
+      "positive_cases": [
+        {
+          "case_id": "div_basic",
+          "stdin": "(/ 20 4)\n",
+          "expected_stdout": "5\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_div"
+      ]
+    },
+    {
+      "id": "arith_mod",
+      "surface": "%",
+      "category": "arithmetic",
+      "semantics": "Integer modulus",
+      "positive_cases": [
+        {
+          "case_id": "mod_basic",
+          "stdin": "(% 17 5)\n",
+          "expected_stdout": "2\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_mod"
+      ]
+    },
+    {
+      "id": "arith_neg",
+      "surface": "~",
+      "category": "arithmetic",
+      "semantics": "Boolean negation: 1 if x=0 else 0",
+      "positive_cases": [
+        {
+          "case_id": "neg_zero",
+          "stdin": "(~ 0)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "neg_nonzero",
+          "stdin": "(~ 5)\n",
+          "expected_stdout": "0\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_neg"
+      ]
+    },
+    {
+      "id": "arith_fact",
+      "surface": "!",
+      "category": "arithmetic",
+      "semantics": "Factorial function via table for x <= 11",
+      "positive_cases": [
+        {
+          "case_id": "fact_basic",
+          "stdin": "(! 5)\n",
+          "expected_stdout": "120\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_fact"
+      ]
+    },
+    {
+      "id": "arith_pow",
+      "surface": "^",
+      "category": "arithmetic",
+      "semantics": "Integer exponentiation with 0^0=1",
+      "positive_cases": [
+        {
+          "case_id": "pow_basic",
+          "stdin": "(^ 2 8)\n",
+          "expected_stdout": "256\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_pow"
+      ]
+    },
+    {
+      "id": "arith_and",
+      "surface": "&",
+      "category": "arithmetic",
+      "semantics": "Bitwise / logical AND (1 if both > 0 else 0)",
+      "positive_cases": [
+        {
+          "case_id": "and_basic",
+          "stdin": "(& 1 1)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "and_zero",
+          "stdin": "(& 1 0)\n",
+          "expected_stdout": "0\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_and"
+      ]
+    },
+    {
+      "id": "arith_or",
+      "surface": "|",
+      "category": "arithmetic",
+      "semantics": "Bitwise / logical OR (0 if both 0 else 1)",
+      "positive_cases": [
+        {
+          "case_id": "or_basic",
+          "stdin": "(| 0 1)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "or_zero",
+          "stdin": "(| 0 0)\n",
+          "expected_stdout": "0\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_or"
+      ]
+    },
+    {
+      "id": "arith_eq",
+      "surface": "=",
+      "category": "arithmetic",
+      "semantics": "Equality comparison returning 1 if equal else 0",
+      "positive_cases": [
+        {
+          "case_id": "eq_true",
+          "stdin": "(= 5 5)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "eq_false",
+          "stdin": "(= 5 6)\n",
+          "expected_stdout": "0\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_eq"
+      ]
+    },
+    {
+      "id": "arith_neq",
+      "surface": "/=",
+      "category": "arithmetic",
+      "semantics": "Inequality comparison returning 1 if unequal else 0",
+      "positive_cases": [
+        {
+          "case_id": "neq_true",
+          "stdin": "(/= 5 6)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "neq_false",
+          "stdin": "(/= 5 5)\n",
+          "expected_stdout": "0\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_neq"
+      ]
+    },
+    {
+      "id": "arith_lt",
+      "surface": "<",
+      "category": "arithmetic",
+      "semantics": "Lesser than comparison",
+      "positive_cases": [
+        {
+          "case_id": "lt_true",
+          "stdin": "(< 4 5)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "lt_false",
+          "stdin": "(< 5 4)\n",
+          "expected_stdout": "0\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_lt"
+      ]
+    },
+    {
+      "id": "arith_gt",
+      "surface": ">",
+      "category": "arithmetic",
+      "semantics": "Greater than comparison",
+      "positive_cases": [
+        {
+          "case_id": "gt_true",
+          "stdin": "(> 6 5)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "gt_false",
+          "stdin": "(> 5 6)\n",
+          "expected_stdout": "0\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_gt"
+      ]
+    },
+    {
+      "id": "arith_lte",
+      "surface": "<=",
+      "category": "arithmetic",
+      "semantics": "Lesser or equal to comparison",
+      "positive_cases": [
+        {
+          "case_id": "lte_equal",
+          "stdin": "(<= 5 5)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "lte_less",
+          "stdin": "(<= 4 5)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_lte"
+      ]
+    },
+    {
+      "id": "arith_gte",
+      "surface": ">=",
+      "category": "arithmetic",
+      "semantics": "Greater or equal to comparison",
+      "positive_cases": [
+        {
+          "case_id": "gte_equal",
+          "stdin": "(>= 5 5)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "gte_greater",
+          "stdin": "(>= 6 5)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_gte"
+      ]
+    },
+    {
+      "id": "arith_gcd",
+      "surface": "gcd",
+      "category": "arithmetic",
+      "semantics": "Greatest common divisor",
+      "positive_cases": [
+        {
+          "case_id": "gcd_basic",
+          "stdin": "(gcd 12 18)\n",
+          "expected_stdout": "6\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_gcd"
+      ]
+    },
+    {
+      "id": "arith_lcm",
+      "surface": "lcm",
+      "category": "arithmetic",
+      "semantics": "Least common multiple",
+      "positive_cases": [
+        {
+          "case_id": "lcm_basic",
+          "stdin": "(lcm 4 6)\n",
+          "expected_stdout": "12\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_lcm"
+      ]
+    },
+    {
+      "id": "arith_min",
+      "surface": "min",
+      "category": "arithmetic",
+      "semantics": "Minimum of two values",
+      "positive_cases": [
+        {
+          "case_id": "min_basic",
+          "stdin": "(min 3 9)\n",
+          "expected_stdout": "3\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_min"
+      ]
+    },
+    {
+      "id": "arith_max",
+      "surface": "max",
+      "category": "arithmetic",
+      "semantics": "Maximum of two values",
+      "positive_cases": [
+        {
+          "case_id": "max_basic",
+          "stdin": "(max 3 9)\n",
+          "expected_stdout": "9\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_arith_max"
+      ]
+    },
+    {
+      "id": "form_quote",
+      "surface": "'",
+      "category": "special_form",
+      "semantics": "Quote special form preventing evaluation",
+      "positive_cases": [
+        {
+          "case_id": "quote_atom",
+          "stdin": "'foo\n",
+          "expected_stdout": "foo\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "quote_list",
+          "stdin": "'(1 2 3)\n",
+          "expected_stdout": "(1 2 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_form_quote"
+      ]
+    },
+    {
+      "id": "form_def",
+      "surface": "def",
+      "category": "special_form",
+      "semantics": "Define global binding in symbol table",
+      "positive_cases": [
+        {
+          "case_id": "def_var",
+          "stdin": "(def a 42)\na\n",
+          "expected_stdout": "42\n42\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_form_def"
+      ]
+    },
+    {
+      "id": "form_defun",
+      "surface": "defun",
+      "category": "special_form",
+      "semantics": "Define named global function",
+      "positive_cases": [
+        {
+          "case_id": "defun_basic",
+          "stdin": "(defun double (x) (+ x x))\n(double 7)\n",
+          "expected_stdout": "double\n14\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_form_defun"
+      ]
+    },
+    {
+      "id": "form_lambda",
+      "surface": "lambda",
+      "category": "special_form",
+      "semantics": "Create anonymous closure",
+      "positive_cases": [
+        {
+          "case_id": "lambda_call",
+          "stdin": "((lambda (x) (* x x)) 6)\n",
+          "expected_stdout": "36\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_form_lambda"
+      ]
+    },
+    {
+      "id": "form_if",
+      "surface": "if",
+      "category": "special_form",
+      "semantics": "Conditional branch with short-circuiting",
+      "positive_cases": [
+        {
+          "case_id": "if_true",
+          "stdin": "(if 1 10 20)\n",
+          "expected_stdout": "10\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "if_false",
+          "stdin": "(if 0 10 20)\n",
+          "expected_stdout": "20\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_form_if"
+      ]
+    },
+    {
+      "id": "form_cond",
+      "surface": "cond",
+      "category": "special_form",
+      "semantics": "Multi-arm condition evaluator",
+      "positive_cases": [
+        {
+          "case_id": "cond_basic",
+          "stdin": "(cond ((= 1 2) 100) ((= 2 2) 200) (1 300))\n",
+          "expected_stdout": "200\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_form_cond"
+      ]
+    },
+    {
+      "id": "form_let",
+      "surface": "let",
+      "category": "special_form",
+      "semantics": "Lexical local bindings scope",
+      "positive_cases": [
+        {
+          "case_id": "let_basic",
+          "stdin": "(let ((x 5) (y 3)) (+ x y))\n",
+          "expected_stdout": "8\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_form_let"
+      ]
+    },
+    {
+      "id": "form_defmacro",
+      "surface": "defmacro",
+      "category": "special_form",
+      "semantics": "Define syntactic macro",
+      "positive_cases": [
+        {
+          "case_id": "defmacro_basic",
+          "stdin": "(defmacro unless (c a b) (list 'if c b a))\n",
+          "expected_stdout": "unless\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_form_defmacro"
+      ]
+    },
+    {
+      "id": "core_atom",
+      "surface": "atom",
+      "category": "list_core",
+      "semantics": "Inspect value type tag (0 to 12)",
+      "positive_cases": [
+        {
+          "case_id": "atom_number",
+          "stdin": "(atom 42)\n",
+          "expected_stdout": "0\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "atom_sym",
+          "stdin": "(atom 'foo)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "atom_list",
+          "stdin": "(atom '(1 2))\n",
+          "expected_stdout": "2\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        },
+        {
+          "case_id": "atom_null",
+          "stdin": "(atom null)\n",
+          "expected_stdout": "12\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_core_atom"
+      ]
+    },
+    {
+      "id": "core_cons",
+      "surface": "cons",
+      "category": "list_core",
+      "semantics": "Construct a cons cell pair",
+      "positive_cases": [
+        {
+          "case_id": "cons_basic",
+          "stdin": "(cons 1 '(2 3))\n",
+          "expected_stdout": "(1 2 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_core_cons"
+      ]
+    },
+    {
+      "id": "core_car",
+      "surface": "car",
+      "category": "list_core",
+      "semantics": "Retrieve head of cons cell",
+      "positive_cases": [
+        {
+          "case_id": "car_basic",
+          "stdin": "(car '(1 2 3))\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_core_car"
+      ]
+    },
+    {
+      "id": "core_cdr",
+      "surface": "cdr",
+      "category": "list_core",
+      "semantics": "Retrieve tail of cons cell",
+      "positive_cases": [
+        {
+          "case_id": "cdr_basic",
+          "stdin": "(cdr '(1 2 3))\n",
+          "expected_stdout": "(2 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_core_cdr"
+      ]
+    },
+    {
+      "id": "core_print",
+      "surface": "print",
+      "category": "list_core",
+      "semantics": "Print value representation and return it",
+      "positive_cases": [
+        {
+          "case_id": "print_basic",
+          "stdin": "(print 123)\n",
+          "expected_stdout": "123\n123\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_core_print"
+      ]
+    },
+    {
+      "id": "comb_iota",
+      "surface": "iota",
+      "category": "combinator",
+      "semantics": "Generate sequence of integers 0 to n-1",
+      "positive_cases": [
+        {
+          "case_id": "comb_iota_case",
+          "stdin": "(iota 4)\n",
+          "expected_stdout": "(0 1 2 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_iota"
+      ]
+    },
+    {
+      "id": "comb_size",
+      "surface": "size",
+      "category": "combinator",
+      "semantics": "Count elements in a list",
+      "positive_cases": [
+        {
+          "case_id": "comb_size_case",
+          "stdin": "(size '(a b c))\n",
+          "expected_stdout": "3\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_size"
+      ]
+    },
+    {
+      "id": "comb_nth",
+      "surface": "nth",
+      "category": "combinator",
+      "semantics": "Get element at index n",
+      "positive_cases": [
+        {
+          "case_id": "comb_nth_case",
+          "stdin": "(nth 1 '(10 20 30))\n",
+          "expected_stdout": "20\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_nth"
+      ]
+    },
+    {
+      "id": "comb_map",
+      "surface": "map",
+      "category": "combinator",
+      "semantics": "Apply function to each element of list",
+      "positive_cases": [
+        {
+          "case_id": "comb_map_case",
+          "stdin": "(map (monad [x * 2]) '(1 2 3))\n",
+          "expected_stdout": "(2 4 6)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_map"
+      ]
+    },
+    {
+      "id": "comb_filter",
+      "surface": "filter",
+      "category": "combinator",
+      "semantics": "Filter list by predicate",
+      "positive_cases": [
+        {
+          "case_id": "comb_filter_case",
+          "stdin": "(filter (monad [x > 1]) '(1 2 3))\n",
+          "expected_stdout": "(2 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_filter"
+      ]
+    },
+    {
+      "id": "comb_eval",
+      "surface": "eval",
+      "category": "combinator",
+      "semantics": "Evaluate S-expression data",
+      "positive_cases": [
+        {
+          "case_id": "comb_eval_case",
+          "stdin": "(eval '(+ 3 4))\n",
+          "expected_stdout": "7\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_eval"
+      ]
+    },
+    {
+      "id": "comb_append",
+      "surface": "append",
+      "category": "combinator",
+      "semantics": "Append two lists",
+      "positive_cases": [
+        {
+          "case_id": "comb_append_case",
+          "stdin": "(append '(1 2) '(3 4))\n",
+          "expected_stdout": "(1 2 3 4)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_append"
+      ]
+    },
+    {
+      "id": "comb_append_unbounded",
+      "surface": "append'",
+      "category": "combinator",
+      "semantics": "Append element to list",
+      "positive_cases": [
+        {
+          "case_id": "comb_append_unbounded_case",
+          "stdin": "(append' '(1 2) 3)\n",
+          "expected_stdout": "(1 2 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_append_unbounded"
+      ]
+    },
+    {
+      "id": "comb_rev",
+      "surface": "rev",
+      "category": "combinator",
+      "semantics": "Reverse a list",
+      "positive_cases": [
+        {
+          "case_id": "comb_rev_case",
+          "stdin": "(rev '(1 2 3))\n",
+          "expected_stdout": "(3 2 1)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_rev"
+      ]
+    },
+    {
+      "id": "comb_any",
+      "surface": "any",
+      "category": "combinator",
+      "semantics": "Check if any element satisfies predicate",
+      "positive_cases": [
+        {
+          "case_id": "comb_any_case",
+          "stdin": "(any (monad [x > 2]) '(1 2 3))\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_any"
+      ]
+    },
+    {
+      "id": "comb_every",
+      "surface": "every",
+      "category": "combinator",
+      "semantics": "Check if all elements satisfy predicate",
+      "positive_cases": [
+        {
+          "case_id": "comb_every_case",
+          "stdin": "(every (monad [x > 0]) '(1 2 3))\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_every"
+      ]
+    },
+    {
+      "id": "comb_sort",
+      "surface": "sort",
+      "category": "combinator",
+      "semantics": "Sort numeric list in ascending order",
+      "positive_cases": [
+        {
+          "case_id": "comb_sort_case",
+          "stdin": "(sort '(3 1 2))\n",
+          "expected_stdout": "(1 2 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_sort"
+      ]
+    },
+    {
+      "id": "comb_zip",
+      "surface": "zip",
+      "category": "combinator",
+      "semantics": "Zip two lists into pairs",
+      "positive_cases": [
+        {
+          "case_id": "comb_zip_case",
+          "stdin": "(zip '(1 2) '(a b))\n",
+          "expected_stdout": "((1 a) (2 b))\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_zip"
+      ]
+    },
+    {
+      "id": "comb_id",
+      "surface": "id",
+      "category": "combinator",
+      "semantics": "Identity function",
+      "positive_cases": [
+        {
+          "case_id": "comb_id_case",
+          "stdin": "(id 42)\n",
+          "expected_stdout": "42\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_id"
+      ]
+    },
+    {
+      "id": "comb_flatten",
+      "surface": "flatten",
+      "category": "combinator",
+      "semantics": "Flatten nested list",
+      "positive_cases": [
+        {
+          "case_id": "comb_flatten_case",
+          "stdin": "(flatten '((1 2) (3 4)))\n",
+          "expected_stdout": "(1 2 3 4)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_flatten"
+      ]
+    },
+    {
+      "id": "comb_flatmap",
+      "surface": "flatmap",
+      "category": "combinator",
+      "semantics": "Map and flatten result",
+      "positive_cases": [
+        {
+          "case_id": "comb_flatmap_case",
+          "stdin": "(flatmap (monad (list x x)) '(1 2))\n",
+          "expected_stdout": "(1 1 2 2)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_flatmap"
+      ]
+    },
+    {
+      "id": "comb_tie",
+      "surface": "tie",
+      "category": "combinator",
+      "semantics": "Tie arguments into list",
+      "positive_cases": [
+        {
+          "case_id": "comb_tie_case",
+          "stdin": "(tie 1 2 3)\n",
+          "expected_stdout": "(1 2 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_tie"
+      ]
+    },
+    {
+      "id": "comb_fold",
+      "surface": "fold",
+      "category": "combinator",
+      "semantics": "Left fold reduction",
+      "positive_cases": [
+        {
+          "case_id": "comb_fold_case",
+          "stdin": "(fold + 0 '(1 2 3 4))\n",
+          "expected_stdout": "10\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_fold"
+      ]
+    },
+    {
+      "id": "comb_fold_unbounded",
+      "surface": "fold'",
+      "category": "combinator",
+      "semantics": "Right fold reduction",
+      "positive_cases": [
+        {
+          "case_id": "comb_fold_unbounded_case",
+          "stdin": "(fold' + 0 '(1 2 3 4))\n",
+          "expected_stdout": "10\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_fold_unbounded"
+      ]
+    },
+    {
+      "id": "comb_zipwith",
+      "surface": "zipwith",
+      "category": "combinator",
+      "semantics": "Zip with binary function",
+      "positive_cases": [
+        {
+          "case_id": "comb_zipwith_case",
+          "stdin": "(zipwith + '(1 2) '(10 20))\n",
+          "expected_stdout": "(11 22)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_zipwith"
+      ]
+    },
+    {
+      "id": "comb_iterate",
+      "surface": "iterate",
+      "category": "combinator",
+      "semantics": "Iterate function",
+      "positive_cases": [
+        {
+          "case_id": "comb_iterate_case",
+          "stdin": "(take 4 (iterate (monad [x * 2]) 1))\n",
+          "expected_stdout": "(1 2 4 8)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_iterate"
+      ]
+    },
+    {
+      "id": "comb_iterateN",
+      "surface": "iterateN",
+      "category": "combinator",
+      "semantics": "Iterate function n times",
+      "positive_cases": [
+        {
+          "case_id": "comb_iterateN_case",
+          "stdin": "(iterateN 3 (monad [x + 1]) 0)\n",
+          "expected_stdout": "3\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_iterateN"
+      ]
+    },
+    {
+      "id": "comb_where",
+      "surface": "where",
+      "category": "combinator",
+      "semantics": "Indices of truthy elements",
+      "positive_cases": [
+        {
+          "case_id": "comb_where_case",
+          "stdin": "(where '(0 1 0 1))\n",
+          "expected_stdout": "(1 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_where"
+      ]
+    },
+    {
+      "id": "comb_replicate",
+      "surface": "replicate",
+      "category": "combinator",
+      "semantics": "Replicate value n times",
+      "positive_cases": [
+        {
+          "case_id": "comb_replicate_case",
+          "stdin": "(replicate 3 'x)\n",
+          "expected_stdout": "(x x x)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_replicate"
+      ]
+    },
+    {
+      "id": "comb_count",
+      "surface": "count",
+      "category": "combinator",
+      "semantics": "Count occurrences",
+      "positive_cases": [
+        {
+          "case_id": "comb_count_case",
+          "stdin": "(count 2 '(1 2 2 3))\n",
+          "expected_stdout": "2\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_count"
+      ]
+    },
+    {
+      "id": "comb_take",
+      "surface": "take",
+      "category": "combinator",
+      "semantics": "Take first n elements",
+      "positive_cases": [
+        {
+          "case_id": "comb_take_case",
+          "stdin": "(take 2 '(a b c d))\n",
+          "expected_stdout": "(a b)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_take"
+      ]
+    },
+    {
+      "id": "comb_take_unbounded",
+      "surface": "take'",
+      "category": "combinator",
+      "semantics": "Take from end",
+      "positive_cases": [
+        {
+          "case_id": "comb_take_unbounded_case",
+          "stdin": "(take' 2 '(a b c d))\n",
+          "expected_stdout": "(c d)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_take_unbounded"
+      ]
+    },
+    {
+      "id": "comb_drop",
+      "surface": "drop",
+      "category": "combinator",
+      "semantics": "Drop first n elements",
+      "positive_cases": [
+        {
+          "case_id": "comb_drop_case",
+          "stdin": "(drop 2 '(a b c d))\n",
+          "expected_stdout": "(c d)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_drop"
+      ]
+    },
+    {
+      "id": "comb_drop_unbounded",
+      "surface": "drop'",
+      "category": "combinator",
+      "semantics": "Drop from end",
+      "positive_cases": [
+        {
+          "case_id": "comb_drop_unbounded_case",
+          "stdin": "(drop' 2 '(a b c d))\n",
+          "expected_stdout": "(a b)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_drop_unbounded"
+      ]
+    },
+    {
+      "id": "comb_bind",
+      "surface": "bind",
+      "category": "combinator",
+      "semantics": "Partial function application",
+      "positive_cases": [
+        {
+          "case_id": "comb_bind_case",
+          "stdin": "((bind + 5) 3)\n",
+          "expected_stdout": "8\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_bind"
+      ]
+    },
+    {
+      "id": "comb_atop",
+      "surface": "atop",
+      "category": "combinator",
+      "semantics": "Function composition f(g(x))",
+      "positive_cases": [
+        {
+          "case_id": "comb_atop_case",
+          "stdin": "((atop (monad [x * 2]) (monad [x + 1])) 3)\n",
+          "expected_stdout": "8\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_atop"
+      ]
+    },
+    {
+      "id": "comb_intersperse",
+      "surface": "intersperse",
+      "category": "combinator",
+      "semantics": "Intersperse element into list",
+      "positive_cases": [
+        {
+          "case_id": "comb_intersperse_case",
+          "stdin": "(intersperse 0 '(1 2 3))\n",
+          "expected_stdout": "(1 0 2 0 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_intersperse"
+      ]
+    },
+    {
+      "id": "comb_scan",
+      "surface": "scan",
+      "category": "combinator",
+      "semantics": "Prefix scan cumulative reduction",
+      "positive_cases": [
+        {
+          "case_id": "comb_scan_case",
+          "stdin": "(scan + 0 '(1 2 3))\n",
+          "expected_stdout": "(0 1 3 6)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_scan"
+      ]
+    },
+    {
+      "id": "comb_scan_unbounded",
+      "surface": "scan'",
+      "category": "combinator",
+      "semantics": "Suffix scan reduction",
+      "positive_cases": [
+        {
+          "case_id": "comb_scan_unbounded_case",
+          "stdin": "(scan' + 0 '(1 2 3))\n",
+          "expected_stdout": "(6 5 3 0)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_scan_unbounded"
+      ]
+    },
+    {
+      "id": "comb_monad",
+      "surface": "monad",
+      "category": "combinator",
+      "semantics": "Single-parameter lambda syntax helper",
+      "positive_cases": [
+        {
+          "case_id": "comb_monad_case",
+          "stdin": "((monad [x + 1]) 4)\n",
+          "expected_stdout": "5\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_monad"
+      ]
+    },
+    {
+      "id": "comb_dyad",
+      "surface": "dyad",
+      "category": "combinator",
+      "semantics": "Two-parameter lambda syntax helper",
+      "positive_cases": [
+        {
+          "case_id": "comb_dyad_case",
+          "stdin": "((dyad [x * y]) 3 4)\n",
+          "expected_stdout": "12\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_dyad"
+      ]
+    },
+    {
+      "id": "comb_selfie",
+      "surface": "selfie",
+      "category": "combinator",
+      "semantics": "Apply function with duplicated argument f(x,x)",
+      "positive_cases": [
+        {
+          "case_id": "comb_selfie_case",
+          "stdin": "((selfie *) 5)\n",
+          "expected_stdout": "25\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_selfie"
+      ]
+    },
+    {
+      "id": "comb_commute",
+      "surface": "commute",
+      "category": "combinator",
+      "semantics": "Swap function arguments f(y,x)",
+      "positive_cases": [
+        {
+          "case_id": "comb_commute_case",
+          "stdin": "((commute /) 2 10)\n",
+          "expected_stdout": "5\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_commute"
+      ]
+    },
+    {
+      "id": "comb_uniq",
+      "surface": "uniq",
+      "category": "combinator",
+      "semantics": "Remove duplicate consecutive elements",
+      "positive_cases": [
+        {
+          "case_id": "comb_uniq_case",
+          "stdin": "(uniq '(1 1 2 2 3 1))\n",
+          "expected_stdout": "(1 2 3 1)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_uniq"
+      ]
+    },
+    {
+      "id": "comb_off",
+      "surface": "off",
+      "category": "combinator",
+      "semantics": "Cleanly terminate the interpreter session",
+      "positive_cases": [
+        {
+          "case_id": "comb_off_case",
+          "stdin": "(off)\n",
+          "expected_stdout": "",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_off"
+      ]
+    },
+    {
+      "id": "comb_fork",
+      "surface": "fork",
+      "category": "combinator",
+      "semantics": "Fork combinator evaluating multiple functions",
+      "positive_cases": [
+        {
+          "case_id": "comb_fork_case",
+          "stdin": "((fork + -) 10 3)\n",
+          "expected_stdout": "(13 7)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_fork"
+      ]
+    },
+    {
+      "id": "comb_lazy",
+      "surface": "lazy",
+      "category": "combinator",
+      "semantics": "Create lazy evaluation thunk",
+      "positive_cases": [
+        {
+          "case_id": "comb_lazy_case",
+          "stdin": "(lazy (+ 1 2))\n",
+          "expected_stdout": "lazy\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_lazy"
+      ]
+    },
+    {
+      "id": "comb_lift",
+      "surface": "lift",
+      "category": "combinator",
+      "semantics": "Force evaluation of lazy thunk",
+      "positive_cases": [
+        {
+          "case_id": "comb_lift_case",
+          "stdin": "(lift (lazy (+ 1 2)))\n",
+          "expected_stdout": "3\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_lift"
+      ]
+    },
+    {
+      "id": "comb_bruijn",
+      "surface": "bruijn",
+      "category": "combinator",
+      "semantics": "De Bruijn index transformation",
+      "positive_cases": [
+        {
+          "case_id": "comb_bruijn_case",
+          "stdin": "(bruijn '(lambda (x) x))\n",
+          "expected_stdout": "(lambda 0)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_comb_bruijn"
+      ]
+    },
+    {
+      "id": "dot_features",
+      "surface": ".F",
+      "category": "dot_command",
+      "semantics": "List all 76 built-in features",
+      "positive_cases": [
+        {
+          "case_id": "dot_f_case",
+          "stdin": ".F\n",
+          "expected_stdout": "' ~ + - % < > = ! & | * / ^ def defun lambda\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_dot_features"
+      ]
+    },
+    {
+      "id": "dot_author",
+      "surface": ".A",
+      "category": "dot_command",
+      "semantics": "Display author banner",
+      "positive_cases": [
+        {
+          "case_id": "dot_a_case",
+          "stdin": ".A\n",
+          "expected_stdout": "kamila szewczyk / LispSlop 2026\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_dot_author"
+      ]
+    },
+    {
+      "id": "dot_reset",
+      "surface": ".R",
+      "category": "dot_command",
+      "semantics": "Reset memory heap and global bindings",
+      "positive_cases": [
+        {
+          "case_id": "dot_r_case",
+          "stdin": ".R\n",
+          "expected_stdout": "OK\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_dot_reset"
+      ]
+    },
+    {
+      "id": "dot_memory",
+      "surface": ".M",
+      "category": "dot_command",
+      "semantics": "Display word count of used memory",
+      "positive_cases": [
+        {
+          "case_id": "dot_m_case",
+          "stdin": ".M\n",
+          "expected_stdout": "6W USED\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_dot_memory"
+      ]
+    },
+    {
+      "id": "dot_symbols",
+      "surface": ".S",
+      "category": "dot_command",
+      "semantics": "List interned global symbols",
+      "positive_cases": [
+        {
+          "case_id": "dot_s_case",
+          "stdin": ".S\n",
+          "expected_stdout": "quote lazy x y\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_dot_symbols"
+      ]
+    },
+    {
+      "id": "dot_export",
+      "surface": ".E",
+      "category": "dot_command",
+      "semantics": "Export heap memory image to Base64 ASCII",
+      "positive_cases": [
+        {
+          "case_id": "dot_e_case",
+          "stdin": ".E\n",
+          "expected_stdout": "OK\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_dot_export"
+      ]
+    },
+    {
+      "id": "dot_import",
+      "surface": ".I",
+      "category": "dot_command",
+      "semantics": "Import heap memory image from Base64 ASCII",
+      "positive_cases": [
+        {
+          "case_id": "dot_i_case",
+          "stdin": ".I\n",
+          "expected_stdout": "OK\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_dot_import"
+      ]
+    },
+    {
+      "id": "syntax_infix_brackets",
+      "surface": "[...]",
+      "category": "syntax",
+      "semantics": "Infix square bracket sugar [a f b] -> (f a b)",
+      "positive_cases": [
+        {
+          "case_id": "infix_bracket_basic",
+          "stdin": "[4 + 3]\n",
+          "expected_stdout": "7\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_syntax_infix_brackets"
+      ]
+    },
+    {
+      "id": "syntax_fork_braces",
+      "surface": "{...}",
+      "category": "syntax",
+      "semantics": "Fork curly brace sugar {f g} -> (fork f g)",
+      "positive_cases": [
+        {
+          "case_id": "fork_brace_basic",
+          "stdin": "({+ -} 5 2)\n",
+          "expected_stdout": "(7 3)\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_syntax_fork_braces"
+      ]
+    },
+    {
+      "id": "syntax_null",
+      "surface": "null",
+      "category": "syntax",
+      "semantics": "Null literal representing empty list",
+      "positive_cases": [
+        {
+          "case_id": "null_literal",
+          "stdin": "null\n",
+          "expected_stdout": "null\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_syntax_null"
+      ]
+    },
+    {
+      "id": "syntax_comments",
+      "surface": ";",
+      "category": "syntax",
+      "semantics": "Line comment beginning with semicolon",
+      "positive_cases": [
+        {
+          "case_id": "comment_case",
+          "stdin": "; comment\n42\n",
+          "expected_stdout": "42\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [],
+      "guest_test_ids": [
+        "test_guest_syntax_comments"
+      ]
+    },
+    {
+      "id": "err_invalid_dot",
+      "surface": ".Z",
+      "category": "error",
+      "semantics": "Unrecognised dot command prints Eh? and halts",
+      "positive_cases": [
+        {
+          "case_id": "dot_invalid_fallback",
+          "stdin": ".Z\n",
+          "expected_stdout": "Eh?\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [
+        {
+          "case_id": "dot_unknown_error",
+          "stdin": ".X\n",
+          "expected_stdout": "Eh?\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "guest_test_ids": [
+        "test_guest_err_invalid_dot"
+      ]
+    },
+    {
+      "id": "err_unbound_symbol",
+      "surface": "unbound_symbol",
+      "category": "error",
+      "semantics": "Reference to unbound variable",
+      "positive_cases": [
+        {
+          "case_id": "unbound_fallback",
+          "stdin": "(if 1 1 0)\n",
+          "expected_stdout": "1\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [
+        {
+          "case_id": "unbound_error",
+          "stdin": "undefined_var_xyz\n",
+          "expected_stdout": "ERROR: unbound symbol\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "guest_test_ids": [
+        "test_guest_err_unbound_symbol"
+      ]
+    },
+    {
+      "id": "err_syntax",
+      "surface": "syntax_error",
+      "category": "error",
+      "semantics": "Mismatched parentheses or malformed token",
+      "positive_cases": [
+        {
+          "case_id": "syntax_fallback",
+          "stdin": "(+ 1 1)\n",
+          "expected_stdout": "2\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "negative_cases": [
+        {
+          "case_id": "mismatched_paren",
+          "stdin": "(+ 1 2\n",
+          "expected_stdout": "ERROR: syntax error\n",
+          "terminal_status": "HALT",
+          "max_steps": 500000,
+          "timeout_seconds": 5.0,
+          "address_space_bytes": 67108864,
+          "output_bytes": 1024
+        }
+      ],
+      "guest_test_ids": [
+        "test_guest_err_syntax"
+      ]
+    }
+  ]
+}
