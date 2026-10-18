@@ -4,12 +4,15 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from pathlib import Path
 from typing import Any
 
+from .ir import Halt, Program, ReadA, WriteA
 from .ir_json import load_program
 from .profile import load_profile
 from .search import SearchBudget, SemanticProof, SynthesisStatus, synthesize_program
+from tools.guest_runner import GuestStatus, RunConfig, run_guest
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -107,6 +110,116 @@ def write_manifest(path: Path, manifest: dict[str, Any]) -> None:
         stream.write(manifest_bytes(manifest))
 
 
+def _validation_inputs(program: Program) -> tuple[bytes, ...]:
+    read_count = sum(isinstance(operation, ReadA) for operation in program.operations)
+    length = max(1, read_count)
+    samples = [bytes([value]) * length for value in (0x41, 0x7A, 0x00, 0xFF)]
+    samples.append(b"")
+    return tuple(samples)
+
+
+def _expected_stdout(program: Program, stdin: bytes, eof_value: int) -> bytes:
+    accumulator = 0
+    input_position = 0
+    stdout = bytearray()
+    for operation in program.operations:
+        if isinstance(operation, ReadA):
+            if operation.destination != "A":
+                raise ValueError("certified direct lowering can read only into A")
+            if input_position < len(stdin):
+                accumulator = stdin[input_position]
+                input_position += 1
+            else:
+                accumulator = eof_value
+        elif isinstance(operation, WriteA):
+            if operation.value != "A":
+                raise ValueError("certified direct lowering can write only from A")
+            stdout.append(accumulator & 0xFF)
+        elif not isinstance(operation, Halt):
+            raise ValueError("certified direct lowering contains an unsupported operation")
+    return bytes(stdout)
+
+
+def _verify_guest_validation(
+    validation: dict[str, Any],
+    artifact_path: Path,
+    program: Program,
+    *,
+    max_steps: int,
+    eof_value: int,
+) -> None:
+    """Replay every recorded M1 validation case against the real fixed19 VM."""
+    if validation.get("guest_status") != GuestStatus.HALT.value:
+        raise ValueError("manifest guest_status must be HALT")
+    if validation.get("loader") != "canonical":
+        raise ValueError("manifest guest validation loader must be canonical")
+    if type(validation.get("max_steps")) is not int or validation["max_steps"] != max_steps:
+        raise ValueError("manifest guest validation max_steps does not match synthesis bounds")
+
+    timeout_seconds = validation.get("timeout_seconds")
+    try:
+        valid_timeout = (
+            not isinstance(timeout_seconds, bool)
+            and isinstance(timeout_seconds, (int, float))
+            and math.isfinite(timeout_seconds)
+            and timeout_seconds > 0
+        )
+    except OverflowError:
+        valid_timeout = False
+    if not valid_timeout:
+        raise ValueError("manifest guest validation timeout_seconds is invalid")
+    address_space_bytes = validation.get("address_space_bytes")
+    output_bytes = validation.get("output_bytes")
+    if type(address_space_bytes) is not int or address_space_bytes <= 0:
+        raise ValueError("manifest guest validation address_space_bytes is invalid")
+    if type(output_bytes) is not int or output_bytes < 0:
+        raise ValueError("manifest guest validation output_bytes is invalid")
+
+    # Cap untrusted manifest limits while replaying. Passing with stricter
+    # limits still proves the recorded bounded guest behavior.
+    run_config = RunConfig(
+        loader="canonical",
+        max_steps=max_steps,
+        timeout_seconds=min(float(timeout_seconds), 5.0),
+        address_space_bytes=min(address_space_bytes, 536_870_912),
+        output_bytes=min(output_bytes, 1_048_576),
+    )
+    cases = validation.get("cases")
+    inputs = _validation_inputs(program)
+    if not isinstance(cases, list) or len(cases) != len(inputs):
+        raise ValueError("manifest guest validation cases are incomplete")
+
+    required_case_fields = {
+        "stdin_hex",
+        "expected_stdout_hex",
+        "observed_stdout_hex",
+        "guest_status",
+        "returncode",
+        "matches",
+    }
+    for case, stdin in zip(cases, inputs, strict=True):
+        if not isinstance(case, dict) or set(case) != required_case_fields:
+            raise ValueError("manifest guest validation case has an invalid schema")
+        expected = _expected_stdout(program, stdin, eof_value)
+        if (
+            case.get("stdin_hex") != stdin.hex()
+            or case.get("expected_stdout_hex") != expected.hex()
+            or case.get("matches") is not True
+        ):
+            raise ValueError("manifest guest validation case does not match the certified goal")
+
+        guest = run_guest(artifact_path, stdin, run_config)
+        if (
+            guest.status is not GuestStatus.HALT
+            or guest.returncode != 0
+            or guest.stdout != expected
+            or case.get("observed_stdout_hex") != guest.stdout.hex()
+            or case.get("guest_status") != guest.status.value
+            or case.get("returncode") != guest.returncode
+        ):
+            raise ValueError("manifest guest validation case failed real-VM replay")
+
+
 def verify_manifest(
     manifest_path: Path,
     artifact_path: Path,
@@ -175,4 +288,11 @@ def verify_manifest(
         or manifest.get("explored_nodes") != synthesis.explored_nodes
     ):
         raise ValueError("artifact does not match certified semantic lowering")
+    _verify_guest_validation(
+        validation,
+        artifact_path,
+        program,
+        max_steps=budget.max_steps,
+        eof_value=profile.eof_value,
+    )
     return manifest

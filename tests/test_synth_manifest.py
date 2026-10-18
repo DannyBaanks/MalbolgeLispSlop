@@ -174,6 +174,93 @@ class SynthesisManifestTests(unittest.TestCase):
                     program_path=PROGRAM,
                 )
 
+    def test_manifest_rejects_contradictory_guest_validation_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifact = root / "guest.mb"
+            artifact.write_bytes(b"ubO")
+            manifest_data = self.build(artifact.read_bytes())
+            validation = manifest_data["validation"]
+            assert isinstance(validation, dict)
+            validation.update(
+                {
+                    "guest_status": "MAX_STEPS",
+                    "loader": "raw",
+                    "max_steps": 8,
+                    "timeout_seconds": 5.0,
+                    "address_space_bytes": 536_870_912,
+                    "output_bytes": 1_048_576,
+                    "cases": [
+                        self._echo_validation_case("41", "41", "42", False),
+                        self._echo_validation_case("7a", "7a", "7a", True),
+                        self._echo_validation_case("00", "00", "00", True),
+                        self._echo_validation_case("ff", "ff", "ff", True),
+                        self._echo_validation_case("", "da", "da", True),
+                    ],
+                }
+            )
+            manifest = root / "guest.manifest.json"
+            manifest.write_bytes(manifest_bytes(manifest_data))
+
+            with self.assertRaisesRegex(ValueError, "guest_status.*HALT"):
+                verify_manifest(
+                    manifest,
+                    artifact,
+                    profile_path=PROFILE,
+                    program_path=PROGRAM,
+                )
+
+    def test_manifest_replays_guest_cases_instead_of_trusting_claimed_stdout(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifact = root / "guest.mb"
+            artifact.write_bytes(b"ubO")
+            manifest_data = self.build(artifact.read_bytes())
+            validation = manifest_data["validation"]
+            assert isinstance(validation, dict)
+            validation.update(
+                {
+                    "loader": "canonical",
+                    "max_steps": 8,
+                    "timeout_seconds": 5.0,
+                    "address_space_bytes": 536_870_912,
+                    "output_bytes": 1_048_576,
+                    "cases": [
+                        self._echo_validation_case("41", "41", "42", True),
+                        self._echo_validation_case("7a", "7a", "7a", True),
+                        self._echo_validation_case("00", "00", "00", True),
+                        self._echo_validation_case("ff", "ff", "ff", True),
+                        self._echo_validation_case("", "da", "da", True),
+                    ],
+                }
+            )
+            manifest = root / "guest.manifest.json"
+            manifest.write_bytes(manifest_bytes(manifest_data))
+
+            with self.assertRaisesRegex(ValueError, "real-VM replay"):
+                verify_manifest(
+                    manifest,
+                    artifact,
+                    profile_path=PROFILE,
+                    program_path=PROGRAM,
+                )
+
+    @staticmethod
+    def _echo_validation_case(
+        stdin_hex: str,
+        expected_stdout_hex: str,
+        observed_stdout_hex: str,
+        matches: bool,
+    ) -> dict[str, object]:
+        return {
+            "stdin_hex": stdin_hex,
+            "expected_stdout_hex": expected_stdout_hex,
+            "observed_stdout_hex": observed_stdout_hex,
+            "guest_status": "HALT",
+            "returncode": 0,
+            "matches": matches,
+        }
+
     def test_cli_outputs_are_reproducible_and_existing_paths_are_refused(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
