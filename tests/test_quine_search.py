@@ -229,7 +229,6 @@ class QuineSearchTests(unittest.TestCase):
                     "LOAD_ERROR",
                     "WALL_TIMEOUT",
                     "OUTPUT_LIMIT",
-                    "PROCESS_ERROR",
                 ),
             )
             self.assertTrue((run_dir / records[0]["candidate_path"]).is_file())
