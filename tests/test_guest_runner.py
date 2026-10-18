@@ -1,10 +1,46 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 from tools.guest_runner import GuestStatus, RunConfig, run_guest
+
+
+def _payload_pipe(payload: bytes):
+    read_fd, write_fd = os.pipe()
+    os.write(write_fd, payload)
+    os.close(write_fd)
+    return os.fdopen(read_fd, "rb")
+
+
+def _stdin_pipe():
+    read_fd, write_fd = os.pipe()
+    return os.fdopen(read_fd, "rb"), os.fdopen(write_fd, "wb")
+
+
+class _FakeProcess:
+    """Deterministic stand-in used to place the deadline check precisely."""
+
+    def __init__(self, *, stdout: bytes, stderr: bytes, exited: bool) -> None:
+        self.stdout = _payload_pipe(stdout)
+        self.stderr = _payload_pipe(stderr)
+        self._stdin_read, self.stdin = _stdin_pipe()
+        self.pid = 1 << 30
+        self.returncode = 0 if exited else None
+
+    def poll(self) -> int | None:
+        return self.returncode
+
+    def wait(self, timeout: float | None = None) -> int:
+        if self.returncode is None:
+            self.returncode = -9
+        return self.returncode
+
+    def kill(self) -> None:
+        raise ProcessLookupError
 
 
 class GuestRunnerTests(unittest.TestCase):
@@ -78,6 +114,57 @@ class GuestRunnerTests(unittest.TestCase):
         result = self.run_fake("raise SystemExit(7)\n")
 
         self.assertEqual(result.status, GuestStatus.PROCESS_ERROR)
+
+    def test_guest_that_exited_when_the_deadline_fires_classifies_by_telemetry(
+        self,
+    ) -> None:
+        process = _FakeProcess(
+            stdout=b"",
+            stderr=b"bolge19: HALT steps=3 c=1 d=1 a=1 elapsed=0s\n",
+            exited=True,
+        )
+        engine = self.root / "fake_bolge19"
+        engine.write_bytes(b"x")
+        ticks = iter([100.0, 103.0])
+        fake_time = mock.Mock()
+        fake_time.monotonic.side_effect = lambda: next(ticks, 2000.0)
+
+        with (
+            mock.patch("tools.guest_runner.subprocess.Popen", return_value=process),
+            mock.patch("tools.guest_runner.time", fake_time),
+        ):
+            result = run_guest(
+                self.image,
+                b"input",
+                self.config(timeout=2.0),
+                engine_path=engine,
+            )
+
+        self.assertEqual(result.status, GuestStatus.HALT)
+        self.assertEqual(result.returncode, 0)
+        self.assertIn(b"HALT steps=", result.stderr)
+
+    def test_guest_still_running_when_the_deadline_fires_is_wall_timeout(self) -> None:
+        process = _FakeProcess(stdout=b"", stderr=b"", exited=False)
+        engine = self.root / "fake_bolge19"
+        engine.write_bytes(b"x")
+        ticks = iter([100.0, 103.0])
+        fake_time = mock.Mock()
+        fake_time.monotonic.side_effect = lambda: next(ticks, 2000.0)
+
+        with (
+            mock.patch("tools.guest_runner.subprocess.Popen", return_value=process),
+            mock.patch("tools.guest_runner.time", fake_time),
+        ):
+            result = run_guest(
+                self.image,
+                b"input",
+                self.config(timeout=2.0),
+                engine_path=engine,
+            )
+
+        self.assertEqual(result.status, GuestStatus.WALL_TIMEOUT)
+        self.assertIsNone(result.returncode)
 
 
 if __name__ == "__main__":

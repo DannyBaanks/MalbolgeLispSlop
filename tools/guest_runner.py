@@ -106,7 +106,10 @@ def run_guest(
 
     ``output_bytes`` caps captured stdout. Stderr is drained continuously and
     capped at one MiB to keep diagnostics bounded. Crossing either cap kills
-    the guest and returns ``OUTPUT_LIMIT``.
+    the guest and returns ``OUTPUT_LIMIT``. ``WALL_TIMEOUT`` is reported only
+    when the deadline actually terminated the guest; a guest that exited on
+    its own is classified from its exit code and telemetry even if the
+    deadline check fires while draining.
     """
     if not isinstance(stdin, bytes):
         raise ValueError("stdin must be bytes")
@@ -217,10 +220,11 @@ def run_guest(
     if output_limit:
         status = GuestStatus.OUTPUT_LIMIT
         returncode: int | None = process.returncode
-    elif wall_timeout:
+    elif wall_timeout and process.returncode == -signal.SIGKILL:
         status = GuestStatus.WALL_TIMEOUT
         returncode = None
     else:
         returncode = process.returncode
+        assert returncode is not None
         status = _status_from_stderr(bytes(stderr), returncode)
     return GuestResult(bytes(stdout), bytes(stderr), returncode, status)
