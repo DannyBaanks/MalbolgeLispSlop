@@ -1,0 +1,79 @@
+{
+  "utc": "2026-10-18T12:14:08.510854+00:00",
+  "runs": [
+    {
+      "name": "unittest",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "unittest",
+        "discover"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "2a1522062a4f0c69ee72d28ebbefd3ba6c4cc814a82005093e714764acd10332"
+    },
+    {
+      "name": "manifest_m0",
+      "command": [
+        "sha256sum",
+        "-c",
+        "SHA256SUMS.txt"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m0",
+      "exit": 0,
+      "stdout_sha256": "aae6a3cbeb92091ca49a2669443efc9a51dedea0823384e8d1e3ce7f13ae1d71",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "manifest_m1",
+      "command": [
+        "sha256sum",
+        "-c",
+        "SHA256SUMS.txt"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m1",
+      "exit": 0,
+      "stdout_sha256": "9a586139dd7ba220df0c49f170f5ae2774b7319a5b1d697a2ddebc73d935fe81",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "manifest_m2",
+      "command": [
+        "sha256sum",
+        "-c",
+        "SHA256SUMS.txt"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m2",
+      "exit": 0,
+      "stdout_sha256": "9143a63f9e62db9f1e8ed6b26d65136e336e6bdd82f480e4b51e7772ce7ca2de",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "manifest_m3",
+      "command": [
+        "sha256sum",
+        "-c",
+        "SHA256SUMS.txt"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m3",
+      "exit": 0,
+      "stdout_sha256": "61b019ff074f996c7c374ebd04dfc86a356ea51bab2ed9b0ee2e97b1826096f6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "manifest_m4",
+      "command": [
+        "sha256sum",
+        "-c",
+        "SHA256SUMS.txt"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m4",
+      "exit": 0,
+      "stdout_sha256": "9906ba6d17768e39323cc6fd973557559fd6b0397787b9bb7ae72a429a69cd83",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "all_commands_exit_zero": true
+}

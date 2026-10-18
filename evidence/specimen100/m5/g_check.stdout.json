@@ -1,0 +1,48 @@
+{
+  "specimen_bytes": 371331415,
+  "specimen_sha256": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+  "regen_bytes": 371331415,
+  "regen_sha256": "cc8dcfbc23f6ec85203a83f874d02d71d3f2a906a6e4ccb558819e7c8f486904",
+  "byte_exact": false,
+  "covered_bytes": 133860553,
+  "covered_frac": 0.360488,
+  "deviation_bytes": 237470862,
+  "deviation_spans": 1289356,
+  "first_deviation": 19511,
+  "covered_mismatches": 0,
+  "raw_alphabet_size": 95,
+  "resolution_fixes": 1,
+  "layers": [
+    {
+      "lag": 12,
+      "runs": 510385,
+      "cum_covered": 99945707,
+      "added": 99926315
+    },
+    {
+      "lag": 7,
+      "runs": 597393,
+      "cum_covered": 124636689,
+      "added": 24690982
+    },
+    {
+      "lag": 9,
+      "runs": 173752,
+      "cum_covered": 129125920,
+      "added": 4489231
+    },
+    {
+      "lag": 2,
+      "runs": 157862,
+      "cum_covered": 131799508,
+      "added": 2673588
+    },
+    {
+      "lag": 11,
+      "runs": 100202,
+      "cum_covered": 133860553,
+      "added": 2061045
+    }
+  ],
+  "seconds": 8.5
+}

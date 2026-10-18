@@ -40,6 +40,7 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
 - Milestones: [PLAN.md](docs/PLAN.md)
 - Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
 - Quine research (fixed-3^19): [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md)
+- Specimen-100 research: [SPECIMEN100.md](docs/SPECIMEN100.md) — canonical REPL reproduced; regeneration and truncation research PARTIAL, no behavioral-equivalence claim
 - Detailed subsystem plans: [plan index](docs/superpowers/plans/README.md)
 - Third-party provenance: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 

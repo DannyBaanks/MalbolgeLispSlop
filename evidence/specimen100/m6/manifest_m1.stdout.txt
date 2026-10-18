@@ -1,0 +1,2 @@
+console.txt: La suma coincide
+upstream.json: La suma coincide

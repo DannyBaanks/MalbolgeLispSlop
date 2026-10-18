@@ -44,7 +44,7 @@ reproduced those defects.
 | Claim | Status | Evidence / limit |
 |---|---|---|
 | `bolge19` models a fixed 3^19 address space | `[DEMONSTRATED IN SOURCE]` | `src/bolge19/main.zig` pins `END` to 1,162,261,467 and performs fixed-region dispatch; hash above |
-| `bolge19` can execute a full MalbolgeLISP REPL | `[REPORTED; NOT REPRODUCED IN M0]` | Forensics reproduction notes report a large specimen run; this project does not redistribute or rerun it |
+| `bolge19` can execute the canonical full MalbolgeLISP REPL session | `[REPRODUCED IN SPECIMEN100 M2; 2026-10-18]` | Two CRLF-input runs match historical stdout and HALT at 2,408,246,381 steps; see [research closeout](SPECIMEN100.md) and `evidence/specimen100/m2/reproduction.json`. M0 itself did not reproduce it; no general Lisp conformance claim |
 | Original Unshackled is exactly the fixed-3^19 profile | `[CONTRADICTED]` | Inspected semantics notes describe randomized initial width and dynamic growth |
 | A small guest can be executed and observed byte-for-byte here | `[TO VERIFY IN M1]` | The M1 fixture and verifier are in this repository |
 | Lisp evaluation takes place inside Malbolge | `[NOT_DEMONSTRATED]` | No evaluator has been implemented or independently shown in this repo |

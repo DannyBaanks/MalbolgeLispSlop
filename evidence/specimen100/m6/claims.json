@@ -1,0 +1,74 @@
+{
+  "schema": "specimen100.closeout.claims.v1",
+  "claims": [
+    {
+      "milestone": "M0",
+      "status": "VERIFIED",
+      "claim": "Identity and init-first concatenation",
+      "source": "evidence/specimen100/m0/inventory.json",
+      "sha256": "49af72929650de492810b3adbde029345366a854472888acb39e442bdaebfe8c"
+    },
+    {
+      "milestone": "M1",
+      "status": "REPRODUCED_BYTE_EXACT",
+      "claim": "Pinned committed artifacts and concat recipe; not source compilation",
+      "source": "evidence/specimen100/m1/upstream.json",
+      "sha256": "85a2272011da9c63dec6e3cc6d48d1aa36cf3ae0e44e538a2a366cbee709cbbf"
+    },
+    {
+      "milestone": "M2",
+      "status": "REPRODUCED",
+      "claim": "Canonical CRLF stdout and HALT tuple; bounded session only",
+      "source": "evidence/specimen100/m2/reproduction.json",
+      "sha256": "2e672c76dc90d646ce1894ee78a43368d1547f78ee6481c80ba69faf939ef195"
+    },
+    {
+      "milestone": "M3",
+      "status": "VERIFIED_WITH_LIMITS",
+      "claim": "Measured differential rows; not all proposed stress cases",
+      "source": "evidence/specimen100/m3/differential_matrix.json",
+      "sha256": "6dd4f6ddd086fa8edc1ece588369454c4ae1246367738d9f630cb6b6ef702ee1"
+    },
+    {
+      "milestone": "M4",
+      "status": "PARTIAL",
+      "claim": "Full artifact hash differs; covered bytes exact",
+      "source": "evidence/specimen100/m4/g_check.log",
+      "sha256": "6f1322c59266c0b3ff70cc80e5178e1117d1ebbd65c0531eaa76d643ce54cff6"
+    },
+    {
+      "milestone": "M5",
+      "status": "PARTIAL",
+      "claim": "Prerequisite fails: final two bytes unknown under sealed G",
+      "source": "evidence/specimen100/m5/gate_run1.stdout.json",
+      "sha256": "e718cf419fbaf589029f8d42e904e311668ea37fda8ca142f295a0fc426c19bb"
+    },
+    {
+      "milestone": "M5-behavior",
+      "status": "NOT_DEMONSTRATED",
+      "claim": "No behavioral runs, no semantic counterexample or minimum",
+      "source": "evidence/specimen100/m5/execution.json",
+      "sha256": "f9198d7acd91157325d95f625f1efdac32f2b84028bef610873ab813bc70deeb"
+    },
+    {
+      "milestone": "M6",
+      "status": "VERIFIED",
+      "claim": "Suite and M0-M4 manifests executed with exit zero",
+      "source": "evidence/specimen100/m6/execution.json",
+      "sha256": "fba245514cfab314ec2325290db0eac9a607179b0920ec33bb85430bfd4aee41"
+    },
+    {
+      "milestone": "M6-tests",
+      "status": "VERIFIED_WITH_WARNINGS",
+      "claim": "93 tests OK; ResourceWarnings retained",
+      "source": "evidence/specimen100/m6/unittest.stderr.txt",
+      "sha256": "2a1522062a4f0c69ee72d28ebbefd3ba6c4cc814a82005093e714764acd10332"
+    }
+  ],
+  "not_demonstrated": [
+    "Full Lisp conformance and all planned stress cases",
+    "Full raw regeneration from G",
+    "Behavioral equivalence, semantic liveness, behavioral minimum",
+    "Prefix-only derivation of G metadata"
+  ]
+}

@@ -1,0 +1,5 @@
+RULES.md: La suma coincide
+bolge19.diff: La suma coincide
+concat-diagnosis.txt: La suma coincide
+console.txt: La suma coincide
+inventory.json: La suma coincide

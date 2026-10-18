@@ -24,3 +24,16 @@
 
 Before a public release of a Lisp artifact, revisit licensing, attribution,
 resource bounds, and independent execution evidence.
+
+## Specimen-100 findings (2026-10-18)
+
+See [SPECIMEN100.md](SPECIMEN100.md) for the bounded closeout. The canonical
+REPL is reproduced, not a general conformance suite. The partial generative
+image is not runnable evidence of equivalence: unknown tail bytes remain, and
+M5's behavioral battery was not run after its reconstruction prerequisite
+failed. A length-only deviation map does not restore omitted contents.
+The model uses whole-specimen metadata; prefix-only generation is unproved.
+`generate.py check` exit zero is not a byte-exact verdict; inspect its JSON.
+The regression suite passes but emits retained unclosed-file ResourceWarnings;
+maintenance reports #8141 and #8144 track these limitations. Licensing and
+non-redistribution restrictions above remain unchanged.

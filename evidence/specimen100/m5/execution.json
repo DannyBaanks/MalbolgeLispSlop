@@ -1,0 +1,60 @@
+{
+  "schema": "specimen100.m5.execution.v1",
+  "utc": "2026-10-18T12:13:29.515371+00:00",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "runs": [
+    {
+      "name": "gate_run1",
+      "command": [
+        "/usr/bin/python3",
+        "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/suffix_gate.py",
+        "--specimen",
+        "/tmp/opencode/specimen100-m1-lisp.mb",
+        "--model",
+        "/tmp/opencode/m4/model_v1.m4g"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop",
+      "exit": 0,
+      "stdout_sha256": "e718cf419fbaf589029f8d42e904e311668ea37fda8ca142f295a0fc426c19bb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "gate_run2",
+      "command": [
+        "/usr/bin/python3",
+        "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/suffix_gate.py",
+        "--specimen",
+        "/tmp/opencode/specimen100-m1-lisp.mb",
+        "--model",
+        "/tmp/opencode/m4/model_v1.m4g"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop",
+      "exit": 0,
+      "stdout_sha256": "e718cf419fbaf589029f8d42e904e311668ea37fda8ca142f295a0fc426c19bb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "g_check",
+      "command": [
+        "/usr/bin/python3",
+        "tools/specimen100/generate.py",
+        "check",
+        "--specimen",
+        "/tmp/opencode/specimen100-m1-lisp.mb",
+        "--model",
+        "/tmp/opencode/m4/model_v1.m4g"
+      ],
+      "cwd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop",
+      "exit": 0,
+      "stdout_sha256": "07d8a5d2ba0e7c55ab9e79881872f4733ff0bef3801767dd279d5e9786d4bea1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "gate_outputs_bit_identical": true,
+  "independent_interval_union_matches_g_check": true,
+  "behavioral_runs_executed": 0,
+  "strict_m5_acceptance": "NOT_MET_PRECONDITION",
+  "milestone_status": "PARTIAL",
+  "verdict": "NOT_ELIGIBLE_UNDER_SEALED_G"
+}

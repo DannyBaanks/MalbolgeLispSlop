@@ -1,0 +1,60 @@
+{
+  "schema": "isyco-evidence-pack-v1",
+  "created_at": "2026-10-18T12:19:12Z",
+  "environment": {
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cwd": "/home/danny/Development/ISyCo",
+    "git_commit": "df2756c"
+  },
+  "command": "python3 evidence/specimen100/m6/run_verification.py (cwd=MalbolgeLispSlop worktree)",
+  "exit_code": 0,
+  "stdout": {
+    "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m6/execution.json",
+    "sha256": "fba245514cfab314ec2325290db0eac9a607179b0920ec33bb85430bfd4aee41"
+  },
+  "artifacts": [
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m6/claims.json",
+      "sha256": "8894556a864a43fdd47bbfe949b21a340d77d51ecda556fc73c6c312726cccf0"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m6/documentation_hashes.json",
+      "sha256": "194f1ad27a061e461b8029f9313dad4df47a35749ba300351267f9e3ccbadeda"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m6/unittest.stderr.txt",
+      "sha256": "2a1522062a4f0c69ee72d28ebbefd3ba6c4cc814a82005093e714764acd10332"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m6/run_verification.py",
+      "sha256": "8b5a679d0ddebdd8b2554f09b731fd133d3f8671008ba6e76e4c54829dd3842d"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m6/finalize.py",
+      "sha256": "7f78f974e7fc82527c6b0f5b85fd29def5bf826782ed870f2339c094ac2a83b2"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/docs/SPECIMEN100.md",
+      "sha256": "faffe94073ff1b176df430c4d6d74761f545de8fe7cb7b44fd7db197c22af4e4"
+    }
+  ],
+  "claims": [
+    {
+      "text": "Regression suite 93 tests OK, exit0, with ResourceWarnings",
+      "status": "VERIFIED_WITH_WARNINGS"
+    },
+    {
+      "text": "M0-M4 evidence manifests reverified",
+      "status": "VERIFIED"
+    },
+    {
+      "text": "Full specimen regeneration and behavioral truncation equivalence",
+      "status": "NOT_DEMONSTRATED"
+    }
+  ],
+  "scope": "Bounded Specimen100 research closeout; M4 and M5 PARTIAL, no VM changes or publication",
+  "not_demonstrated": [
+    "Complete original behavioral and stress acceptance matrix"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "isyco-evidence-pack-v1",
+  "created_at": "2026-10-18T12:15:11Z",
+  "environment": {
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cwd": "/home/danny/Development/ISyCo",
+    "git_commit": "df2756c"
+  },
+  "command": "python3 evidence/specimen100/m5/run_experiment.py (cwd=MalbolgeLispSlop worktree)",
+  "exit_code": 0,
+  "stdout": {
+    "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/execution.json",
+    "sha256": "f9198d7acd91157325d95f625f1efdac32f2b84028bef610873ab813bc70deeb"
+  },
+  "artifacts": [
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/protocol.md",
+      "sha256": "1c04dea315c05a2d423a02c0241822f980de6bbeb4690ca208b4452ebd62442a"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/suffix_gate.py",
+      "sha256": "46ab9d1cf91e6e5eb31083d786904f5e0eb34ab8abd6ec67709267a15633e28c"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/run_experiment.py",
+      "sha256": "9d92103a9fabda522545cc0a2fa966ff72d61b582390223ecdf200fe3fb88bae"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/gate_run1.stdout.json",
+      "sha256": "e718cf419fbaf589029f8d42e904e311668ea37fda8ca142f295a0fc426c19bb"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/gate_run2.stdout.json",
+      "sha256": "e718cf419fbaf589029f8d42e904e311668ea37fda8ca142f295a0fc426c19bb"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/g_check.stdout.json",
+      "sha256": "07d8a5d2ba0e7c55ab9e79881872f4733ff0bef3801767dd279d5e9786d4bea1"
+    },
+    {
+      "file": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/evidence/specimen100/m5/g_check.stderr.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "claims": [
+    {
+      "text": "Sealed G cannot supply any fully defined nonempty suffix",
+      "status": "VERIFIED"
+    },
+    {
+      "text": "Behavioral equivalence and semantic tail liveness",
+      "status": "NOT_DEMONSTRATED"
+    }
+  ],
+  "scope": "M5 suffix eligibility of fixed M4G1; M5 PARTIAL; no behavioral runs",
+  "not_demonstrated": [
+    "Full-vs-reduced behavior and behavioral minimum"
+  ]
+}

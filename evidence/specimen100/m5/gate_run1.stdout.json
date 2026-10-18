@@ -1,0 +1,84 @@
+{
+  "behavioral_battery": "NOT_RUN_PRECONDITION",
+  "behavioral_equivalence": "NOT_DEMONSTRATED",
+  "behavioral_minimum_prefix": "NOT_DEMONSTRATED",
+  "covered_bytes": 133860553,
+  "eligible_nonempty_suffix_exists": false,
+  "first_gap": [
+    19511,
+    19543
+  ],
+  "gap_count": 1289356,
+  "gap_intervals_sha256_le_i64": "a7c618a32b3f7f580f8fb1e1b5202665250112c922c6f7a7dfbeb20d71e40235",
+  "header_control_covered": true,
+  "inverse_mismatches_full_file_after_fixes": 0,
+  "last_byte_covered": false,
+  "last_gap": [
+    371331413,
+    371331415
+  ],
+  "layers": [
+    {
+      "lag": 12,
+      "largest_span_end_exclusive": 371331413,
+      "runs": 510385
+    },
+    {
+      "lag": 7,
+      "largest_span_end_exclusive": 371331413,
+      "runs": 597393
+    },
+    {
+      "lag": 9,
+      "largest_span_end_exclusive": 371331413,
+      "runs": 173752
+    },
+    {
+      "lag": 2,
+      "largest_span_end_exclusive": 371331413,
+      "runs": 157862
+    },
+    {
+      "lag": 11,
+      "largest_span_end_exclusive": 371331413,
+      "runs": 100202
+    }
+  ],
+  "maximum_supported_tail_omission_bytes": 0,
+  "model_sha256": "6e7fa25df5bd645773398cf1c33a67ec8d29d1bcb137e9a4366d6c3dcd4f1b6d",
+  "no_truncation_control_eligible": true,
+  "raw_alphabet_size": 95,
+  "raw_resolution_fixes": [
+    [
+      19391,
+      10
+    ]
+  ],
+  "schema": "specimen100.m5.suffix-eligibility.v1",
+  "semantic_tail_liveness": "NOT_DEMONSTRATED",
+  "smallest_prefix_with_fully_defined_suffix": 371331415,
+  "specimen_bytes": 371331415,
+  "specimen_sha256": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+  "synthetic_controls": {
+    "fully_covered": {
+      "actual": 0,
+      "expected": 0
+    },
+    "interior_gap": {
+      "actual": 4,
+      "expected": 4
+    },
+    "last_byte_unknown": {
+      "actual": 8,
+      "expected": 8
+    },
+    "no_coverage": {
+      "actual": 8,
+      "expected": 8
+    }
+  },
+  "tail16_raw_hex": "41403f3e3d3c3b3a3938373635345251",
+  "uncovered_bytes": 237470862,
+  "verdict": "NOT_ELIGIBLE_UNDER_SEALED_G",
+  "zero_op_count_full_file": 0
+}

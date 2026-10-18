@@ -15,3 +15,13 @@ upgrade any row about full Unshackled parity, Lisp semantics, backend
 independence, or quines. A related C `fast20` executable matched the Zig VM on
 one input byte; that comparison is recorded in
 `evidence/m1/fast20-differential.json` and is not independent validation.
+
+## Specimen-100 follow-up (2026-10-18)
+
+The earlier table records the initial slice. The [research closeout](SPECIMEN100.md)
+adds bounded evidence: bolge19 reproduces the canonical CRLF REPL stdout and
+HALT tuple in M2; related fast20 Linux matches its stdout in M3. This is not
+independent Unshackled parity or full Lisp conformance. M4 regeneration remains
+PARTIAL (36.0488% covered, zero covered-byte mismatches). M5 behavioral
+equivalence is NOT_DEMONSTRATED: the sealed G cannot supply a complete nonempty
+suffix, so the conditional behavioral battery was not executed.
