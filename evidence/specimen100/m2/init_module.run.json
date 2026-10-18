@@ -1,0 +1,20 @@
+{
+  "generated_utc": "2026-10-18T10:20:05Z",
+  "cmd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19 /home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/runtime/init_module.mb",
+  "stdin": "EOF inmediato (sin datos)",
+  "rc": 0,
+  "wall_s": 0.0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "a19cfcba169da969db8f2aed063e835ec0013750a40cc291ac6c4573ae3412be",
+  "halt": {
+    "steps": 19337,
+    "c": 19435,
+    "d": 19,
+    "a": 710270897,
+    "elapsed_s": 0
+  },
+  "historical_claim": {
+    "steps": 19337,
+    "source": "EXPERIMENT_CONTRACT.md"
+  }
+}

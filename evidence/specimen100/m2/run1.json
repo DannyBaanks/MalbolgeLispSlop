@@ -1,0 +1,28 @@
+{
+  "generated_utc": "2026-10-18T10:18:38Z",
+  "cmd": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19 /tmp/opencode/specimen100-m1-lisp.mb",
+  "rc": -9,
+  "wall_s": 21.6,
+  "stdout_bytes": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_bytes": 183,
+  "stderr_sha256": "a5ebb510dcc03f7238167343f2db063bbfc378319bd909986a1a65362398f22b",
+  "halt": null,
+  "last_telemetry_overlay": null,
+  "historical": {
+    "stdout_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+    "stderr_sha256": "1ce90ee3a128e35b88e6c10e99ada6c68b5ada31eb75dc58d76d0c2ff2685253",
+    "halt_steps": 2408246381,
+    "halt_c": 581143360,
+    "halt_d": 581861866,
+    "halt_a": 10,
+    "last_telemetry_overlay": 468760
+  },
+  "log": [
+    "# m2 driver: bolge19=/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19 img=/tmp/opencode/specimen100-m1-lisp.mb t_start_utc=2026-10-18T10:18:38Z",
+    "# cmd=/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19 /tmp/opencode/specimen100-m1-lisp.mb",
+    "[21.6s] proceso termino durante espera de primer prompt '% ' rc=-9",
+    "[21.6s] prompt_a=NO",
+    "[21.6s] PROC EXITED rc=-9"
+  ]
+}

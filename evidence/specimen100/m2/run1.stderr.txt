@@ -1,0 +1,1 @@
+bolge19: AVISO /tmp/opencode/specimen100-m1-lisp.mb: 1 celdas de espaciado contadas como celdas por el cargador crudo; use --loader canonical para imagenes de texto alineado a opcode
