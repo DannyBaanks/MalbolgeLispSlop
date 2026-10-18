@@ -56,3 +56,18 @@ modules, but branch, guest memory, arithmetic, loops, and call/return remain
 [`SYNTHESIS_FEASIBILITY.md`](SYNTHESIS_FEASIBILITY.md) and its immutable raw
 campaign evidence. The full Lisp guest plan cannot start until those gates
 demonstrate guest execution.
+
+## Satire estimate
+
+The review-time command measures the selected artifact's current byte length
+and reports sequential-reading estimates under explicit assumptions:
+
+```sh
+python3 tools/estimate_review_time.py build/synth/echo.mb \
+  --bytes-per-second 1 --hours-per-day 8
+```
+
+`make review-time-estimate` runs it on the generated echo guest. The estimate
+is a joke about character-by-character inspection; it is not a measure of
+semantic review or program correctness. The calculation uses the artifact on
+disk, not a historical size.
