@@ -1,0 +1,23 @@
+{
+  "algorithm": "fixed19-profile-dispatch-product-v1",
+  "bounds": {
+    "candidate_memory_bytes": 536870912,
+    "candidate_steps": 1000000,
+    "candidate_timeout_seconds": 2.0,
+    "max_candidate_bytes": 100000,
+    "max_nodes": 10000,
+    "seed": 0,
+    "wall_seconds": 10.0
+  },
+  "candidate_records_path": "candidate-records.jsonl",
+  "candidate_records_sha256": "851818e37e420ac986ddc026d549c1f46fed7d797a0e0e477a5509ae416b2b49",
+  "candidates_attempted": 2082,
+  "loader": "canonical",
+  "newline_policy": "no-final-newline",
+  "profile": "fixed-3^19",
+  "report_reason": "global wall_seconds budget exhausted before search completion",
+  "report_status": "BUDGET_EXHAUSTED",
+  "schema_version": 1,
+  "seed": 0,
+  "seed_rule": "rotate-by-dispatch-count; reverse-on-odd-quotient-v1"
+}

@@ -1,4 +1,4 @@
-.PHONY: build verify synth-echo review-time-estimate
+.PHONY: build verify synth-echo review-time-estimate quine-smoke
 
 build:
 	./tools/build.sh
@@ -15,3 +15,6 @@ synth-echo: build
 
 review-time-estimate: synth-echo
 	python3 tools/estimate_review_time.py build/synth/echo.mb --bytes-per-second 1 --hours-per-day 8
+
+quine-smoke: build
+	python3 tools/search_fixed19_quine.py --contract quine/contract.json --budget quine/budget-smoke.json --output-root evidence/quine

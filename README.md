@@ -25,6 +25,12 @@ wall-timeout path. The timeout self-check intentionally expires a child
 immediately; it does not establish that a particular Malbolge program loops
 forever.
 
+The bounded fixed-`3^19` quine campaign runs with `make quine-smoke` (10 s
+wall, at most 10,000 nodes, seed 0). Every run writes a new immutable
+directory under `evidence/quine/` with candidate images, raw guest output,
+digests, and an append-only index; earlier runs are never overwritten. The
+latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
+
 ## Project status
 
 - M0 inventory and scope: [BASELINE.md](docs/BASELINE.md)
@@ -33,6 +39,7 @@ forever.
 - Risks: [RISKS.md](docs/RISKS.md)
 - Milestones: [PLAN.md](docs/PLAN.md)
 - Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
+- Quine research (fixed-3^19): [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md)
 - Detailed subsystem plans: [plan index](docs/superpowers/plans/README.md)
 - Third-party provenance: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 

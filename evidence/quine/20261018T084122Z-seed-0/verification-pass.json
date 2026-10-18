@@ -1,0 +1,11 @@
+{
+  "by_status": {
+    "NOT_DEMONSTRATED": 1997
+  },
+  "candidates_verified": 1997,
+  "schema_version": 1,
+  "source_records": "candidate-records.jsonl (guest_status HALT)",
+  "verification_records_path": "verification-records.jsonl",
+  "verification_records_sha256": "4cea70edbf28f7196aed54af45cca750ac23b317787536d4023940fe7c096417",
+  "verifier": "quine.verify.verify_candidate"
+}

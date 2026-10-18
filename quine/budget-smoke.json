@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "max_nodes": 10000,
+  "wall_seconds": 10.0,
+  "candidate_steps": 1000000,
+  "candidate_timeout_seconds": 2.0,
+  "candidate_memory_bytes": 536870912,
+  "max_candidate_bytes": 100000,
+  "seed": 0
+}
