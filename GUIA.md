@@ -104,3 +104,23 @@ T24 lee los repos hermanos `MALBOLGE-MB-DATABASE` y `MALGAMES` sin modificarlos.
 - No ejecutar `evidence/specimen100/m6/finalize.py` sobre el árbol nuevo:
   sus hashes documentales son históricos. H2 registra el nuevo cambio sin
   reescribir aquella evidencia.
+
+## Verificar bloques aritméticos nativos
+
+El sintetizador ya puede encontrar y certificar dos bloques pequeños que
+reutilizan `crazy` y `rotate`. Cada bloque exige que su código, sus registros de
+datos y su celda de salida estén instalados de antemano. La prueba verifica la
+memoria completa, comprueba que el código se restaura y lo ejecuta dos veces en
+`bolge19` con varios bytes. Esto todavía no genera el bootstrap ni compila un
+programa general.
+
+Con Z3 instalado según `requirements-dev.txt` y Zig 0.16.0:
+
+```sh
+make verify-unary
+```
+
+El comando construye el VM, vuelve a ejecutar las pruebas con Python normal y
+con `-O`, reproduce ambos certificados y guarda una corrida nueva en
+`evidence/unary_blocks_v1/runs/`. `REUSABLE_BLOCKS_DEMONSTRATED` acredita solo
+estos dos bloques preinstalados; no es evidencia de intérprete Lisp.

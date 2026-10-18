@@ -1,0 +1,7 @@
+{
+  "status": "MAX_STEPS",
+  "returncode": 0,
+  "stdout_hex": "",
+  "reference_stdout_hex": "dee8",
+  "negative_control_changed": true
+}

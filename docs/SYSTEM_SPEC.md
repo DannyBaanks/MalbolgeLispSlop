@@ -18,7 +18,7 @@ Implementation progress and decisions live in `IMPLEMENTATION_LEDGER.md`.
 
 ## 1. Purpose
 
-MalbolgeLispSlop will be an original Lisp system whose evaluator runs inside a generated Malbolge guest program using the fixed `3^19` profile. It will include a host-side toolchain, a guest REPL, a conformance suite, reproducible generated source, and a native guest quine.
+MalbolgeLispSlop will be an original Lisp system whose evaluator runs inside a generated Malbolge guest program using the fixed `3^19` profile. It will include a host-side toolchain, a guest REPL, a conformance suite, and reproducible generated source. Quine synthesis is a separate research track.
 
 The joke targets manual opcode purism: reviewing an enormous self-modifying instruction stream character by character is a poor way to establish correctness. The project will review the language contract, generator, synthesis evidence, runtime behavior, and reproducible artifacts instead.
 
@@ -37,7 +37,7 @@ The system has four user-visible outputs:
 1. A deterministic host toolchain that accepts the project’s Lisp runtime description and emits a Malbolge guest image.
 2. A generated guest interpreter that performs parsing, evaluation, memory management, printing, and REPL behavior inside the selected fixed-3^19 target.
 3. A conformance corpus that runs Lisp inputs through that guest and records exact outputs, termination, resource use, and evidence.
-4. A guest-side quine whose execution emits its own source bytes and halts. A host tool copying the source file is not a quine.
+4. A persistent guest REPL that evaluates new expressions, preserves definitions between inputs, and implements the documented state commands.
 
 “Complete” means every feature row in the approved language specification has an implementation and guest-execution evidence. A host reference evaluator may help calculate expected behavior, but it may not evaluate user programs on the product execution path.
 
@@ -85,7 +85,6 @@ The verification suite should include:
 - variable input, nested expressions, state across REPL expressions, malformed input, type errors, allocation failure, step limit, and wall timeout;
 - differential comparison against a separately written host reference model, explicitly labeled as an oracle rather than the product runtime;
 - a second genuinely independent 19-trit backend when one is available. Wrappers around the same implementation do not count as independent. Until then, reports must say `single-implementation verification`;
-- quine validation using byte-for-byte `stdout == source`, a real guest halt, no extra output, and explicit file newline rules;
 - negative controls that alter an input, generated source, loader, or target profile and demonstrate the expected failure or changed result.
 
 Timeout, step exhaustion, rejected load, and HALT are distinct outcomes. Evidence must preserve raw output and hashes; a printed `PASS` label is not evidence by itself.
@@ -98,10 +97,9 @@ The implementation plan should use small gates and should not call the product c
 2. **Synthesizer gate:** ordinary guest control flow and I/O are generated from readable inputs, with no hand-written target instruction stream, and regeneration is deterministic.
 3. **Guest runtime gate:** the reader, value representation, heap, environments, evaluator, printer, and REPL execute in the guest and pass the approved feature matrix.
 4. **Language surface gate:** every feature promised by the specification has positive, negative, and where applicable stateful tests; anything else remains clearly marked incomplete.
-5. **Quine gate:** a native fixed-19-trit guest emits its own source bytes exactly and halts under the declared convention.
-6. **Evidence gate:** a clean checkout can regenerate and replay the evidence bundle with declared tools and resource limits. Independent-engine status is reported honestly.
+5. **Evidence gate:** a clean checkout can regenerate and replay the evidence bundle with declared tools and resource limits. Independent-engine status is reported honestly.
 
-The quine is a separate synthesis challenge. It may proceed after the synthesizer’s first vertical slice, but it must not be used to imply that Lisp features are implemented, and Lisp progress must not be described as a quine result.
+The quine is a separate synthesis challenge. It may proceed independently, but it must not be used to imply that Lisp features are implemented, and Lisp progress must not be described as a quine result.
 
 ## 8. Review method and satire metric
 

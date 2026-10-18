@@ -1,0 +1,9 @@
+{
+  "crazy.certificate.json": "f2c343c39fcdc6e169d6d5f3b874397e70fc4ce66cf97a076bf3ddae89d6e592",
+  "normal.stderr": "e2b019470373a718b126f347cd431094256fcb0e26f077cae1edd8996260d163",
+  "normal.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "optimized.stderr": "839f99de29a72191b10e4283968671b84a9bcecd55ff96a46ff2a05805958a4f",
+  "optimized.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "report.json": "5ac833d036262dd149dde189ce1c89370265160be27b62cd5d89e0a9663d1a95",
+  "rotate.certificate.json": "6a414945599ed05da44ace6b3fc29482bb19c229bb73d0b63bf33a4e25be2948"
+}
