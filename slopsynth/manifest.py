@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import re
 from typing import Any
 
 from .ir import Halt, Program, ReadA, WriteA
@@ -13,6 +14,9 @@ from .ir_json import load_program
 from .profile import load_profile
 from .search import SearchBudget, SemanticProof, SynthesisStatus, synthesize_program
 from tools.guest_runner import GuestStatus, RunConfig, run_guest
+
+
+_SHA256_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -147,10 +151,18 @@ def _verify_guest_validation(
     *,
     max_steps: int,
     eof_value: int,
+    engine_path: Path,
 ) -> None:
     """Replay every recorded M1 validation case against the real fixed19 VM."""
     if validation.get("guest_status") != GuestStatus.HALT.value:
         raise ValueError("manifest guest_status must be HALT")
+    engine_digest = validation.get("engine_sha256")
+    if (
+        not isinstance(engine_digest, str)
+        or _SHA256_PATTERN.fullmatch(engine_digest) is None
+        or engine_digest != sha256_file(engine_path)
+    ):
+        raise ValueError("manifest guest VM engine SHA-256 mismatch")
     if validation.get("loader") != "canonical":
         raise ValueError("manifest guest validation loader must be canonical")
     if type(validation.get("max_steps")) is not int or validation["max_steps"] != max_steps:
@@ -207,8 +219,10 @@ def _verify_guest_validation(
             or case.get("matches") is not True
         ):
             raise ValueError("manifest guest validation case does not match the certified goal")
+        if type(case.get("returncode")) is not int or case["returncode"] != 0:
+            raise ValueError("manifest guest validation case returncode must be integer 0")
 
-        guest = run_guest(artifact_path, stdin, run_config)
+        guest = run_guest(artifact_path, stdin, run_config, engine_path=engine_path)
         if (
             guest.status is not GuestStatus.HALT
             or guest.returncode != 0
@@ -226,10 +240,11 @@ def verify_manifest(
     *,
     profile_path: Path,
     program_path: Path,
+    engine_path: Path | None = None,
 ) -> dict[str, Any]:
     """Verify digests and recompute the certified lowering byte for byte."""
     manifest = _read_json(manifest_path, "manifest")
-    if manifest.get("schema_version") != 1:
+    if type(manifest.get("schema_version")) is not int or manifest["schema_version"] != 1:
         raise ValueError("unsupported manifest schema_version")
     if manifest.get("artifact_sha256") != sha256_file(artifact_path):
         raise ValueError("artifact SHA-256 mismatch")
@@ -259,6 +274,7 @@ def verify_manifest(
     if not isinstance(configuration, dict) or configuration.get("loader") != "canonical":
         raise ValueError("manifest does not contain a canonical lowering configuration")
     try:
+        vm_path = engine_path or Path(__file__).resolve().parents[1] / "build" / "bolge19"
         budget = SearchBudget(
             max_cells=configuration["max_cells"],
             max_nodes=configuration["max_nodes"],
@@ -294,5 +310,6 @@ def verify_manifest(
         program,
         max_steps=budget.max_steps,
         eof_value=profile.eof_value,
+        engine_path=vm_path,
     )
     return manifest

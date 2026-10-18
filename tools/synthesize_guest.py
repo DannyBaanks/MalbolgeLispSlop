@@ -163,6 +163,8 @@ def main() -> int:
         address_space_bytes=args.address_space_bytes,
         output_bytes=args.output_bytes,
     )
+    engine_path = ROOT / "build" / "bolge19"
+    engine_sha256 = hashlib.sha256(engine_path.read_bytes()).hexdigest()
     validation_cases: list[dict[str, object]] = []
     validation_passed = True
     build_directory = ROOT / "build"
@@ -178,7 +180,7 @@ def main() -> int:
                 candidate_path,
                 stdin,
                 run_config,
-                engine_path=ROOT / "build" / "bolge19",
+                engine_path=engine_path,
             )
             matches = guest.status is GuestStatus.HALT and guest.stdout == expected
             validation_passed = validation_passed and matches
@@ -204,6 +206,7 @@ def main() -> int:
         "timeout_seconds": run_config.timeout_seconds,
         "address_space_bytes": run_config.address_space_bytes,
         "output_bytes": run_config.output_bytes,
+        "engine_sha256": engine_sha256,
     }
     manifest = build_manifest(
         profile_path=profile_path,
