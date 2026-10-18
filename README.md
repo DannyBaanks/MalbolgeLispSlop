@@ -49,6 +49,9 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
 - Native loop gate H3, iterative loop with native control flow:
   [protocol](evidence/h3_loop_v1/protocol.md).
   This is a scoped 259-cell lowering, not general loops or a Lisp guest.
+- Native guest memory gate H4, store/load lowering:
+  [protocol](evidence/h4_memory_v1/protocol.md).
+  This is a scoped 259-cell lowering, not arbitrary dynamic pointers or a Lisp guest.
 - Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
 - Quine research (fixed-3^19): [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md)
 - Specimen-100 research: [SPECIMEN100.md](docs/SPECIMEN100.md) — canonical REPL reproduced; regeneration and truncation research PARTIAL, no behavioral-equivalence claim

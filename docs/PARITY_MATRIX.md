@@ -95,3 +95,17 @@ image by input: one image runs all cases.
 H3-SCOPED-LOOP is `DEMONSTRATED_SCOPED`. General BRZ, general JMP, arbitrary
 loops, general compiler, memory/arithmetic, and Lisp remain `NOT_DEMONSTRATED`.
 
+## Native guest memory gate H4 (2026-10-18)
+
+[Gate H4](../evidence/h4_memory_v1/protocol.md) adds one certified store/load
+sequence through the CLI's `slopsynth.memory` path: `read A; st 32, A; ld A, 32; write A; halt`.
+One generated 259-cell image uses native crazy involution with byte 121 (`'y'`),
+a 3-move pointer relay chain (`2 -> 116 -> 47 -> 71`), and consecutive canonical
+data cells 71 and 72. The sealed campaign covers exhaustive single-byte inputs
+across all 256 byte values, EOF, spacing neutrality, and two negative mutants (pointer
+and data). Labels and cases do not choose an image by input: one image runs all cases.
+
+H4-SCOPED-MEMORY is `DEMONSTRATED_SCOPED`. General memory, dynamic pointers,
+heap structures, arithmetic, calls, and Lisp remain `NOT_DEMONSTRATED`.
+
+

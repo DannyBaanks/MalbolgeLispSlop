@@ -197,6 +197,55 @@ Verificar la campaña completa de Gate H3:
 python3 tools/verify_h3_loop.py
 ```
 
+## Probar memoria nativa de guest (Gate H4)
+
+Ensamblar el programa de store/load:
+
+```sh
+python3 tools/assemble.py examples/store_load.slop --round-trip --out build/mem.mb
+```
+
+Salida real:
+
+```text
+store_load.slop: guest store_load, 259 cells
+  lowering=fixed19-scoped-memory-v1 (scoped H4; general control flow remains unsupported)
+  label main: cells 103,104
+  walk: accepted_cells=259 verdict=ACCEPTED
+  image_sha256=1e472f836f50a6ac1f343dd108c1b5a77dc5d511e56e6fa79c8477e5131f81b0
+round-trip: identical
+wrote build/mem.mb (259 bytes)
+```
+
+Ejecutar almacenamiento y recarga en `build/bolge19`:
+
+```sh
+python3 - <<'PY'
+import subprocess
+for stdin in (b'\x00', b'A', b'\x7f', b'\xff'):
+    r = subprocess.run(
+        ['build/bolge19', 'build/mem.mb', '--loader', 'canonical', '--max-steps', '512'],
+        input=stdin, capture_output=True, check=True,
+    )
+    print(f'{stdin.hex()}: stdout={r.stdout!r}')
+PY
+```
+
+Salida real:
+
+```text
+00: stdout=b'\x00'
+41: stdout=b'A'
+7f: stdout=b'\x7f'
+ff: stdout=b'\xff'
+```
+
+Verificar la campaña completa de Gate H4:
+
+```sh
+python3 tools/verify_h4_memory.py
+```
+
 ## Verificar bloques aritméticos nativos
 
 El sintetizador ya puede encontrar y certificar dos bloques pequeños que

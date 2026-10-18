@@ -1,0 +1,14 @@
+name store_load
+case 00,00
+case 01,01
+case 41,41
+case 7f,7f
+case ff,ff
+entry main
+
+main:
+    read A
+    st 32, A
+    ld A, 32
+    write A
+    halt
