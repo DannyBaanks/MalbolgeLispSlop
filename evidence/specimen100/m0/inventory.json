@@ -1,0 +1,94 @@
+{
+  "schema": "specimen100.m0.inventory.v1",
+  "generated_utc": "2026-10-18T10:09:06Z",
+  "repo": {
+    "worktree": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop",
+    "branch": "codex/malbolgelispslop-build",
+    "head": "8ca200bdb2ce1ebef99457e0b6039416e50cc86d",
+    "main_repo": "/home/danny/Development/ISyCo",
+    "main_head": "de0df234e327a228a01ae71ddb5b0177e76370eb"
+  },
+  "artifacts": {
+    "lisp.mb": {
+      "path": "/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/runtime/lisp.mb",
+      "bytes": 371331415,
+      "sha256": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+      "canonical_sha256": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+      "bytes_match": true,
+      "sha256_match": true,
+      "coreutils_sha256": "092df5cdc240de33a355d3cf82bdf09e0859c5827ee57a65bf93dfc37e8f3256",
+      "python_equals_coreutils": true
+    },
+    "core.mb": {
+      "path": "/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/runtime/core.mb",
+      "bytes": 371312023,
+      "sha256": "70e9155bbe44b58a0a44795cf0c614b214c8f31f82270f4913394e07f1f3e53a",
+      "canonical_sha256": "70e9155bbe44b58a0a44795cf0c614b214c8f31f82270f4913394e07f1f3e53a",
+      "bytes_match": true,
+      "sha256_match": true,
+      "coreutils_sha256": "70e9155bbe44b58a0a44795cf0c614b214c8f31f82270f4913394e07f1f3e53a",
+      "python_equals_coreutils": true
+    },
+    "init_module.mb": {
+      "path": "/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/runtime/init_module.mb",
+      "bytes": 19392,
+      "sha256": "4b3080fd250a4193030ec647e6c496f90540c1546f717b923284ea31b411e812",
+      "canonical_sha256": "4b3080fd250a4193030ec647e6c496f90540c1546f717b923284ea31b411e812",
+      "bytes_match": true,
+      "sha256_match": true,
+      "coreutils_sha256": "4b3080fd250a4193030ec647e6c496f90540c1546f717b923284ea31b411e812",
+      "python_equals_coreutils": true
+    },
+    "lisp.zip": {
+      "path": "/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/malbolge-lisp-master/malbolge-lisp-master/lisp.zip",
+      "bytes": 41413346,
+      "sha256": "b2e6edffee2cc92328a9b2a0fcae9abf95989c430e078c158a06142099124c88",
+      "canonical_sha256": "b2e6edffee2cc92328a9b2a0fcae9abf95989c430e078c158a06142099124c88",
+      "bytes_match": true,
+      "sha256_match": true,
+      "coreutils_sha256": "b2e6edffee2cc92328a9b2a0fcae9abf95989c430e078c158a06142099124c88",
+      "python_equals_coreutils": true
+    }
+  },
+  "concat": {
+    "claim_archived": "lisp.mb == concat(core.mb, init_module.mb) (solo por identidad de tamanos, 2026-08-25)",
+    "claim_order_matches_bytes": false,
+    "actual_order": "init_module.mb ++ core.mb (init PRIMERO, core despues)",
+    "prefix_bytes": 19392,
+    "prefix_sha256": "4b3080fd250a4193030ec647e6c496f90540c1546f717b923284ea31b411e812",
+    "prefix_matches_init": true,
+    "suffix_bytes": 371312023,
+    "suffix_sha256": "70e9155bbe44b58a0a44795cf0c614b214c8f31f82270f4913394e07f1f3e53a",
+    "suffix_matches_core": true,
+    "byte_compare": "cmp init_module.mb <(head -c 19392 lisp.mb) -> IDENTICAL; cmp core.mb <(tail -c 371312023 lisp.mb) -> IDENTICAL",
+    "verified": true,
+    "diagnosis_file": "concat-diagnosis.txt"
+  },
+  "upstream": {
+    "url": "https://github.com/iczelia/malbolge-lisp",
+    "pinned_commit": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "ls_remote_head": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "match": true,
+    "checked_utc": "2026-10-18T10:09:06Z"
+  },
+  "bolge19": {
+    "slop_path": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/src/bolge19.zig",
+    "slop_sha256": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+    "historical_path": "/home/danny/Development/ISyCo/experiments0000/MalbolgeLisp Vs Isyco/tools/bolge19/main.zig",
+    "historical_sha256": "7ab028ccbf444eb70cd81198dc38fd80556348c34e2b6deaaa1121c6fa5965e6",
+    "identical": false,
+    "diff_rc": 1,
+    "diff_lines": 657,
+    "diff_file": "bolge19.diff",
+    "added_lines": 282,
+    "removed_lines": 302
+  },
+  "environment": {
+    "zig": "0.16.0",
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "python": "3.12.3",
+    "uname": "Linux 7.0.0-38-generic x86_64"
+  },
+  "policy": "main repo read-only; specimen nunca copiado a este repo ni redistribuido; scratch fuera de repos; evidencia en rutas nuevas",
+  "corrected_utc": "2026-10-18T10:10:25Z"
+}
