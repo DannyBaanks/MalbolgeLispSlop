@@ -104,3 +104,54 @@ T24 lee los repos hermanos `MALBOLGE-MB-DATABASE` y `MALGAMES` sin modificarlos.
 - No ejecutar `evidence/specimen100/m6/finalize.py` sobre el árbol nuevo:
   sus hashes documentales son históricos. H2 registra el nuevo cambio sin
   reescribir aquella evidencia.
+
+## Probar el bucle nativo (Gate H3)
+
+Ensamblar el bucle nativo:
+
+```sh
+python3 tools/assemble.py examples/echo_loop.slop --round-trip --out build/loop.mb
+```
+
+Salida real:
+
+```text
+echo_loop.slop: guest echo_loop, 259 cells
+  lowering=fixed19-scoped-loop-v1 (scoped H3; general control flow remains unsupported)
+  label loop: cells 105,72
+  label stop: cells 1,86
+  label echo: cells 42,66,96,123,256
+  walk: accepted_cells=259 verdict=ACCEPTED
+  image_sha256=5c60f8d9c144c8408ca992b96a0451bb486e7e9e61356e39220e7fdbf461d917
+round-trip: identical
+wrote build/loop.mb (259 bytes)
+```
+
+Ejecutar iteraciones en `build/bolge19`:
+
+```sh
+python3 - <<'PY'
+import subprocess
+for stdin in (b'\x00', b'\x02A\x00', b'\x02A\x02B\x00'):
+    r = subprocess.run(
+        ['build/bolge19', 'build/loop.mb', '--loader', 'canonical', '--max-steps', '512'],
+        input=stdin, capture_output=True, check=True,
+    )
+    print(f'{stdin.hex()}: stdout={r.stdout!r}')
+PY
+```
+
+Salida real:
+
+```text
+00: stdout=b''
+024100: stdout=b'A'
+0241024200: stdout=b'AB'
+```
+
+Verificar la campaña completa de Gate H3:
+
+```sh
+python3 tools/verify_h3_loop.py
+```
+

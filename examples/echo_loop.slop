@@ -1,0 +1,16 @@
+; First byte is a selector. Zero stops; nonzero echoes the next byte and repeats.
+; Canonical fixed-3^19 native loop lowering (Gate H3).
+name echo_loop
+case 00,
+case 024100,41
+case 0241024200,4142
+entry loop
+loop:
+    read
+    brz A, stop, echo
+stop:
+    halt
+echo:
+    read
+    write
+    jump loop

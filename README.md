@@ -45,6 +45,9 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
 - Native branch gate H2, zero stops / nonzero echoes the next byte:
   [protocol](evidence/h2_branch_v1/protocol.md), [Spanish guide](GUIA.md).
   This is a scoped 259-cell lowering, not general control flow or a Lisp guest.
+- Native loop gate H3, iterative loop with native control flow:
+  [protocol](evidence/h3_loop_v1/protocol.md).
+  This is a scoped 259-cell lowering, not general loops or a Lisp guest.
 - Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
 - Quine research (fixed-3^19): [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md)
 - Specimen-100 research: [SPECIMEN100.md](docs/SPECIMEN100.md) — canonical REPL reproduced; regeneration and truncation research PARTIAL, no behavioral-equivalence claim

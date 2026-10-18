@@ -79,3 +79,19 @@ its old capability table and semantic-proof enum have not been upgraded.
 EOF specifically depends on this fixed19 VM's lazy-memory pattern and the
 exact emitted tail; no Unshackled parity follows. The H1 paragraph above is
 historical as to its then-missing branch lowering.
+
+## Native loop gate H3 (2026-10-18)
+
+[Gate H3](../evidence/h3_loop_v1/protocol.md) adds one certified iterative loop
+CFG through the CLI's `slopsynth.loop` path: `entry: read; brz A, stop, echo`,
+where `stop` halts and `echo` reads and writes the next byte, then jumps back
+to `entry`. One generated 259-cell image uses native JMP, zero-discriminating
+seeds $(82, 112)$ and $(85, 85)$, twin halt landing pads (cells 1 and 86), and
+conveyor stage routing. The sealed campaign covers 0 iterations, exhaustive
+single-iteration payload values across 256 bytes, 2-iteration samples, EOF,
+spacing neutrality, and two negative mutants. Labels and cases do not choose an
+image by input: one image runs all cases.
+
+H3-SCOPED-LOOP is `DEMONSTRATED_SCOPED`. General BRZ, general JMP, arbitrary
+loops, general compiler, memory/arithmetic, and Lisp remain `NOT_DEMONSTRATED`.
+

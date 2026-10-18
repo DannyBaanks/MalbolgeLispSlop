@@ -106,7 +106,7 @@ the echo text reaching `ubO` byte-identically, and a guest placed at cells
 compiler route with nothing GPLv3 in it, but its emitted language is still the
 three-opcode straight-line subset: the search lowering this table measures has
 not gained branch, memory, arithmetic, loops or calls, and the compiler route
-gains them no faster until a lowering for control flow exists (H2, not claimed).
+gained branch in Gate H2 and scoped loop in Gate H3.
 
 ## Reproduction
 

@@ -136,15 +136,25 @@ def _sha(data: bytes) -> str:
 
 def _assemble_branch(args, placed, profile) -> int:
     from slopsynth.branch import lower_branch
+    from slopsynth.ir import Jump
+    from slopsynth.loop import lower_loop
 
     if args.against is not None:
         print("--against requires a straight-line JSON goal", file=sys.stderr)
         return 3
+    has_jump = any(
+        isinstance(op, Jump)
+        for func in placed.module.functions
+        for block in func.blocks
+        for op in block.operations
+    )
+    lower_fn = lower_loop if has_jump else lower_branch
+    scope_gate = "H3" if has_jump else "H2"
     try:
-        built = lower_branch(placed.module, profile, line_width=args.line_width)
+        built = lower_fn(placed.module, profile, line_width=args.line_width)
         if args.round_trip:
             reparsed = parse_placed(format_placed(placed))
-            if (reparsed != placed or lower_branch(
+            if (reparsed != placed or lower_fn(
                     reparsed.module, profile, line_width=args.line_width).image != built.image):
                 raise AssemblyError("round trip changed the module or image")
         if args.out is not None:
@@ -156,7 +166,7 @@ def _assemble_branch(args, placed, profile) -> int:
         return 3
     if not args.quiet:
         print(f"{args.source.name}: guest {placed.name}, {built.cells} cells")
-        print(f"  lowering={built.lowering} (scoped H2; general control flow remains unsupported)")
+        print(f"  lowering={built.lowering} (scoped {scope_gate}; general control flow remains unsupported)")
         for label, addresses in built.labels:
             print(f"  label {label}: cells {','.join(map(str, addresses))}")
         print(f"  walk: accepted_cells={built.cells} verdict=ACCEPTED")

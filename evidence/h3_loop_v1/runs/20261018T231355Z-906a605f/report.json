@@ -1,0 +1,47 @@
+{
+  "actual_vm_runs": 271,
+  "base_revision": "d0b83b1e72b98c5a197b47b36d9aa538be44bd3b",
+  "claims": {
+    "GENERAL-BOOTSTRAP": "NOT_DEMONSTRATED",
+    "GENERAL-BRZ": "NOT_DEMONSTRATED",
+    "GENERAL-JUMP": "NOT_DEMONSTRATED",
+    "H3-SCOPED-LOOP": "DEMONSTRATED_SCOPED",
+    "LISP-GUEST": "NOT_DEMONSTRATED"
+  },
+  "command": [
+    "/usr/bin/python3",
+    "tools/verify_h3_loop.py"
+  ],
+  "config": {
+    "address_space_bytes": 536870912,
+    "loader": "canonical",
+    "max_steps": 512,
+    "output_bytes": 8,
+    "timeout_seconds": 5
+  },
+  "failure": null,
+  "image_cells": 259,
+  "image_sha256": "5c60f8d9c144c8408ca992b96a0451bb486e7e9e61356e39220e7fdbf461d917",
+  "model_traces": 4,
+  "negative_controls": 2,
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "schema": "h3-loop-v1",
+  "sources_sha256": {
+    "build/bolge19": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e",
+    "examples/echo_loop.slop": "94880c9923891987354492eb8b450005a1a82e905923b196ae1ae5492e9b3b7e",
+    "profiles/fixed19.json": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+    "slopsynth/branch.py": "17c3d513531dcc076cc34efb552dbd5c3f9b6e974d2beca23208c16eed5ff70b",
+    "slopsynth/canonical.py": "32acccd6851972c4fe8750ac1bcfbf7a00bb4f5a587254fcdd97903c0fd3b8c5",
+    "slopsynth/encode.py": "04115a499555fd5f25517cc85aeb9c329b89a75b2806f13d1ee62839609d9d6d",
+    "slopsynth/lang.py": "b42f4a36cdc50c38f014b27e420bba04bb3397dc438e6043a619db67317a84fd",
+    "slopsynth/loop.py": "e99f236ed3b09cba46b7e79403f76601f41cd8e8870a77916a961c5564e69a68",
+    "slopsynth/model.py": "9e043c17f3c71340c0d15f180717c774e412cfe9792d0fb7d6d6b07d0fa9fb4c",
+    "src/bolge19.zig": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+    "tests/test_loop.py": "226cf7bb692ed52cbd55965771acb83cc6a79de41a314c5b9cf03b4e3f8ae261",
+    "tools/assemble.py": "ae2123ebf4f8ff85cc63beb66305ba6dd22a83636abfb371b2080e2cea7cf325",
+    "tools/guest_runner.py": "5d87ef2916572728156ff92afe85551dcb00985f42fefa67a2024487c86213f1",
+    "tools/verify_h3_loop.py": "a578a02f70de5b2fa70a546c60a4745657135858a043a07a391b23369adf1045"
+  },
+  "timestamp_utc": "20261018T231355Z"
+}
