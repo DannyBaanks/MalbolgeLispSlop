@@ -1,0 +1,55 @@
+M0 READ-ONLY INVENTORY
+Captured: 2026-10-18T00:14:31-06:00 (America/Mexico_City)
+Project: MalbolgeLispSlop
+
+ENVIRONMENT
+Command: date --iso-8601=seconds && uname -a && python3 --version && zig version
+         && gcc --version | head -n 1 && clang --version | head -n 1
+Output:
+2026-10-18T00:14:31-06:00
+Linux DannyISyCo 7.0.0-38-generic #38~24.04.4-Ubuntu SMP PREEMPT_DYNAMIC Mon Sep 14 16:37:11 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+Python 3.12.3
+Zig 0.16.0
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Ubuntu clang version 18.1.3 (1ubuntu1)
+
+SOURCE CHECKOUTS
+Command: git status --short --branch (in malbolge-lisp-forensics)
+Output: ## main...origin/main
+HEAD: a0ce1642f7c3ba46175d6623edfead5197d6a7c5
+Date/subject: 2026-10-15 feat(bolge19): canonical Whitespace-skipping loader + evidence for the LMFAO .mu break
+
+Command: git status --short --branch (in malbolge-lisp)
+Output: ## master...origin/master [ahead 1]
+HEAD: c64eececd6351fc8d297e932cde73be698ade6ec
+Date/subject: 2026-10-14 feat: portability patch for fast20.c (Cygwin mprotect fix & Linux .rodata bounds check)
+
+SOURCE DIGESTS
+47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3  malbolge-lisp-forensics/src/bolge19/main.zig
+e922e7d34068ba65bb0466f19be10a4d6b8c10ea6bc76fed5b7180eca5e6297a  malbolge-lisp-forensics/LICENSE
+89d6e89101d36dce39c0b9abcbab344f9a530b08690db9231c4861d2df55552f  malbolge-lisp/fast20.c
+607467b591f3446e7e54dfccfee0fff867a03f325ca2767ff49be71e8a431143  malbolge-lisp/fast20_original.c
+680be0404f9e8560a8fd12559963ef08dca5f895f5b2d95860dbb8836928c1e7  MalbolgeFree/docs/UNSHACKLED_SEMANTICS.md
+3b1fda56ed71c8b8a69e8e312629f016d58b294a600cfedb87ff5a3cfa84eb57  MalbolgeFree/docs/FREE_SEMANTICS.md
+
+SOURCE OBSERVATIONS
+- bolge19/main.zig declares END=1162261467 (3^19) and says its dispatch is
+  intended to match fast20.c semantics. It supports `raw` and `canonical`
+  loaders, byte input/output, a max-step limit, and a HALT telemetry line.
+- The local MalbolgeFree semantics notes say original Unshackled begins with
+  rotwidth = 10 + rand() % 6 and can grow dynamically; they mark exact K=19
+  bit parity as NOT_DEMONSTRABLE. This is a docs-based local claim, not a new
+  independent execution of the original implementation.
+- The forensics patch notes describe Cygwin MAP_FIXED -> mprotect and a Linux
+  xlat index guard (<135). These fixes were not independently reproduced in
+  M0.
+- No large Lisp image or manual was copied into this project.
+
+M0 SCOPE / NEGATIVE RESULTS
+- Selected executable target: the fixed-3^19 bolge19/MalbolgeLISP profile.
+- General original-Unshackled parity: NOT_DEMONSTRATED; the local notes give a
+  material width-model difference.
+- Guest Lisp evaluation, independent 3^19 backend agreement, and a native
+  Unshackled quine: NOT_DEMONSTRATED at M0.
+- Full MalbolgeLISP REPL execution was reported in the sibling reproduction
+  notes, but was not rerun or independently established in this inventory.

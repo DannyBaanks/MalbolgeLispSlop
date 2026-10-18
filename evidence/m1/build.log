@@ -1,0 +1,4 @@
+Command: ./tools/build.sh
+Exit status: 0
+Raw output:
+built build/bolge19 with Zig 0.16.0

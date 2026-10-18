@@ -1,0 +1,24 @@
+Local differential evidence recorded: 2026-10-18T00:17:00-06:00
+Exact child start timestamp was not captured separately.
+
+Source: malbolge-lisp/fast20.c
+Source SHA-256: 89d6e89101d36dce39c0b9abcbab344f9a530b08690db9231c4861d2df55552f
+Source revision: c64eececd6351fc8d297e932cde73be698ade6ec
+
+Compile command: gcc -O3 '/home/danny/Development/ISyCo Git/malbolge-lisp/fast20.c' -o build/fast20
+Compile exit status: 0
+Compiler warning: ignored return value of fread at fast20.c:74; no source edit.
+
+Run wrapper: Python 3.12 subprocess.run(argv=['build/fast20','fixtures/echo.mb'],
+input=b'A', stdout=PIPE, stderr=PIPE, timeout=3, preexec_fn=setrlimit)
+stdin: hex 41
+limits: RLIMIT_AS=8589934592; RLIMIT_CPU=2; RLIMIT_FSIZE=4194304; wall timeout=3 seconds
+exit status: 0
+stdout: hex 41
+stdout SHA-256: 559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd
+stderr: empty
+compiled binary SHA-256: 197a4a3863c5a1e5c4fc2d991db5e055da2d28c01ea58e42ad337c6596e296b9
+
+Interpretation: same byte output on this single input. This is a related-backend
+differential only, not an independent oracle: bolge19 states that it reproduces
+fast20.c semantics. No general equivalence claim follows.

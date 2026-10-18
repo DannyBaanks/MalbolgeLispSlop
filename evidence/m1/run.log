@@ -1,0 +1,16 @@
+Command: python3 tools/verify_slice.py --output evidence/m1/slice-20261018.json
+Exit status: 0
+Raw output:
+PASS binary echo A: status=HALT rc=0 stdout_sha256=559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd
+PASS binary echo z: status=HALT rc=0 stdout_sha256=594e519ae499312b29433b7dd8a97ff068defcba9755b6d5d00e84c524d67b06
+PASS binary echo nul: status=HALT rc=0 stdout_sha256=6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d
+PASS binary echo ff: status=HALT rc=0 stdout_sha256=a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89
+PASS deterministic repeat: status=HALT rc=0 stdout_sha256=559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd
+PASS clean halt in two guest steps: status=HALT rc=0 stdout_sha256=4ae81572f06e1b88fd5ced7a1a000945432e83e1551e6f721ee9c00b8cc33260
+PASS canonical loader error: status=EXIT rc=2 stdout_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+PASS loader conventions diverge: status=MAX_STEPS rc=0 stdout_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+PASS guest step limit: status=MAX_STEPS rc=0 stdout_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+PASS guest mutation changes output: status=HALT rc=0 stdout_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+PASS supervisor wall-timeout path: status=WALL_TIMEOUT rc=None stdout_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+evidence: evidence/m1/slice-20261018.json
+SUMMARY 11/11 checks

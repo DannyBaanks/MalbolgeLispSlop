@@ -1,0 +1,27 @@
+{
+  "captured_at_local": "2026-10-18T00:17:00-06:00",
+  "run_start_timestamp": "NOT_CAPTURED; captured_at_local is when this evidence record was written immediately after the run.",
+  "purpose": "One-sample byte-output comparison against the related C fast20 backend.",
+  "source_repository": "malbolge-lisp",
+  "source_revision": "c64eececd6351fc8d297e932cde73be698ade6ec",
+  "source_path": "fast20.c",
+  "source_sha256": "89d6e89101d36dce39c0b9abcbab344f9a530b08690db9231c4861d2df55552f",
+  "compile_command": "gcc -O3 '/home/danny/Development/ISyCo Git/malbolge-lisp/fast20.c' -o build/fast20",
+  "compile_exit_status": 0,
+  "compiler_warning": "gcc reported an ignored fread return value at fast20.c:74; source was not modified.",
+  "run_command": "Python 3.12 subprocess.run(argv=['build/fast20','fixtures/echo.mb'], input=b'A', stdout=PIPE, stderr=PIPE, timeout=3, preexec_fn=setrlimit)",
+  "stdin_hex": "41",
+  "resource_limits": {
+    "address_space_bytes": 8589934592,
+    "cpu_seconds": 2,
+    "output_file_bytes": 4194304,
+    "wall_seconds": 3
+  },
+  "returncode": 0,
+  "stdout_hex": "41",
+  "stdout_sha256": "559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd",
+  "stderr_hex": "",
+  "fast20_binary_sha256": "197a4a3863c5a1e5c4fc2d991db5e055da2d28c01ea58e42ad337c6596e296b9",
+  "bolge19_same_case_stdout_sha256": "559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd",
+  "interpretation": "The two executables produced the same output byte for this fixture. This is a related-backend differential only, not an independent oracle or proof of semantic equivalence; bolge19 explicitly aims to reproduce fast20.c semantics."
+}
