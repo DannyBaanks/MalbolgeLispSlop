@@ -24,6 +24,7 @@ class SynthesisManifestTests(unittest.TestCase):
             generator_revision="codex-test-revision",
             algorithm="profile-derived-direct-lowering-v1",
             configuration={
+                "loader": "canonical",
                 "max_cells": 3,
                 "max_nodes": 10000,
                 "max_steps": 8,
@@ -102,6 +103,24 @@ class SynthesisManifestTests(unittest.TestCase):
 
             with self.assertRaisesRegex(
                 ValueError, "unrecognized semantic lowering proof"
+            ):
+                verify_manifest(
+                    manifest,
+                    artifact,
+                    profile_path=PROFILE,
+                    program_path=PROGRAM,
+                )
+
+    def test_manifest_rejects_proof_token_for_mismatched_artifact(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifact = root / "guest.mb"
+            artifact.write_bytes(b"not-the-echo-image")
+            manifest = root / "guest.manifest.json"
+            write_manifest(manifest, self.build(artifact.read_bytes()))
+
+            with self.assertRaisesRegex(
+                ValueError, "artifact does not match certified semantic lowering"
             ):
                 verify_manifest(
                     manifest,

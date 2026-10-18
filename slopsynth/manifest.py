@@ -7,7 +7,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .search import SemanticProof
+from .ir_json import load_program
+from .profile import load_profile
+from .search import SearchBudget, SemanticProof, SynthesisStatus, synthesize_program
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -112,7 +114,7 @@ def verify_manifest(
     profile_path: Path,
     program_path: Path,
 ) -> dict[str, Any]:
-    """Verify artifact and input digests plus the recorded validation gate."""
+    """Verify digests and recompute the certified lowering byte for byte."""
     manifest = _read_json(manifest_path, "manifest")
     if manifest.get("schema_version") != 1:
         raise ValueError("unsupported manifest schema_version")
@@ -127,9 +129,47 @@ def verify_manifest(
         raise ValueError("manifest does not record a passing guest validation")
     if manifest.get("synthesis_status") != "FOUND":
         raise ValueError("manifest does not record a FOUND synthesis result")
+    if validation.get("synthesis_status") != "FOUND":
+        raise ValueError("manifest validation does not record FOUND synthesis")
     semantic_proof = validation.get("semantic_proof")
     if not isinstance(semantic_proof, str) or not semantic_proof:
         raise ValueError("manifest does not record a semantic lowering proof")
     if semantic_proof not in {proof.value for proof in SemanticProof}:
         raise ValueError("manifest records an unrecognized semantic lowering proof")
+
+    if semantic_proof != SemanticProof.DIRECT_M1_LOWERING_V1.value:
+        raise ValueError("manifest proof has no verifier implementation")
+    if manifest.get("algorithm") != "profile-derived-direct-lowering-v1":
+        raise ValueError("manifest algorithm does not match its semantic proof")
+
+    configuration = manifest.get("configuration")
+    if not isinstance(configuration, dict) or configuration.get("loader") != "canonical":
+        raise ValueError("manifest does not contain a canonical lowering configuration")
+    try:
+        budget = SearchBudget(
+            max_cells=configuration["max_cells"],
+            max_nodes=configuration["max_nodes"],
+            max_steps=configuration["max_steps"],
+            max_address=configuration["max_address"],
+        )
+        profile = load_profile(profile_path)
+        if (
+            profile.name != "fixed-3^19"
+            or manifest.get("target_profile") != profile.name
+        ):
+            raise ValueError("manifest target profile is not fixed-3^19")
+        program = load_program(program_path)
+        synthesis = synthesize_program(program, profile, budget)
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError(f"manifest certified lowering could not be recomputed: {exc}") from exc
+
+    if (
+        synthesis.status is not SynthesisStatus.FOUND
+        or synthesis.semantic_proof is None
+        or synthesis.semantic_proof.value != semantic_proof
+        or synthesis.image != artifact_path.read_bytes()
+        or type(manifest.get("explored_nodes")) is not int
+        or manifest.get("explored_nodes") != synthesis.explored_nodes
+    ):
+        raise ValueError("artifact does not match certified semantic lowering")
     return manifest

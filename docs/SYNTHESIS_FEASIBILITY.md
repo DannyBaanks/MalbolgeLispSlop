@@ -9,7 +9,9 @@
 The backend has one certified lowering: straight-line `ReadA, WriteA, Halt`.
 It derives the bytes from the fixed profile and returns
 `direct-m1-lowering-v1`; generated artifacts and their manifests require that
-proof token and an independent run of the real `bolge19` executable.
+recognized proof token. The manifest verifier recomputes the lowering from the
+declared goal, fixed profile, and search bounds, then compares the exact image;
+generation also runs that image in the real `bolge19` executable.
 
 The advanced-module path enumerates canonical dispatch streams, but I/O cases
 and structural trace guards are only candidate filters. They cannot establish
