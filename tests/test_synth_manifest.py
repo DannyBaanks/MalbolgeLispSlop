@@ -129,6 +129,51 @@ class SynthesisManifestTests(unittest.TestCase):
                     program_path=PROGRAM,
                 )
 
+    def test_manifest_rejects_same_name_profile_with_changed_dispatch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            profile_data = json.loads(PROFILE.read_text(encoding="utf-8"))
+            profile_data["dispatch"].update(
+                {"input": 65, "output": 67, "halt": 69}
+            )
+            spoofed_profile = root / "spoofed-profile.json"
+            spoofed_profile.write_text(json.dumps(profile_data), encoding="utf-8")
+            artifact = root / "guest.mb"
+            artifact.write_bytes(b"ABC")
+            manifest_data = build_manifest(
+                profile_path=spoofed_profile,
+                program_path=PROGRAM,
+                artifact=artifact.read_bytes(),
+                generator_revision="codex-test-revision",
+                algorithm="profile-derived-direct-lowering-v1",
+                configuration={
+                    "loader": "canonical",
+                    "max_cells": 3,
+                    "max_nodes": 10000,
+                    "max_steps": 8,
+                    "max_address": 8,
+                },
+                explored_nodes=1,
+                validation={
+                    "status": "PASS",
+                    "guest_status": "HALT",
+                    "synthesis_status": "FOUND",
+                    "semantic_proof": "direct-m1-lowering-v1",
+                },
+            )
+            manifest = root / "guest.manifest.json"
+            write_manifest(manifest, manifest_data)
+
+            with self.assertRaisesRegex(
+                ValueError, "does not match the bundled fixed profile"
+            ):
+                verify_manifest(
+                    manifest,
+                    artifact,
+                    profile_path=spoofed_profile,
+                    program_path=PROGRAM,
+                )
+
     def test_cli_outputs_are_reproducible_and_existing_paths_are_refused(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

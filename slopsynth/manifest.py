@@ -153,11 +153,14 @@ def verify_manifest(
             max_address=configuration["max_address"],
         )
         profile = load_profile(profile_path)
+        canonical_profile = load_profile(
+            Path(__file__).resolve().parents[1] / "profiles" / "fixed19.json"
+        )
         if (
-            profile.name != "fixed-3^19"
+            profile != canonical_profile
             or manifest.get("target_profile") != profile.name
         ):
-            raise ValueError("manifest target profile is not fixed-3^19")
+            raise ValueError("manifest profile does not match the bundled fixed profile")
         program = load_program(program_path)
         synthesis = synthesize_program(program, profile, budget)
     except (KeyError, TypeError, ValueError) as exc:
