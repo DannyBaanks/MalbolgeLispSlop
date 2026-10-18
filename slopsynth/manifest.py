@@ -7,6 +7,7 @@ import json
 import math
 from pathlib import Path
 import re
+import subprocess
 from typing import Any
 
 from .ir import Halt, Program, ReadA, WriteA
@@ -17,6 +18,18 @@ from tools.guest_runner import GuestStatus, RunConfig, run_guest
 
 
 _SHA256_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
+_GIT_REVISION_PATTERN = re.compile(r"[0-9a-f]{40}\Z")
+_GENERATOR_SOURCE_FILES = (
+    "slopsynth/encode.py",
+    "slopsynth/search.py",
+    "slopsynth/model.py",
+    "slopsynth/profile.py",
+    "slopsynth/ir.py",
+    "slopsynth/ir_json.py",
+    "slopsynth/manifest.py",
+    "tools/synthesize_guest.py",
+    "tools/guest_runner.py",
+)
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -25,6 +38,44 @@ def sha256_bytes(value: bytes) -> str:
 
 def sha256_file(path: Path) -> str:
     return sha256_bytes(path.read_bytes())
+
+
+def generator_source_digest(root: Path, *, revision: str | None = None) -> str:
+    """Hash generator sources from the worktree or one exact Git revision."""
+    digest = hashlib.sha256()
+    if revision is not None:
+        if _GIT_REVISION_PATTERN.fullmatch(revision) is None:
+            raise ValueError("generator_revision must be a full 40-character Git commit")
+        commit = subprocess.run(
+            ["git", "cat-file", "-e", f"{revision}^{{commit}}"],
+            cwd=root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+        if commit.returncode != 0:
+            raise ValueError("generator_revision is not a commit in this repository")
+
+    for relative in _GENERATOR_SOURCE_FILES:
+        if revision is None:
+            content = (root / relative).read_bytes()
+        else:
+            result = subprocess.run(
+                ["git", "show", f"{revision}:{relative}"],
+                cwd=root,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+            if result.returncode != 0:
+                raise ValueError(
+                    f"generator_revision does not contain source file {relative}"
+                )
+            content = result.stdout
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(content)
+    return digest.hexdigest()
 
 
 def _read_json(path: Path, label: str) -> dict[str, Any]:
@@ -252,6 +303,31 @@ def verify_manifest(
         raise ValueError("profile SHA-256 mismatch")
     if manifest.get("program_sha256") != sha256_file(program_path):
         raise ValueError("program SHA-256 mismatch")
+    if manifest.get("profile_path") != profile_path.name:
+        raise ValueError("manifest profile_path does not match the supplied profile")
+    program_metadata = _read_json(program_path, "program")
+    if manifest.get("program_name") != program_metadata.get("name"):
+        raise ValueError("manifest program_name does not match the supplied program")
+    if manifest.get("program_path") != program_path.name:
+        raise ValueError("manifest program_path does not match the supplied program")
+    generator_revision = manifest.get("generator_revision")
+    generator_digest = manifest.get("generator_sha256")
+    if not isinstance(generator_revision, str) or _GIT_REVISION_PATTERN.fullmatch(
+        generator_revision
+    ) is None:
+        raise ValueError("manifest generator_revision must be a full 40-character Git commit")
+    if not isinstance(generator_digest, str) or _SHA256_PATTERN.fullmatch(
+        generator_digest
+    ) is None:
+        raise ValueError("manifest generator source SHA-256 is invalid")
+    try:
+        expected_generator_digest = generator_source_digest(
+            Path(__file__).resolve().parents[1], revision=generator_revision
+        )
+    except ValueError as exc:
+        raise ValueError(f"manifest generator_revision is invalid: {exc}") from exc
+    if generator_digest != expected_generator_digest:
+        raise ValueError("manifest generator source SHA-256 does not match its revision")
     validation = manifest.get("validation")
     if not isinstance(validation, dict) or validation.get("status") != "PASS":
         raise ValueError("manifest does not record a passing guest validation")
@@ -273,8 +349,17 @@ def verify_manifest(
     configuration = manifest.get("configuration")
     if not isinstance(configuration, dict) or configuration.get("loader") != "canonical":
         raise ValueError("manifest does not contain a canonical lowering configuration")
+    selected_vm_path = (
+        engine_path
+        if engine_path is not None
+        else Path(__file__).resolve().parents[1] / "build" / "bolge19"
+    )
     try:
-        vm_path = engine_path or Path(__file__).resolve().parents[1] / "build" / "bolge19"
+        vm_path = selected_vm_path.resolve(strict=True)
+    except OSError as exc:
+        raise ValueError(f"manifest guest VM engine path cannot be resolved: {exc}") from exc
+
+    try:
         budget = SearchBudget(
             max_cells=configuration["max_cells"],
             max_nodes=configuration["max_nodes"],

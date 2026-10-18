@@ -17,7 +17,11 @@ if str(ROOT) not in sys.path:
 
 from slopsynth.ir import Halt, Program, ReadA, WriteA
 from slopsynth.ir_json import load_program
-from slopsynth.manifest import build_manifest, write_manifest
+from slopsynth.manifest import (
+    build_manifest,
+    generator_source_digest,
+    write_manifest,
+)
 from slopsynth.profile import Profile, load_profile
 from slopsynth.search import SearchBudget, SynthesisStatus, synthesize_program
 from tools.guest_runner import GuestStatus, RunConfig, run_guest
@@ -35,22 +39,7 @@ def _git_revision() -> str:
 
 
 def _generator_digest() -> str:
-    digest = hashlib.sha256()
-    for relative in (
-        "slopsynth/encode.py",
-        "slopsynth/search.py",
-        "slopsynth/model.py",
-        "slopsynth/profile.py",
-        "slopsynth/ir.py",
-        "slopsynth/ir_json.py",
-        "slopsynth/manifest.py",
-        "tools/synthesize_guest.py",
-        "tools/guest_runner.py",
-    ):
-        digest.update(relative.encode("utf-8"))
-        digest.update(b"\0")
-        digest.update((ROOT / relative).read_bytes())
-    return digest.hexdigest()
+    return generator_source_digest(ROOT)
 
 
 def _expected_stdout(program: Program, stdin: bytes, profile: Profile) -> bytes:
@@ -208,12 +197,23 @@ def main() -> int:
         "output_bytes": run_config.output_bytes,
         "engine_sha256": engine_sha256,
     }
+    generator_revision = _git_revision()
+    generator_sha256 = _generator_digest()
+    try:
+        committed_generator_sha256 = generator_source_digest(
+            ROOT, revision=generator_revision
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
+    if generator_sha256 != committed_generator_sha256:
+        parser.error("generator sources differ from generator_revision; commit them first")
+
     manifest = build_manifest(
         profile_path=profile_path,
         program_path=goal_path,
         artifact=synthesis.image,
-        generator_revision=_git_revision(),
-        generator_sha256=_generator_digest(),
+        generator_revision=generator_revision,
+        generator_sha256=generator_sha256,
         algorithm="profile-derived-direct-lowering-v1",
         configuration={
             "loader": "canonical",
