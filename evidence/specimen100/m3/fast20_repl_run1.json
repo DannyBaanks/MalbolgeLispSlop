@@ -1,0 +1,18 @@
+{
+  "generated_utc": "2026-10-18T10:29:07Z",
+  "cmd": "/tmp/opencode/fast20-linux /tmp/opencode/specimen100-m1-lisp.mb",
+  "rc": 0,
+  "wall_s": 16.0,
+  "stdout_bytes": 291,
+  "stdout_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "log": [
+    "# m3 fast20-linux probe: bin=/tmp/opencode/fast20-linux img=/tmp/opencode/specimen100-m1-lisp.mb t=2026-10-18T10:29:07Z",
+    "[11.8] prompt_a=SI",
+    "[11.8] enviado (+ 1 2)",
+    "[15.8] resultado_3=SI",
+    "[15.8] prompt_b=SI",
+    "[15.8] stdin cerrado (EOF)",
+    "[16.0] EXITED rc=0"
+  ]
+}

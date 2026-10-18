@@ -1,0 +1,15 @@
+{
+  "run1_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+  "run2_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+  "run1_eq_run2": true,
+  "historical_stdout_sha256": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+  "historical_declared": "b3214e2914a175fdac1c3898e7ec8d3b4eef88bcde6da152a551b57d058d02ea",
+  "run1_eq_historical": true,
+  "run1_bytes": 291,
+  "historical_bytes": 291,
+  "notes": [
+    "stdout identico entre corridas (determinismo) y vs transcript historico bolge19_lisp_session_stdout.txt",
+    "el poema es la despedida del REPL al recibir EOF; tras el poema el programa HALT-ea (fast20 rc=0)",
+    "fast20 upstream compila y corre en Linux sin el bug mmap de Cygwin (aquel bug es HISTORICAL/Windows-especifico)"
+  ]
+}
