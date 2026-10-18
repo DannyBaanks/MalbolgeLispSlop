@@ -167,6 +167,25 @@ class Fixed19ModelTests(unittest.TestCase):
                     self.assertEqual(model.stdout, actual["stdout"])
                     self.assertEqual(model.steps, actual["steps"])
 
+    def test_optional_trace_records_guest_dispatches_and_memory_purposes(self) -> None:
+        result = run_model(
+            b"ubO",
+            b"X",
+            self.profile,
+            loader="canonical",
+            max_steps=8,
+            max_address=8,
+            trace_instructions=True,
+            trace_accesses=True,
+        )
+
+        self.assertEqual(
+            [(event.address, event.operation) for event in result.instruction_trace],
+            [(0, "input"), (1, "output"), (2, "halt")],
+        )
+        self.assertIn("instruction", {access.purpose for access in result.memory_accesses})
+        self.assertIn("encryption", {access.purpose for access in result.memory_accesses})
+
     def run_bolge19(self, image: bytes, stdin: bytes, *, max_steps: int) -> dict[str, object]:
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "candidate.mb"

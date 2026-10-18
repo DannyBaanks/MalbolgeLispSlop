@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "name": "add-sub-boundaries",
+  "entry_function": "main",
+  "functions": [
+    {
+      "name": "main",
+      "parameters": [],
+      "entry_block": "entry",
+      "blocks": [
+        {"name": "entry", "operations": [
+          {"op": "read_a", "destination": "left"},
+          {"op": "read_a", "destination": "right"},
+          {"op": "add", "destination": "sum", "left": "left", "right": "right"},
+          {"op": "sub", "destination": "result", "left": "sum", "right": 1},
+          {"op": "write_a", "value": "result"},
+          {"op": "halt"}
+        ]}
+      ]
+    }
+  ],
+  "cases": [
+    {"stdin_hex": "0001", "stdout_hex": "00"},
+    {"stdin_hex": "0101", "stdout_hex": "01"},
+    {"stdin_hex": "ffff", "stdout_hex": "fd"}
+  ]
+}

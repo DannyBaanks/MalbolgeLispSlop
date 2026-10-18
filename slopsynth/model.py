@@ -29,6 +29,22 @@ class MemoryWrite:
     address: int
     before: int
     after: int
+    step: int = 0
+
+
+@dataclass(frozen=True, slots=True)
+class MemoryAccess:
+    address: int
+    purpose: str
+    step: int = 0
+
+
+@dataclass(frozen=True, slots=True)
+class InstructionEvent:
+    address: int
+    operation: str
+    data_address: int | None
+    step: int = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -40,6 +56,8 @@ class RunResult:
     final_c: int
     final_d: int
     memory_writes: tuple[MemoryWrite, ...] = ()
+    instruction_trace: tuple[InstructionEvent, ...] = ()
+    memory_accesses: tuple[MemoryAccess, ...] = ()
 
 
 class _ModelBound(Exception):
@@ -106,12 +124,15 @@ class _Memory:
         profile: Profile,
         max_address: int,
         writes: list[MemoryWrite] | None,
+        accesses: list[MemoryAccess] | None,
     ) -> None:
         self.image = image
         self.profile = profile
         self.max_address = max_address
         self.overlay: dict[int, int] = {}
         self.writes = writes
+        self.accesses = accesses
+        self.current_step = 0
         self.zone_start = ((len(image) + _PAGE_SIZE - 1) // _PAGE_SIZE) * _PAGE_SIZE
         self.chain: list[int] = []
         self.p2 = image[-2] if len(image) >= 2 else 0
@@ -139,8 +160,10 @@ class _Memory:
             self.p2, self.p1 = self.p1, next_value
         self.pattern = tuple(values)
 
-    def get(self, address: int) -> int:
+    def get(self, address: int, purpose: str = "data") -> int:
         self._check_address(address)
+        if self.accesses is not None:
+            self.accesses.append(MemoryAccess(address, purpose, self.current_step))
         if address < len(self.image):
             return self.image[address]
         if address in self.overlay:
@@ -156,13 +179,13 @@ class _Memory:
 
     def set(self, address: int, value: int) -> None:
         self._check_address(address)
-        before = self.get(address)
+        before = self.get(address, "write_before")
         if address < len(self.image):
             self.image[address] = value
         else:
             self.overlay[address] = value
         if self.writes is not None:
-            self.writes.append(MemoryWrite(address, before, value))
+            self.writes.append(MemoryWrite(address, before, value, self.current_step))
 
 
 def _result(
@@ -173,6 +196,8 @@ def _result(
     c: int,
     d: int,
     writes: list[MemoryWrite] | None,
+    instructions: list[InstructionEvent] | None,
+    accesses: list[MemoryAccess] | None,
 ) -> RunResult:
     return RunResult(
         stdout=bytes(stdout),
@@ -182,6 +207,8 @@ def _result(
         final_c=c,
         final_d=d,
         memory_writes=tuple(writes) if writes is not None else (),
+        instruction_trace=tuple(instructions) if instructions is not None else (),
+        memory_accesses=tuple(accesses) if accesses is not None else (),
     )
 
 
@@ -194,6 +221,8 @@ def run_model(
     max_steps: int,
     max_address: int,
     trace_writes: bool = False,
+    trace_instructions: bool = False,
+    trace_accesses: bool = False,
 ) -> RunResult:
     """Run a byte-oriented fixed-profile image within explicit model bounds.
 
@@ -211,7 +240,9 @@ def run_model(
         return RunResult(b"", RunStatus.LOAD_ERROR, 0, 0, 0, 0)
 
     writes: list[MemoryWrite] | None = [] if trace_writes else None
-    memory = _Memory(memory_image, profile, max_address, writes)
+    instructions: list[InstructionEvent] | None = [] if trace_instructions else None
+    accesses: list[MemoryAccess] | None = [] if trace_accesses else None
+    memory = _Memory(memory_image, profile, max_address, writes, accesses)
     stdout = bytearray()
     a = 0
     c = 0
@@ -228,17 +259,28 @@ def run_model(
 
     while True:
         if steps >= max_steps:
-            return _result(stdout, RunStatus.MAX_STEPS, steps, a, c, d, writes)
+            return _result(
+                stdout, RunStatus.MAX_STEPS, steps, a, c, d, writes, instructions, accesses
+            )
         try:
+            memory.current_step = steps
             region = c // third
             offset = offsets[region] if region < 3 else 0
-            opcode_index = (c + memory.get(c) + offset) % opcode_modulus
+            opcode_index = (c + memory.get(c, "instruction") + offset) % opcode_modulus
             operation = dispatch.get(opcode_index)
+            operation_name = operation or "invalid"
+            data_address = int(d) if operation in {"jump", "rotate", "move", "crazy"} else None
+            if instructions is not None:
+                instructions.append(
+                    InstructionEvent(int(c), operation_name, data_address, steps)
+                )
 
             if operation == "halt":
-                return _result(stdout, RunStatus.HALT, steps, a, c, d, writes)
+                return _result(
+                    stdout, RunStatus.HALT, steps, a, c, d, writes, instructions, accesses
+                )
             if operation == "jump":
-                c = memory.get(d)
+                c = memory.get(d, "jump_target")
             elif operation == "output":
                 stdout.append(a & 0xFF)
             elif operation == "input":
@@ -248,21 +290,23 @@ def run_model(
                 else:
                     a = profile.eof_value
             elif operation == "rotate":
-                rotated = _rotate(memory.get(d), profile.end)
+                rotated = _rotate(memory.get(d, "rotate_source"), profile.end)
                 memory.set(d, rotated)
                 a = rotated
             elif operation == "move":
-                d = memory.get(d)
+                d = memory.get(d, "move_source")
             elif operation == "crazy":
-                transformed = _crazy(a, memory.get(d), profile.trits)
+                transformed = _crazy(a, memory.get(d, "crazy_source"), profile.trits)
                 memory.set(d, transformed)
                 a = transformed
 
-            encoded_cell = memory.get(c)
+            encoded_cell = memory.get(c, "encryption")
             if encoded_cell < len(_TRANSLATION):
                 memory.set(c, ord(_TRANSLATION[encoded_cell]))
             c = (c + 1) % profile.end
             d = (d + 1) % profile.end
             steps += 1
         except _ModelBound:
-            return _result(stdout, RunStatus.MODEL_BOUND, steps, a, c, d, writes)
+            return _result(
+                stdout, RunStatus.MODEL_BOUND, steps, a, c, d, writes, instructions, accesses
+            )

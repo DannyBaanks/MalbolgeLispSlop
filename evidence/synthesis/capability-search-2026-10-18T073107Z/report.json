@@ -1,0 +1,291 @@
+{
+  "bounds": {
+    "max_address_inclusive": 64,
+    "max_cells": 8,
+    "max_nodes": 1000,
+    "max_steps": 128
+  },
+  "engine": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/build/bolge19",
+  "loader": "canonical",
+  "profile": "/home/danny/Development/ISyCo Git/.codex-worktrees/MalbolgeLispSlop/profiles/fixed19.json",
+  "run_id": "2026-10-18T073107Z",
+  "schema_version": 1,
+  "target_profile": "fixed-3^19",
+  "targets": [
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "branch_zero/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "5a",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "branch_zero/case-00/stderr.bin",
+          "raw_stdout": "branch_zero/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "00",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "4e",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "branch_zero/case-01/stderr.bin",
+          "raw_stdout": "branch_zero/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "01",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "4e",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "branch_zero/case-02/stderr.bin",
+          "raw_stdout": "branch_zero/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "ff",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams plus semantic trace guards",
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "branch_zero",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    },
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "store_load/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "store_load/case-00/stderr.bin",
+          "raw_stdout": "store_load/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "00",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "01",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "store_load/case-01/stderr.bin",
+          "raw_stdout": "store_load/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "01",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "ff",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "store_load/case-02/stderr.bin",
+          "raw_stdout": "store_load/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "ff",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams plus semantic trace guards",
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "store_load",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    },
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "add_sub/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "add_sub/case-00/stderr.bin",
+          "raw_stdout": "add_sub/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "0001",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "01",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "add_sub/case-01/stderr.bin",
+          "raw_stdout": "add_sub/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "0101",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "fd",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "add_sub/case-02/stderr.bin",
+          "raw_stdout": "add_sub/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "ffff",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams plus semantic trace guards",
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "add_sub",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    },
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "countdown/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "countdown/case-00/stderr.bin",
+          "raw_stdout": "countdown/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "00",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "countdown/case-01/stderr.bin",
+          "raw_stdout": "countdown/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "01",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "countdown/case-02/stderr.bin",
+          "raw_stdout": "countdown/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "03",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams plus semantic trace guards",
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "countdown",
+      "vm_result": "ALL_CASES_MATCH_HALT"
+    },
+    {
+      "bounds": {
+        "max_address_inclusive": 64,
+        "max_cells": 8,
+        "max_nodes": 1000,
+        "max_steps": 128
+      },
+      "candidate_path": "call_return/candidate.mb",
+      "candidate_role": "last_explored_candidate",
+      "cases": [
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "00",
+          "matches": true,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "call_return/case-00/stderr.bin",
+          "raw_stdout": "call_return/case-00/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "00",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "01",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "call_return/case-01/stderr.bin",
+          "raw_stdout": "call_return/case-01/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "01",
+          "steps": 74,
+          "vm_status": "HALT"
+        },
+        {
+          "expected_status": "HALT",
+          "expected_stdout_hex": "ff",
+          "matches": false,
+          "observed_stdout_hex": "00",
+          "raw_stderr": "call_return/case-02/stderr.bin",
+          "raw_stdout": "call_return/case-02/stdout.bin",
+          "returncode": 0,
+          "stdin_hex": "ff",
+          "steps": 74,
+          "vm_status": "HALT"
+        }
+      ],
+      "explored_nodes": 1000,
+      "generated_image_sha256": "6bb4ef89168f1d9881fa627f53154331ae1c28511c3e3c87fcc7d25eaa6b0d9e",
+      "search_method": "ordered enumeration of canonical dispatch streams plus semantic trace guards",
+      "status": "NOT_DEMONSTRATED",
+      "synthesis_status": "BUDGET_EXHAUSTED",
+      "target": "call_return",
+      "vm_result": "CASES_DID_NOT_ALL_MATCH"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+$ ./tools/build.sh
+built build/bolge19 with Zig 0.16.0
+build_exit=0
+$ python3 -m unittest tests.test_synth_capabilities tests.test_synth_echo -v
+test_add_sub_boundaries_remain_not_demonstrated (tests.test_synth_capabilities.Fixed19CapabilityGateTests.test_add_sub_boundaries_remain_not_demonstrated) ... ok
+test_branch_zero_remains_not_demonstrated_without_lowering (tests.test_synth_capabilities.Fixed19CapabilityGateTests.test_branch_zero_remains_not_demonstrated_without_lowering) ... ok
+test_call_return_remains_not_demonstrated (tests.test_synth_capabilities.Fixed19CapabilityGateTests.test_call_return_remains_not_demonstrated) ... ok
+test_countdown_loop_remains_not_demonstrated (tests.test_synth_capabilities.Fixed19CapabilityGateTests.test_countdown_loop_remains_not_demonstrated) ... ok
+test_m1_module_case_mismatch_rejects_candidate (tests.test_synth_capabilities.Fixed19CapabilityGateTests.test_m1_module_case_mismatch_rejects_candidate) ... ok
+test_m1_module_lowering_synthesizes_and_checks_declared_cases (tests.test_synth_capabilities.Fixed19CapabilityGateTests.test_m1_module_lowering_synthesizes_and_checks_declared_cases) ... ok
+test_store_load_remains_not_demonstrated_without_guest_memory (tests.test_synth_capabilities.Fixed19CapabilityGateTests.test_store_load_remains_not_demonstrated_without_guest_memory) ... ok
+test_zero_node_budget_is_exhausted_not_unsatisfiable (tests.test_synth_capabilities.Fixed19CapabilityGateTests.test_zero_node_budget_is_exhausted_not_unsatisfiable) ... ok
+test_budget_exhaustion_is_not_unsat (tests.test_synth_echo.SynthesizedEchoTests.test_budget_exhaustion_is_not_unsat) ... ok
+test_candidate_over_cell_bound_reports_exact_budget (tests.test_synth_echo.SynthesizedEchoTests.test_candidate_over_cell_bound_reports_exact_budget) ... ok
+test_echo_synthesizes_and_runs_for_four_byte_inputs (tests.test_synth_echo.SynthesizedEchoTests.test_echo_synthesizes_and_runs_for_four_byte_inputs) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.011s
+
+OK
+targeted_tests_exit=0
+$ python3 -m unittest discover -s tests -v
+test_add_sub_boundaries_remain_not_demonstrated (test_synth_capabilities.Fixed19CapabilityGateTests.test_add_sub_boundaries_remain_not_demonstrated) ... ok
+test_branch_zero_remains_not_demonstrated_without_lowering (test_synth_capabilities.Fixed19CapabilityGateTests.test_branch_zero_remains_not_demonstrated_without_lowering) ... ok
+test_call_return_remains_not_demonstrated (test_synth_capabilities.Fixed19CapabilityGateTests.test_call_return_remains_not_demonstrated) ... ok
+test_countdown_loop_remains_not_demonstrated (test_synth_capabilities.Fixed19CapabilityGateTests.test_countdown_loop_remains_not_demonstrated) ... ok
+test_m1_module_case_mismatch_rejects_candidate (test_synth_capabilities.Fixed19CapabilityGateTests.test_m1_module_case_mismatch_rejects_candidate) ... ok
+test_m1_module_lowering_synthesizes_and_checks_declared_cases (test_synth_capabilities.Fixed19CapabilityGateTests.test_m1_module_lowering_synthesizes_and_checks_declared_cases) ... ok
+test_store_load_remains_not_demonstrated_without_guest_memory (test_synth_capabilities.Fixed19CapabilityGateTests.test_store_load_remains_not_demonstrated_without_guest_memory) ... ok
+test_zero_node_budget_is_exhausted_not_unsatisfiable (test_synth_capabilities.Fixed19CapabilityGateTests.test_zero_node_budget_is_exhausted_not_unsatisfiable) ... ok
+test_budget_exhaustion_is_not_unsat (test_synth_echo.SynthesizedEchoTests.test_budget_exhaustion_is_not_unsat) ... ok
+test_candidate_over_cell_bound_reports_exact_budget (test_synth_echo.SynthesizedEchoTests.test_candidate_over_cell_bound_reports_exact_budget) ... ok
+test_echo_synthesizes_and_runs_for_four_byte_inputs (test_synth_echo.SynthesizedEchoTests.test_echo_synthesizes_and_runs_for_four_byte_inputs) ... ok
+test_ir_accepts_echo_and_rejects_unknown_ops (test_synth_ir.SynthesisIRTests.test_ir_accepts_echo_and_rejects_unknown_ops) ... ok
+test_ir_requires_terminal_halt (test_synth_ir.SynthesisIRTests.test_ir_requires_terminal_halt) ... ok
+test_canonical_loader_rejects_invalid_opcode (test_synth_model.Fixed19ModelTests.test_canonical_loader_rejects_invalid_opcode) ... ok
+test_crazy_dispatch_updates_accumulator_and_memory (test_synth_model.Fixed19ModelTests.test_crazy_dispatch_updates_accumulator_and_memory) ... ok
+test_eof_sentinel_is_not_a_byte (test_synth_model.Fixed19ModelTests.test_eof_sentinel_is_not_a_byte) ... ok
+test_halt_dispatch_stops_without_advancing (test_synth_model.Fixed19ModelTests.test_halt_dispatch_stops_without_advancing) ... ok
+test_input_dispatch_reads_one_byte_into_accumulator (test_synth_model.Fixed19ModelTests.test_input_dispatch_reads_one_byte_into_accumulator) ... ok
+test_jump_dispatch_loads_c_from_memory_at_d (test_synth_model.Fixed19ModelTests.test_jump_dispatch_loads_c_from_memory_at_d) ... ok
+test_loader_modes_keep_whitespace_behavior_distinct (test_synth_model.Fixed19ModelTests.test_loader_modes_keep_whitespace_behavior_distinct) ... ok
+test_model_bound_is_distinct_from_vm_halt (test_synth_model.Fixed19ModelTests.test_model_bound_is_distinct_from_vm_halt) ... ok
+test_move_dispatch_loads_d_from_memory_at_d (test_synth_model.Fixed19ModelTests.test_move_dispatch_loads_d_from_memory_at_d) ... ok
+test_nop_dispatch_advances_both_pointers (test_synth_model.Fixed19ModelTests.test_nop_dispatch_advances_both_pointers) ... ok
+test_output_dispatch_writes_low_accumulator_byte (test_synth_model.Fixed19ModelTests.test_output_dispatch_writes_low_accumulator_byte) ... ok
+test_positioned_decode_and_mutation_match_bolge19 (test_synth_model.Fixed19ModelTests.test_positioned_decode_and_mutation_match_bolge19) ... ok
+test_post_instruction_encryption_mutates_current_cell (test_synth_model.Fixed19ModelTests.test_post_instruction_encryption_mutates_current_cell) ... ok
+test_rotate_dispatch_updates_accumulator_and_memory (test_synth_model.Fixed19ModelTests.test_rotate_dispatch_updates_accumulator_and_memory) ... ok
+test_step_exhaustion_preserves_completed_steps (test_synth_model.Fixed19ModelTests.test_step_exhaustion_preserves_completed_steps) ... ok
+test_whitespace_only_canonical_image_matches_bolge19 (test_synth_model.Fixed19ModelTests.test_whitespace_only_canonical_image_matches_bolge19) ... ok
+test_loader_contracts_diverge_on_whitespace (test_synth_profile.SynthesisProfileTests.test_loader_contracts_diverge_on_whitespace) ... ok
+test_profile_has_fixed_3_19_constants (test_synth_profile.SynthesisProfileTests.test_profile_has_fixed_3_19_constants) ... ok
+test_profile_rejects_unknown_dispatch_indices (test_synth_profile.SynthesisProfileTests.test_profile_rejects_unknown_dispatch_indices) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.029s
+
+OK
+full_suite_exit=0
+utc=2026-10-18T07:26:32+00:00

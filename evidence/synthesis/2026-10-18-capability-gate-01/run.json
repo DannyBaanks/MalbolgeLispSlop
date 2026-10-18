@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "scope": "fixed-3^19 synthesis capability gate; no advanced candidate was generated",
+  "target_profile": "fixed-3^19",
+  "loader": "canonical",
+  "search_method": "single direct-lowering recognizer; advanced control-flow and memory lowering absent",
+  "bounds": {
+    "max_cells": 8,
+    "max_nodes": 1000,
+    "max_steps": 128,
+    "max_address_inclusive": 64
+  },
+  "targets": ["branch_zero", "store_load", "add_sub", "countdown", "call_return"],
+  "result": "NOT_DEMONSTRATED",
+  "candidate_generated": false,
+  "generated_image_sha256": null,
+  "vm_result": "NOT_RUN_NO_CANDIDATE",
+  "raw_output": "run.log"
+}

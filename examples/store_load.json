@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "name": "store-load",
+  "entry_function": "main",
+  "functions": [
+    {
+      "name": "main",
+      "parameters": [],
+      "entry_block": "entry",
+      "blocks": [
+        {
+          "name": "entry",
+          "operations": [
+            {"op": "read_a", "destination": "x"},
+            {"op": "store", "address": 32, "value": "x"},
+            {"op": "load", "destination": "y", "address": 32},
+            {"op": "write_a", "value": "y"},
+            {"op": "halt"}
+          ]
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {"stdin_hex": "00", "stdout_hex": "00"},
+    {"stdin_hex": "01", "stdout_hex": "01"},
+    {"stdin_hex": "ff", "stdout_hex": "ff"}
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "name": "branch-zero",
+  "entry_function": "main",
+  "functions": [
+    {
+      "name": "main",
+      "parameters": [],
+      "entry_block": "entry",
+      "blocks": [
+        {
+          "name": "entry",
+          "operations": [
+            {"op": "read_a", "destination": "x"},
+            {"op": "branch_zero", "value": "x", "zero_target": "zero", "nonzero_target": "nonzero"}
+          ]
+        },
+        {
+          "name": "zero",
+          "operations": [
+            {"op": "add", "destination": "result", "left": 90, "right": 0},
+            {"op": "write_a", "value": "result"},
+            {"op": "halt"}
+          ]
+        },
+        {
+          "name": "nonzero",
+          "operations": [
+            {"op": "add", "destination": "result", "left": 78, "right": 0},
+            {"op": "write_a", "value": "result"},
+            {"op": "halt"}
+          ]
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {"stdin_hex": "00", "stdout_hex": "5a"},
+    {"stdin_hex": "01", "stdout_hex": "4e"},
+    {"stdin_hex": "ff", "stdout_hex": "4e"}
+  ]
+}
