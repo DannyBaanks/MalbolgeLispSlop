@@ -1,0 +1,134 @@
+{
+  "runs": 469074,
+  "gap_count": 469073,
+  "gap_stats": {
+    "min": 12,
+    "max": 731,
+    "mean": 594.5364602098181,
+    "hist": {
+      "0-63": 245,
+      "64-127": 228,
+      "128-255": 0,
+      "256-511": 36243,
+      "512-1023": 432357,
+      "1024-4095": 0,
+      "4096-16383": 0,
+      "16384-1000000000": 0
+    }
+  },
+  "distinct_gaps_first200k": 199814,
+  "top_gaps": [
+    [
+      62,
+      102,
+      "oooooooooooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      65,
+      86,
+      "oooooooooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      290,
+      1,
+      "ooooooooj*jo*oooojpjoooooojpjoooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*opoojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*oj*ppj*j*oj*ppj*j*j*j*j*oj*ppj*oooojpjo*opjpoj*ppj*j*oj*ppj*j*oj*ppj*j*j*j*j*oj*ppj*oooojpjoooooooooojioooooooooooojoooooojjojooj"
+    ],
+    [
+      413,
+      1,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*j*j*oojpjo*opjpoj*ppj*oj*ppj*j*j*j*oj*ppj*j*j*j*j*oj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*oj*ppj*oj*ppj*j*j*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*oooojpjoooooooooojioooooooooooooooooooooooooooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      410,
+      1,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*j*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*oj*ppj*oj*ppj*oj*ppj*j*j*oj*ppj*j*oooojpjoooooooooojioooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      376,
+      1,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoojpjo*opjpoj*ppj*j*j*j*j*j*oj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*oooojpjoooooooooojiooooooooooooooooooooooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      374,
+      1,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*j*j*oj*ppj*oj*ppj*oj*ppj*j*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*oooojpjoooooooooojioooooooooooooooooooooooooooooooooooooooooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      420,
+      1,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*j*j*j*j*oojpjo*opjpoj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*oj*ppj*j*oj*ppj*j*oj*ppj*j*oooojpjoooooooooojiooooooooooooooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      406,
+      1,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*j*j*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjoooooooooojiooooooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      402,
+      1,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*oj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*j*oj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*j*j*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*oj*ppj*j*j*j*oj*ppj*j*oj*ppj*j*oooojpjoooooooooojioojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ]
+  ],
+  "examples": [
+    [
+      19499,
+      290,
+      "ooooooooj*jo*oooojpjoooooojpjoooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*opoojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*oj*ppj*j*oj*ppj*j*j*j*j*oj*ppj*oooojpjo*opjpoj*ppj*j*oj*ppj*j*oj*ppj*j*j*j*j*oj*ppj*oooojpjoooooooooojioooooooooooojoooooojjojooj"
+    ],
+    [
+      19909,
+      413,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*j*j*oojpjo*opjpoj*ppj*oj*ppj*j*j*j*oj*ppj*j*j*j*j*oj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*oj*ppj*oj*ppj*j*j*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*oooojpjoooooooooojioooooooooooooooooooooooooooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      20442,
+      410,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*j*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*oj*ppj*oj*ppj*oj*ppj*j*j*oj*ppj*j*oooojpjoooooooooojioooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      20972,
+      376,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoojpjo*opjpoj*ppj*j*j*j*j*j*oj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*oooojpjoooooooooojiooooooooooooooooooooooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      21468,
+      374,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*j*j*oj*ppj*oj*ppj*oj*ppj*j*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*oooojpjoooooooooojioooooooooooooooooooooooooooooooooooooooooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      21962,
+      420,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*j*j*j*j*oojpjo*opjpoj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*oj*ppj*j*oj*ppj*j*oj*ppj*j*oooojpjoooooooooojiooooooooooooooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      22502,
+      406,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*j*j*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjoooooooooojiooooooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      23028,
+      402,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*oj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*j*oj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*j*j*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*oj*ppj*j*j*j*oj*ppj*j*oj*ppj*j*oooojpjoooooooooojioojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      23550,
+      401,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*ooooojpjooooooojpjo*opjpoj*ppj*oj*ppj*j*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*j*j*oj*ppj*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*oj*ppj*j*j*oj*ppj*j*oj*ppj*j*oooojpjoooooooooojioooooooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      24071,
+      420,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*oj*ppj*j*j*j*j*j*j*oj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*oj*ppj*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*j*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*oj*ppj*j*j*j*oj*ppj*j*oooojpjoooooooooojiooooooooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ],
+    [
+      24611,
+      394,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*oojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*j*j*oj*ppj*j*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*oj*ppj*j*oooojpjoooooooooojiooooooooooooooooooooooooooojo*ooooojjpjoojoooooojjpjoojoooooj*jooooooojjpjooj"
+    ],
+    [
+      25125,
+      426,
+      "ooooooooj*jo*oooojpjoooooojpjo*opjpoj*ppj*j*oj*ppj*j*j*j*j*j*oojpjo*opjpoj*ppj*j*j*j*j*j*j*j*j*oj*opoojpjo*ooooojpjooooooojpjo*opjpoj*ppj*j*oj*ppj*j*j*oj*ppj*j*j*j*j*j*ooojpjo*opjpoj*ppj*j*j*j*j*oj*ppj*j*j*j*j*oj*opooojpjo*oooooojpjoooooooojpjo*opjpoj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*oj*ppj*j*oj*ppj*j*oooojpjo*opjpoj*ppj*j*j*j*oj*ppj*j*j*oj*ppj*j*oooojpjoooooooooojioooooojo*ooooojjpojoojoooooojjpojoojoooooj*jooooooojjpojooj"
+    ]
+  ]
+}

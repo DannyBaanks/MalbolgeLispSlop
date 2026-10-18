@@ -1,0 +1,53 @@
+{
+  "model": "/tmp/opencode/m4/model_v1.m4g",
+  "model_bytes": 17953343,
+  "model_sha256": "6e7fa25df5bd645773398cf1c33a67ec8d29d1bcb137e9a4366d6c3dcd4f1b6d",
+  "header_bytes": 19392,
+  "min_run": 24,
+  "raw_alphabet_size": 95,
+  "raw_alphabet_hex": "0a2122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e",
+  "resolution_fixes": [
+    [
+      19391,
+      10
+    ]
+  ],
+  "layers": {
+    "12": {
+      "runs": 510385,
+      "default_unit": "444444444444444428272844",
+      "exceptions": 41785,
+      "distinct_units": 4,
+      "anchor_pos": 93802191
+    },
+    "7": {
+      "runs": 597393,
+      "default_unit": "28274428273e3e",
+      "exceptions": 207281,
+      "distinct_units": 3,
+      "anchor_pos": 22414279
+    },
+    "9": {
+      "runs": 173752,
+      "default_unit": "28274428273e3e2827",
+      "exceptions": 113372,
+      "distinct_units": 4,
+      "anchor_pos": 5368931
+    },
+    "2": {
+      "runs": 157862,
+      "default_unit": "4444",
+      "exceptions": 63162,
+      "distinct_units": 2,
+      "anchor_pos": 4947906
+    },
+    "11": {
+      "runs": 100202,
+      "default_unit": "4444444444444444444444",
+      "exceptions": 54369,
+      "distinct_units": 5,
+      "anchor_pos": 3022100
+    }
+  },
+  "seconds": 127.0
+}
