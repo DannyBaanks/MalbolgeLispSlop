@@ -1,0 +1,23 @@
+; Composite loop, conditional branch and arithmetic countdown.
+; Canonical fixed-3^19 native countdown lowering (Gate H7).
+name countdown
+case 00,00
+case 01,0100
+case 03,03020100
+entry entry
+
+entry:
+    read n
+    jump test
+
+test:
+    brz n, done, step
+
+step:
+    write n
+    sub n, n, 1
+    jump test
+
+done:
+    write n
+    halt

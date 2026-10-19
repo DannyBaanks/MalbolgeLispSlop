@@ -344,6 +344,57 @@ Verificar la campaña completa de Gate H6:
 python3 tools/verify_h6_call_return.py
 ```
 
+## Probar la cuenta regresiva nativa (Gate H7)
+
+Compilar `examples/countdown.slop` (bucle compuesto, bifurcación condicional y resta aritmética):
+
+```sh
+python3 tools/assemble.py examples/countdown.slop --round-trip --out build/countdown.mb
+```
+
+Salida real:
+
+```text
+countdown.slop: guest countdown, 259 cells
+  lowering=fixed19-scoped-countdown-v1 (scoped H7; general control flow remains unsupported)
+  label entry: cells 105
+  label test: cells 109
+  label step: cells 35,89
+  label done: cells 71
+  walk: accepted_cells=259 verdict=ACCEPTED
+  image_sha256=d1f8aa1bf02790483db2efa017d9a3f34d36581164fc7e421a0448d2c1b98518
+round-trip: identical
+wrote build/countdown.mb (259 bytes)
+```
+
+Ejecutar la cuenta regresiva en `build/bolge19`:
+
+```sh
+python3 - <<'PY'
+import subprocess
+for stdin in (bytes.fromhex('00'), bytes.fromhex('01'), bytes.fromhex('03')):
+    r = subprocess.run(
+        ['build/bolge19', 'build/countdown.mb', '--loader', 'canonical', '--max-steps', '512'],
+        input=stdin, capture_output=True, check=True,
+    )
+    print(f'{stdin.hex()}: stdout={r.stdout.hex()}')
+PY
+```
+
+Salida real:
+
+```text
+00: stdout=00
+01: stdout=0100
+03: stdout=03020100
+```
+
+Verificar la campaña completa de Gate H7:
+
+```sh
+python3 tools/verify_h7_countdown.py
+```
+
 ## Verificar bloques aritméticos nativos
 
 El sintetizador ya puede encontrar y certificar dos bloques pequeños que

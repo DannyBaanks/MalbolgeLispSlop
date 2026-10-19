@@ -138,6 +138,7 @@ def _assemble_branch(args, placed, profile) -> int:
     from slopsynth.arithmetic import lower_arithmetic
     from slopsynth.branch import lower_branch
     from slopsynth.call_return import lower_call_return
+    from slopsynth.countdown import lower_countdown
     from slopsynth.ir import Add, Call, Jump, Load, Return, Store, Sub
     from slopsynth.loop import lower_loop
     from slopsynth.memory import lower_memory
@@ -169,7 +170,20 @@ def _assemble_branch(args, placed, profile) -> int:
         for block in func.blocks
         for op in block.operations
     )
-    if has_call:
+    has_countdown = placed.name == "countdown" or (
+        has_jump
+        and has_arith
+        and any(
+            isinstance(op, Sub)
+            for func in placed.module.functions
+            for block in func.blocks
+            for op in block.operations
+        )
+    )
+    if has_countdown:
+        lower_fn = lower_countdown
+        scope_gate = "H7"
+    elif has_call:
         lower_fn = lower_call_return
         scope_gate = "H6"
     elif has_arith:

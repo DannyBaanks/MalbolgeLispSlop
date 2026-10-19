@@ -135,6 +135,22 @@ Labels and cases do not choose an image by input: one image runs all cases.
 H6-SCOPED-CALL-RETURN is `DEMONSTRATED_SCOPED`. Arbitrary call stacks, general recursion,
 dynamic dispatch, and Lisp remain `NOT_DEMONSTRATED`.
 
+## Native guest countdown gate H7 (2026-10-18)
+
+[Gate H7](../evidence/h7_countdown_v1/protocol.md) adds one certified composite countdown
+CFG through the CLI's `slopsynth.countdown` path: `entry: read n; jump test`, `test: brz n, done, step`,
+`step: write n; sub n, n, 1; jump test`, and `done: write n; halt`.
+One generated 259-cell image synthesizes bootstrap discriminator seeds $(k_1=37, k_2=112)$ computing
+identity mapping $f(N)=N$ for $N \in \{0, 1, 3\}$, a 5-cell landing cascade, jump relays, and algebraic
+crazy decrement chains down to clean halt pads.
+The sealed campaign covers declared boundary cases `00 -> 00`, `01 -> 0100`, `03 -> 03020100`,
+50 repeated cycles per case, spacing neutrality, and two negative mutants (discriminator seed and stage move pointer).
+Labels and cases do not choose an image by input: one image runs all cases.
+
+H7-SCOPED-COUNTDOWN is `DEMONSTRATED_SCOPED`. Arbitrary CFG compilation, dynamic variables,
+general ALU pipelines, and Lisp guest remain `NOT_DEMONSTRATED`.
+
+
 
 
 
