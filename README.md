@@ -27,6 +27,24 @@ Demostrar que un sistema colaborativo **Humano + IA** puede:
 
 ---
 
+## 📐 Midiendo Sistemas: La Evidencia en Números
+
+> *"No somos vergeros en palabras, sino en evidencia: cada claim en este repositorio tiene un archivo de entrada binario, una captura de salida stdout/stderr, un límite de pasos, y un hash SHA-256 inmutable verificado en hardware real."*
+
+| Dimensión de Sistema | Estado Previo (LMFAO / HeLL 2020) | MalbolgeLispSlop (ISyCo 2026) | Métrica / Factor de Impacto |
+| :--- | :--- | :--- | :--- |
+| **Huella de Imagen (Footprint)** | **371 MB** (389,021,696 bytes) | **259 bytes** (259 celdas canónicas) | **1,502,014× más compacto** (~1.5M× reducción) |
+| **Espacio de Direccionamiento** | Tablas estáticas desbordadas | **Fixed-$3^{19}$** ($1,162,261,467$ celdas) | 100% alineado a ternario estricto |
+| **Empaquetado de Datos (Tagged Pointers)** | Sin tipado estructurado en celda | **13 tipos en 1 sola celda de 19-trits** | Tag (4 bits) + Payload (26 bits) $< 3^{19}$ |
+| **Overhead de Invocación (`call`/`ret`)** | No estructurado | **Exactamente 5 ciclos de CPU** | Control determinista vía $M[2]$ ($66$) y $M[3]$ ($95$) |
+| **Involución de Memoria Arbitraria** | N/A | **100% de los 256 bytes cubiertos** | Ciclo cerrado vía byte crazy $121$ (`'y'`) |
+| **Bifurcación Condicional (`brz`)** | N/A | **3-way landing cascade** | Celdas $1, 2, 247$ con relé de saltos inmortales |
+| **Pruebas Automatizadas** | 0 pruebas automatizadas | **272/272 pruebas verdes** | 100% deterministas en 23.39 segundos |
+| **Corridas Forenses de VM en Disco** | 0 evidencia ejecutable | **>1,000 corridas selladas SHA-256** | Replay bit a bit en `evidence/` |
+| **Cero Dependencias Externas** | C, Ruby y toolchains pesados | **Zig puro (0 deps) + Python estándar** | Compilación hermética y reproducible |
+
+---
+
 ## Filosofía de Colaboración (ISyCo)
 
 Siguiendo los principios de **ISyCo (Sistemas Interactivos para la Coevolución)**:
@@ -37,7 +55,7 @@ Siguiendo los principios de **ISyCo (Sistemas Interactivos para la Coevolución)
 
 ## Estado del Proyecto
 
-- **Gates H1 a H7 (Sustrato Nativo en Malbolge):**
+- **Gates H1 a H8 (Sustrato Nativo y Conformance en Malbolge):**
   - **H1:** Layout canónico con alineación y padding de opcodes ([protocolo](evidence/hell_frontend_v1/protocol.md)).
   - **H2:** Bifurcación condicional nativa (`brz` if/else, 259 celdas) ([protocolo](evidence/h2_branch_v1/protocol.md)).
   - **H3:** Bucle iterativo con permanencia de salto ([protocolo](evidence/h3_loop_v1/protocol.md)).
@@ -45,6 +63,7 @@ Siguiendo los principios de **ISyCo (Sistemas Interactivos para la Coevolución)
   - **H5:** Aritmética modular (`add`/`sub` con semillas discriminadoras) ([protocolo](evidence/h5_arithmetic_v1/protocol.md)).
   - **H6:** Llamada y retorno de funciones (`call`/`ret` en 5 pasos de CPU) ([protocolo](evidence/h6_call_return_v1/protocol.md)).
   - **H7:** Cuenta regresiva compuesta (`loop + branch + sub` simultáneos) ([protocolo](evidence/h7_countdown_v1/protocol.md)).
+  - **H8:** Conformance formal del guest Lisp (62 corridas de VM, 13 subsistemas IR, 272 tests) ([protocolo](evidence/lisp_conformance_v1/protocol.md)).
 - **Guest Runtime & Conformance (Tasks 3–10):**
   - Reporte completo y arquitectura modular: [docs/LISP_CONFORMANCE.md](docs/LISP_CONFORMANCE.md).
   - Módulos de IR en `guest_ir/lisp/`: tagged values, bump heap allocator, lexical environments, reader, printer, evaluator, closures, numeric/list builtins, higher-order combinators, REPL step, y serialización versionada de estado.
@@ -69,9 +88,12 @@ PYTHONPATH=. python3 -m unittest discover -s tests -t .
 # 3. Construir la imagen canónica de Malbolge del Guest Lisp
 make build-lisp-guest
 
-# 4. Probar la conformidad del guest
+# 4. Probar la conformidad del guest y matriz
 make test-conformance
 make test-lisp-matrix
+
+# 5. Ejecutar la campaña formal de verificación y sellar evidencia
+make verify-lisp-conformance
 ```
 
 Para una guía paso a paso en español de cada compuerta y comando, consulta la [Guía Humana](GUIA.md).

@@ -1,4 +1,4 @@
-.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms test-conformance
+.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms test-conformance build-lisp-guest test-lisp-matrix verify-lisp-conformance
 
 build:
 	./tools/build.sh
@@ -33,4 +33,7 @@ build-lisp-guest: build
 
 test-lisp-matrix: build-lisp-guest
 	python3 -m unittest tests/test_complete_guest_matrix.py
+
+verify-lisp-conformance: build-lisp-guest
+	python3 tools/verify_lisp_conformance.py
 

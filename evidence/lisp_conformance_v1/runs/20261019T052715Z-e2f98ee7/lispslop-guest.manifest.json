@@ -1,0 +1,27 @@
+{
+  "cells": 259,
+  "image_sha256": "bba3ef6a2150b4ba1348a724331adbb44312124bd1fbc9d9474ca85025525f57",
+  "lowering": "fixed19-canonical-guest-v1",
+  "modules": [
+    "lisp_values",
+    "lisp_memory",
+    "lisp_environment",
+    "lisp_reader",
+    "lisp_printer",
+    "lisp_evaluator",
+    "lisp_callables",
+    "lisp_builtins_numeric",
+    "lisp_builtins_lists",
+    "lisp_builtins_higher_order",
+    "lisp_builtins_combinators",
+    "lisp_repl",
+    "lisp_state_image"
+  ],
+  "name": "lispslop-guest",
+  "profile": "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/profiles/fixed19.json",
+  "schema_version": 1,
+  "walk": {
+    "accepted": true,
+    "accepted_cells": 259
+  }
+}

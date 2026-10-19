@@ -1,0 +1,67 @@
+[
+  {
+    "details": "13 tagged types, 19-trit word bounds",
+    "status": "PASS",
+    "subsystem": "values"
+  },
+  {
+    "details": "bump allocator, cons cell allocation",
+    "status": "PASS",
+    "subsystem": "memory"
+  },
+  {
+    "details": "parent chaining, lexical shadowing",
+    "status": "PASS",
+    "subsystem": "environment"
+  },
+  {
+    "details": "s-exprs, infix brackets, fork braces, lazy, quote",
+    "status": "PASS",
+    "subsystem": "reader"
+  },
+  {
+    "details": "numbers, null, symbols, lists",
+    "status": "PASS",
+    "subsystem": "printer"
+  },
+  {
+    "details": "McCarthy core, quote, if, cond, let, def, lambda",
+    "status": "PASS",
+    "subsystem": "evaluator"
+  },
+  {
+    "details": "lexical closures, parameter binding",
+    "status": "PASS",
+    "subsystem": "callables"
+  },
+  {
+    "details": "26-bit modular arithmetic, comparisons, logic",
+    "status": "PASS",
+    "subsystem": "builtins_numeric"
+  },
+  {
+    "details": "cons, car, cdr, atom, iota, size, nth, rev, append",
+    "status": "PASS",
+    "subsystem": "builtins_lists"
+  },
+  {
+    "details": "map, filter, fold, fold', take, drop, sort",
+    "status": "PASS",
+    "subsystem": "builtins_higher_order"
+  },
+  {
+    "details": "id, atop, bind, bind', selfie, commute",
+    "status": "PASS",
+    "subsystem": "builtins_combinators"
+  },
+  {
+    "details": ".F, .A, .M, .R, .S, off, eval loop",
+    "status": "PASS",
+    "subsystem": "repl"
+  },
+  {
+    "details": "LISP binary format, SHA-256 verification, rejection of tampered state",
+    "status": "PASS",
+    "subsystem": "state_image"
+  }
+]

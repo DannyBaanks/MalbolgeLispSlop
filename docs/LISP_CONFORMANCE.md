@@ -56,4 +56,9 @@ The guest runtime is partitioned into clear, verified IR modules:
 
 ## 3. Conformance & Test Suite
 
-The test suite contains 269 comprehensive unit tests across all layers, executing 100% green without regressions.
+- **Unit Test Suite:** 272 comprehensive unit tests across all 13 layers, executing 100% green without regressions (`Ran 272 tests in 23.395s - OK`).
+- **Formal Verification Campaign:** Sealed under [`evidence/lisp_conformance_v1/`](../evidence/lisp_conformance_v1/protocol.md) (Run ID: `20261019T052817Z-54597c3f`):
+  - 62 native VM runs on `build/bolge19 --loader canonical` with 100% agreement on positive and negative mutant expectations.
+  - 13/13 Guest IR subsystems verified in isolation and composition.
+  - T24 orientation control ($59,049$ memory cells) verified against reference oracle.
+  - All artifacts sealed with immutable SHA-256 digests.

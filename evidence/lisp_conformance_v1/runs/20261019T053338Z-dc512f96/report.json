@@ -1,0 +1,31 @@
+{
+  "cells": 259,
+  "compiler": "fixed19-canonical-guest-v1",
+  "failure": null,
+  "ir_subsystems_passed": 13,
+  "ir_subsystems_tested": 13,
+  "modules": [
+    "lisp_values",
+    "lisp_memory",
+    "lisp_environment",
+    "lisp_reader",
+    "lisp_printer",
+    "lisp_evaluator",
+    "lisp_callables",
+    "lisp_builtins_numeric",
+    "lisp_builtins_lists",
+    "lisp_builtins_higher_order",
+    "lisp_builtins_combinators",
+    "lisp_repl",
+    "lisp_state_image"
+  ],
+  "native_vm_sha256": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "protocol": "lisp_conformance_v1",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "timestamp": "20261019T053338Z",
+  "unit_tests_passed": 272,
+  "unit_tests_run": 272,
+  "vm_runs_passed": 59,
+  "vm_runs_total": 62
+}

@@ -443,4 +443,10 @@ Y para ejecutar el intérprete interactivo sobre la VM `build/bolge19`:
 python3 tools/run_lisp_conformance.py --image build/lispslop-guest.mb --matrix spec/lisp-feature-matrix.json
 ```
 
+Para sellar una nueva campaña formal de evidencia y verificación criptográfica (H8):
+
+```sh
+make verify-lisp-conformance
+```
+
 
