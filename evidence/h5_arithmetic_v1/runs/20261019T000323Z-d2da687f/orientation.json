@@ -1,0 +1,12 @@
+{
+  "memory_cells": 59049,
+  "mismatches": {
+    "correct": 0,
+    "swapped": 18709
+  },
+  "orientation": "crazy(ctrl, cell) = TABLE[cell][ctrl]",
+  "read_only_inputs": {
+    "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/tools/oracle_classic.py": "5dae8f31eaa296fdc5bb1a65b9bab93e94b3f230de5d1929d5d5d904dd4778cf",
+    "/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb": "177e7fcea2b99c31f83f865ba915e53a9d4d70a4ac850c5e6e61aad970b99f06"
+  }
+}

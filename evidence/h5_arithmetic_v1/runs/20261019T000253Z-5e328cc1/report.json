@@ -1,0 +1,12 @@
+{
+  "cells": 259,
+  "compiler": "fixed19-scoped-arithmetic-v1",
+  "failure": "{'label': 'mutant-pointer', 'image': 'mutant-pointer.mb', 'stdin_hex': '0101', 'stdout_hex': '01', 'stderr_hex': '626f6c676531393a20696d6167656e3d3235392063656c646173207a6f6e613d5b36353237372c31333035353429207061743d5b39322c3538313133303634322c39322e2e2e5d0a626f6c676531393a2048414c542073746570733d313420633d333720643d333720613d3120656c61707365643d30730a', 'returncode': 0, 'status': 'HALT', 'expected_stdout_hex': '01', 'matches_semantics': True}",
+  "native_vm_sha256": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "protocol": "h5_arithmetic_v1",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "runs_passed": 267,
+  "runs_total": 267,
+  "timestamp": "20261019T000253Z"
+}

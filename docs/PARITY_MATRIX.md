@@ -106,6 +106,20 @@ across all 256 byte values, EOF, spacing neutrality, and two negative mutants (p
 and data). Labels and cases do not choose an image by input: one image runs all cases.
 
 H4-SCOPED-MEMORY is `DEMONSTRATED_SCOPED`. General memory, dynamic pointers,
-heap structures, arithmetic, calls, and Lisp remain `NOT_DEMONSTRATED`.
+heap structures, calls, and Lisp remain `NOT_DEMONSTRATED`.
+
+## Native arithmetic gate H5 (2026-10-18)
+
+[Gate H5](../evidence/h5_arithmetic_v1/protocol.md) adds one certified arithmetic
+sequence through the CLI's `slopsynth.arithmetic` path: `read left; read right; add sum, left, right; sub result, sum, 1; write result; halt`.
+One generated 259-cell image uses native algebraic crazy discriminator seeds $(k_1=76, k_2=81)$,
+three-way branch landing disjunction (cells 1, 2, 247), relay jumps, and Pad 255 crazy lowering with data cells 86 and 87.
+The sealed campaign covers declared boundary cases `0001 -> 00`, `0101 -> 01`, `ffff -> fd`, exhaustive right-operand
+inputs across all 256 byte values for left=1 ($1 + b - 1 = b$), EOF, spacing neutrality, and two negative mutants (pointer
+and data). Labels and cases do not choose an image by input: one image runs all cases.
+
+H5-SCOPED-ARITHMETIC is `DEMONSTRATED_SCOPED`. Arbitrary arithmetic expressions, variable widths,
+general ALU pipelines, calls, and Lisp remain `NOT_DEMONSTRATED`.
+
 
 

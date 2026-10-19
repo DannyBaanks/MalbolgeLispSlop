@@ -1,0 +1,13 @@
+name add_sub
+case 0001,00
+case 0101,01
+case ffff,fd
+entry main
+
+main:
+    read left
+    read right
+    add sum, left, right
+    sub result, sum, 1
+    write result
+    halt

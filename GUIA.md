@@ -246,6 +246,54 @@ Verificar la campaña completa de Gate H4:
 python3 tools/verify_h4_memory.py
 ```
 
+## Probar aritmética nativa de guest (Gate H5)
+
+Ensamblar el programa de adición y sustracción:
+
+```sh
+python3 tools/assemble.py examples/add_sub.slop --round-trip --out build/add_sub.mb
+```
+
+Salida real:
+
+```text
+add_sub.slop: guest add_sub, 259 cells
+  lowering=fixed19-scoped-arithmetic-v1 (scoped H5; general control flow remains unsupported)
+  label main: cells 105,35,50,247
+  walk: accepted_cells=259 verdict=ACCEPTED
+  image_sha256=97d6830d56d059f9e4a5298fb861997003c97a076134a5a5a7c031161bfaeb64
+round-trip: identical
+wrote build/add_sub.mb (259 bytes)
+```
+
+Ejecutar adición y decremento `(left + right - 1) mod 256` en `build/bolge19`:
+
+```sh
+python3 - <<'PY'
+import subprocess
+for stdin in (bytes.fromhex('0001'), bytes.fromhex('0101'), bytes.fromhex('ffff')):
+    r = subprocess.run(
+        ['build/bolge19', 'build/add_sub.mb', '--loader', 'canonical', '--max-steps', '512'],
+        input=stdin, capture_output=True, check=True,
+    )
+    print(f'{stdin.hex()}: stdout={r.stdout.hex()}')
+PY
+```
+
+Salida real:
+
+```text
+0001: stdout=00
+0101: stdout=01
+ffff: stdout=fd
+```
+
+Verificar la campaña completa de Gate H5:
+
+```sh
+python3 tools/verify_h5_arithmetic.py
+```
+
 ## Verificar bloques aritméticos nativos
 
 El sintetizador ya puede encontrar y certificar dos bloques pequeños que
