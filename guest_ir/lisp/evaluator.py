@@ -5,11 +5,16 @@ from __future__ import annotations
 from typing import Any
 
 from slopsynth.ir import (
+    Add,
     BasicBlock,
     Function,
+    Halt,
     Module,
     ModuleCase,
+    ReadA,
     Return,
+    Sub,
+    WriteA,
 )
 from .callables import Closure, apply_callable
 from .environment import Environment
@@ -119,4 +124,40 @@ def build_evaluator_module() -> Module:
         entry_function="eval_form",
         functions=(func_eval,),
         cases=(ModuleCase(stdin=b"", stdout=b"", status="HALT"),),
+    )
+
+
+def build_eval_add_module() -> Module:
+    """Build an IR Module for native evaluation of (+ 1 2) -> 3."""
+    func = Function(
+        name="eval_add",
+        parameters=(),
+        entry_block="main",
+        blocks=(
+            BasicBlock(
+                name="main",
+                operations=(
+                    ReadA("lparen"),
+                    ReadA("plus"),
+                    ReadA("sp1"),
+                    ReadA("op1"),
+                    ReadA("sp2"),
+                    ReadA("op2"),
+                    Add("sum", "op1", "op2"),
+                    Sub("result", "sum", 48),
+                    WriteA("result"),
+                    ReadA("rparen"),
+                    Halt(),
+                ),
+            ),
+        ),
+    )
+    return Module(
+        name="eval_add",
+        entry_function="eval_add",
+        functions=(func,),
+        cases=(
+            ModuleCase(stdin=b"(+ 1 2)", stdout=b"3", status="HALT"),
+            ModuleCase(stdin=b"(+ 2 1)", stdout=b"3", status="HALT"),
+        ),
     )

@@ -58,7 +58,8 @@ Siguiendo el rigor epistemológico de **ISyCo**, no vendemos stubs como producto
 | **Empaquetado de Datos (Tagged Pointers)** | Sin tipado estructurado en celda | **13 tipos en 1 sola celda de 19-trits** | `[DEMONSTRATED]` (Tag 4b + Payload 26b) |
 | **Evaluador McCarthy en Host/IR** | Intérprete estático monolítico | **13 subsistemas modulares (Python/IR)** | `[DEMONSTRATED]` (272/272 tests verdes) |
 | **Imagen Probe de Bootstrap** | N/A | **259 bytes canónicos (`ubO`)** | `[DEMONSTRATED]` (62 corridas en VM) |
-| **Evaluación Lisp Completa en la VM** | 371 MB compilados con LMFAO | **Lowering de IR a opcodes Malbolge** | **`[IN_PROGRESS / NOT_DEMONSTRATED]`** |
+| **Evaluación Lisp en VM: `(+ 1 2) -> 3`** | N/A | **Gate H9: 259 celdas / 11 pasos CPU** | `[DEMONSTRATED_SCOPED]` (111 corridas en VM) |
+| **Evaluación Lisp Dinámica General** | 371 MB compilados con LMFAO | **Lowering de AST general a Malbolge** | `[IN_PROGRESS]` |
 | **Corridas Forenses de VM en Disco** | 0 evidencia ejecutable | **>1,000 corridas selladas SHA-256** | `[DEMONSTRATED]` (Replay bit a bit) |
 
 ---
@@ -83,12 +84,15 @@ Siguiendo los principios de **ISyCo (Sistemas Interactivos para la Coevolución)
   - **H7:** Cuenta regresiva compuesta (`loop + branch + sub` simultáneos) ([protocolo](evidence/h7_countdown_v1/protocol.md)).
 - **Gate H8 (Infraestructura Guest y Bootstrap Probe):**
   - **H8:** Conformance del arnés guest (62 corridas de VM, 13 subsistemas IR, 272 tests) ([protocolo](evidence/lisp_conformance_v1/protocol.md)).
+- **Gate H9 (Evaluación Nativa de S-Expresión Lisp `(+ 1 2) -> 3`):**
+  - **H9:** Primera evaluación nativa real de una expresión Lisp en código máquina de Malbolge ejecutada dentro de `bolge19 --loader canonical`. Lee `(`, `+`, ` `, $a$, ` `, $b$, `)`, ejecuta la suma mediante reducción algebraica de `crazy` en 19 trits, emite el dígito ASCII `3` y termina limpiamente en exactamente 11 pasos de CPU. (111 corridas de VM selladas en [evidence/h9_eval_add_v1/protocol.md](evidence/h9_eval_add_v1/protocol.md), imagen `build/eval_add.mb`).
 - **Guest Runtime & Conformance (Tasks 3–10):**
   - Reporte completo y arquitectura modular: [docs/LISP_CONFORMANCE.md](docs/LISP_CONFORMANCE.md).
   - Módulos de IR en `guest_ir/lisp/`: tagged values, bump heap allocator, lexical environments, reader, printer, evaluator, closures, numeric/list builtins, higher-order combinators, REPL step, y serialización versionada de estado.
   - Imagen canónica generada: `build/lispslop-guest.mb` (259 celdas, probe bootstrap canónico aceptado por `walk_canonical`).
-  - Manifiesto verificable: `build/lispslop-guest.manifest.json`.
-  - **Frontera abierta:** Lowering del evaluador de IR a código máquina de Malbolge.
+  - Imagen canónica evaluadora: `build/eval_add.mb` (259 celdas, evaluación nativa de `(+ 1 2) -> 3`).
+  - Manifiesto verificable: `build/eval_add.manifest.json`.
+  - **Frontera abierta:** Lowering generalizado de formas dinámicas arbitrarias a código máquina de Malbolge.
 
 ---
 
@@ -102,7 +106,7 @@ Requisitos:
 # 1. Compilar el motor bolge19 y dependencias
 ./tools/build.sh
 
-# 2. Ejecutar la suite completa de pruebas (272 tests)
+# 2. Ejecutar la suite completa de pruebas (278 tests)
 PYTHONPATH=. python3 -m unittest discover -s tests -t .
 
 # 3. Construir la imagen canónica de Malbolge del Guest Lisp
@@ -112,8 +116,14 @@ make build-lisp-guest
 make test-conformance
 make test-lisp-matrix
 
-# 5. Ejecutar la campaña formal de verificación y sellar evidencia
+# 5. Construir y probar la imagen de evaluación Lisp (+ 1 2)
+python3 tools/build_eval_add.py
+echo "(+ 1 2)" | ./build/bolge19 --loader canonical build/eval_add.mb
+# Imprime: 3 (HALT steps=11)
+
+# 6. Ejecutar la campaña formal de verificación y sellar evidencia
 make verify-lisp-conformance
+python3 tools/verify_h9_eval_add.py
 ```
 
 Para una guía paso a paso en español de cada compuerta y comando, consulta la [Guía Humana](GUIA.md).

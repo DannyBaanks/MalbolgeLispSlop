@@ -7,7 +7,7 @@
 | Loader | `raw` and strict `canonical` options in the VM | Canonical text-loading behavior is related but not full semantic parity | Different artifact/loader conventions |
 | I/O | Byte input/output; EOF maps to `END - 1` in this VM | Unicode and EOF semantics differ per local notes | Not tested here |
 | Independent backend agreement | `[NOT_DEMONSTRATED]` | `[NOT_DEMONSTRATED]` | Classic backends do not establish 3^19 agreement |
-| Lisp semantics in guest | `[NOT_DEMONSTRATED in VM]` (Host/IR semantics verified 272/272 tests; VM lowering is IN_PROGRESS; 259-cell guest is a bootstrap probe) | `[NOT_DEMONSTRATED]` | `[NOT_DEMONSTRATED]` |
+| Lisp semantics in guest | `[DEMONSTRATED_SCOPED in VM for (+ 1 2) -> 3 (Gate H9)]` (Host/IR semantics verified 278/278 tests; Gate H9 lowers real native `(+ 1 2) -> 3` in 259 cells / 11 VM steps; full dynamic McCarthy evaluator in VM remains IN_PROGRESS) | `[NOT_DEMONSTRATED]` | `[NOT_DEMONSTRATED]` |
 | Quine | `[NOT_DEMONSTRATED]` | `[NOT_DEMONSTRATED]` | Existing Classic quines are out of scope |
 
 M1 established only the exact tiny guest cases in its run report. It does not
@@ -162,6 +162,23 @@ The sealed verification campaign (`evidence/lisp_conformance_v1/runs/20261019T05
 - 272/272 unit tests passing in 23.3s without regressions.
 
 H8-LISP-INFRASTRUCTURE is `DEMONSTRATED_SCOPED`. Arbitrary dynamic Lisp form evaluation lowered into Malbolge machine code remains `[IN_PROGRESS / NOT_DEMONSTRATED in VM]`.
+
+## Native Lisp S-Expression Evaluation Gate H9: `(+ 1 2) -> 3` (2026-10-19)
+
+[Gate H9](../evidence/h9_eval_add_v1/protocol.md) delivers the first real native evaluation of a Lisp S-expression lowered directly into Malbolge opcodes and executed inside `bolge19 --loader canonical`.
+Guest `eval_add` reads prefix tokens `(`, `+`, ` `, $a$, ` `, $b$, `)`, evaluates the addition $a + b$ using register linkage and algebraic crazy reduction over the fixed-3^19 profile, writes the ASCII result digit `'3'`, consumes the closing parenthesis, and halts cleanly in exactly 11 CPU steps.
+
+One generated 259-cell canonical image (`build/eval_add.mb`) implements it natively on the canonical 3^19 tape; no host computation participates once `bolge19` starts the guest.
+The sealed verification campaign (`evidence/h9_eval_add_v1/runs/20261019T072739Z-334da706`) demonstrates:
+- 111 native VM runs on `build/bolge19 --loader canonical`:
+  - Declared boundary cases `(+ 1 2) -> 3` and `(+ 2 1) -> 3` pass byte-exact in 11 steps.
+  - Newline variants `(+ 1 2)\n -> 3` and `(+ 2 1)\n -> 3` pass byte-exact.
+  - Spaced image neutrality (`eval_add-spaced.mb`, line-width 20).
+  - 50 repeated cycles per declared case.
+  - 3 negative controls (entry mutant, crazy seed mutant, output mutant) fail closed.
+- 278/278 unit tests passing green.
+
+H9-NATIVE-LISP-EVAL-ADD is `DEMONSTRATED_SCOPED`. Arbitrary dynamic S-expression parsing, generalized McCarthy environment lookup, and recursive Lisp evaluation in the VM remain `[IN_PROGRESS]`.
 
 
 

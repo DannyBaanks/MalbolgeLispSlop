@@ -1,0 +1,18 @@
+; Lisp native expression evaluation lowering for (+ 1 2) -> 3
+name eval_add
+case 282b2031203229,33
+case 282b2032203129,33
+entry main
+
+main:
+    read lparen
+    read plus
+    read sp1
+    read op1
+    read sp2
+    read op2
+    add sum, op1, op2
+    sub result, sum, 48
+    write result
+    read rparen
+    halt

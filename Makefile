@@ -37,3 +37,12 @@ test-lisp-matrix: build-lisp-guest
 verify-lisp-conformance: build-lisp-guest
 	python3 tools/verify_lisp_conformance.py
 
+build-eval-add: build
+	python3 tools/build_eval_add.py
+
+test-eval-add: build-eval-add
+	python3 -m unittest tests/test_native_eval_add.py
+
+verify-h9-eval-add: build-eval-add
+	python3 tools/verify_h9_eval_add.py
+
