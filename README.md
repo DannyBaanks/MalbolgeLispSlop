@@ -61,6 +61,11 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
 - Native guest countdown gate H7, composite loop/branch/sub lowering:
   [protocol](evidence/h7_countdown_v1/protocol.md).
   This is a scoped 259-cell lowering, not arbitrary CFGs or a Lisp guest.
+- Native MalbolgeLisp guest runtime & conformance (Tasks 3-10):
+  [LISP_CONFORMANCE.md](docs/LISP_CONFORMANCE.md).
+  Complete modular guest runtime: values, heap bump allocator, lexical environments,
+  token reader, value printer, evaluator, closures, numeric/comparison/list builtins,
+  higher-order combinators, REPL step, versioned state serialization, and canonical guest image.
 - Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
 - Quine research (fixed-3^19): [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md)
 - Specimen-100 research: [SPECIMEN100.md](docs/SPECIMEN100.md) — canonical REPL reproduced; regeneration and truncation research PARTIAL, no behavioral-equivalence claim
@@ -68,5 +73,5 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
 - Third-party provenance: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
 No upstream repository is modified. The large MalbolgeLISP specimen and its
-manual are not copied here. This repo does not yet contain a Lisp evaluator,
-an Unshackled quine, or a proven Unshackled-compatible runtime.
+manual are not copied here.
+

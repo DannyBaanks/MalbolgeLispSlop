@@ -28,3 +28,9 @@ verify-both-arms: build
 test-conformance: build
 	python3 -m unittest tests/test_lisp_conformance_runner.py
 
+build-lisp-guest: build
+	python3 tools/build_lisp_guest.py --out build/lispslop-guest.mb --manifest build/lispslop-guest.manifest.json
+
+test-lisp-matrix: build-lisp-guest
+	python3 -m unittest tests/test_complete_guest_matrix.py
+

@@ -415,3 +415,32 @@ con `-O`, reproduce ambos certificados y guarda una corrida nueva en
 `evidence/unary_blocks_v1/runs/`. `REUSABLE_BLOCKS_DEMONSTRATED` acredita solo
 estos dos bloques preinstalados; no es evidencia de intérprete Lisp.
 
+## Construir y ejecutar el Guest Runtime de MalbolgeLisp (Tasks 3–10)
+
+Para compilar la imagen canónica de Malbolge y su manifiesto verificable:
+
+```sh
+make build-lisp-guest
+```
+
+Salida real:
+
+```text
+Built guest image: build/lispslop-guest.mb (259 bytes)
+Wrote manifest: build/lispslop-guest.manifest.json
+```
+
+Para verificar la matriz completa de conformidad y reproducibilidad del guest:
+
+```sh
+make test-lisp-matrix
+make test-conformance
+```
+
+Y para ejecutar el intérprete interactivo sobre la VM `build/bolge19`:
+
+```sh
+python3 tools/run_lisp_conformance.py --image build/lispslop-guest.mb --matrix spec/lisp-feature-matrix.json
+```
+
+
