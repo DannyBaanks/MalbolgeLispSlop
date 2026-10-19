@@ -2,9 +2,9 @@
 
 ## Scope and Result
 
-`DEMONSTRATED_CONFORMANCE`: our modular guest IR and synthesis lowering emit a verified canonical fixed-3^19 guest image (`build/lispslop-guest.mb`, 259 cells) and a complete McCarthy-style Lisp dialect operating on the ternary virtual machine `bolge19`.
+`DEMONSTRATED_SCOPED`: our modular guest IR architecture, test harness, and synthesis toolchain emit a verified canonical fixed-3^19 bootstrap probe (`build/lispslop-guest.mb`, 259 cells) operating on the ternary virtual machine `bolge19`.
 
-The guest runtime architecture comprises 13 verified subsystems:
+The guest runtime architecture comprises 13 verified subsystems implemented in `guest_ir/lisp/`:
 1. **`values`:** 13 tagged pointer types (tags 0..12) with 26-bit payloads packed into single 19-trit words ($13 \times 2^{26} = 872,415,231 < 3^{19} = 1,162,261,467$).
 2. **`memory`:** High-memory linear bump allocator (`HEAP_PTR_ADDR = 100`, `HEAP_START_ADDR = 2048`).
 3. **`environment`:** Lexical scoping with parent chaining and symbol shadowing.
@@ -20,9 +20,11 @@ The guest runtime architecture comprises 13 verified subsystems:
 13. **`state_image`:** Binary session persistence with magic header `b"LISP"` and SHA-256 integrity verification.
 
 The certified campaign sealed under `evidence/lisp_conformance_v1/runs/20261019T052817Z-54597c3f` confirms:
-- **62 native VM runs** on `build/bolge19 --loader canonical`: 59 positive runs (boundary bytes, EOF, spaced neutrality, 50 repeated cycles) + 3 negative controls (entry mutant, halt mutant, invalid byte loader rejection) passing 100% of declared expectations.
-- **13 IR subsystems tested**: 100% PASS with 0 failures.
+- **62 native VM runs** on `build/bolge19 --loader canonical`: 59 positive runs (boundary bytes, EOF, spaced neutrality, 50 repeated cycles) + 3 negative controls (entry mutant, halt mutant, invalid byte loader rejection) passing 100% of declared expectations for the 259-cell bootstrap probe.
+- **13 IR subsystems tested**: 100% PASS in host evaluation.
 - **272 unit tests executed**: 272 passing green in 23.3s with 0 failures, 0 errors, 0 skips.
+
+**Boundary & Open Frontier:** The 259-cell canonical image is currently a native I/O bootstrap probe (`input; output; halt`). Lowering the full dynamic Lisp evaluator from IR into composite Malbolge machine code sequences remains `IN_PROGRESS` (`Lisp evaluation inside Malbolge VM is NOT_DEMONSTRATED`).
 
 ## Hypotheses and Controls
 

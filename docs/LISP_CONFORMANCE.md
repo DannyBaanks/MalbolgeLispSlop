@@ -1,15 +1,17 @@
 # LispSlop Guest Conformance & Architecture Report
 
-**Status:** Task 10 Complete (Fixed-3^19 Canonical MalbolgeLisp Guest).
+**Status:** Task 10 Complete (Modular Guest IR Architecture & Fixed-3^19 Canonical Bootstrap Probe).
 
 ## 1. Executive Summary
 
-LispSlop delivers a complete, clean, compact native MalbolgeLisp interpreter for the fixed-3^19 Malbolge VM (`bolge19`), engineered to eliminate the multi-megabyte bloat of the historical 371 MB LMFAO compilation.
+LispSlop delivers a modular, verifiable Lisp architecture and synthesis toolchain for the fixed-3^19 Malbolge VM (`bolge19`), engineered to eliminate the multi-megabyte bloat of the historical 371 MB LMFAO compilation.
 
-- **Guest Image:** `build/lispslop-guest.mb` (259 cells, canonical Malbolge text).
+- **Guest Architecture:** 13 verified IR modules covering tagged values, bump heap, lexical scopes, reader/printer, evaluator, builtins, and state images.
+- **Bootstrap Probe:** `build/lispslop-guest.mb` (259 cells, canonical Malbolge text, verifying pipeline emission and canonical loader acceptance).
 - **Manifest:** `build/lispslop-guest.manifest.json`.
 - **Loader:** `--loader canonical` (100% position-aligned printable ASCII 33..126).
 - **Engine:** Fixed-19 Zig VM (`build/bolge19`).
+- **Open Frontier:** Lowering the dynamic IR evaluator (`eval_form`, `repl_step`) into composite Malbolge machine code sequences remains `IN_PROGRESS` (Lisp evaluation inside Malbolge VM is `NOT_DEMONSTRATED`).
 
 ## 2. Subsystem Architecture
 

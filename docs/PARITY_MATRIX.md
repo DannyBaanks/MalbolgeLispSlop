@@ -7,7 +7,7 @@
 | Loader | `raw` and strict `canonical` options in the VM | Canonical text-loading behavior is related but not full semantic parity | Different artifact/loader conventions |
 | I/O | Byte input/output; EOF maps to `END - 1` in this VM | Unicode and EOF semantics differ per local notes | Not tested here |
 | Independent backend agreement | `[NOT_DEMONSTRATED]` | `[NOT_DEMONSTRATED]` | Classic backends do not establish 3^19 agreement |
-| Lisp semantics in guest | `[DEMONSTRATED]` (259-cell canonical guest, 13 IR subsystems, 62 VM runs, 272/272 tests) | `[NOT_DEMONSTRATED]` | `[NOT_DEMONSTRATED]` |
+| Lisp semantics in guest | `[NOT_DEMONSTRATED in VM]` (Host/IR semantics verified 272/272 tests; VM lowering is IN_PROGRESS; 259-cell guest is a bootstrap probe) | `[NOT_DEMONSTRATED]` | `[NOT_DEMONSTRATED]` |
 | Quine | `[NOT_DEMONSTRATED]` | `[NOT_DEMONSTRATED]` | Existing Classic quines are out of scope |
 
 M1 established only the exact tiny guest cases in its run report. It does not
@@ -152,15 +152,16 @@ general ALU pipelines, and Lisp guest remain `NOT_DEMONSTRATED`.
 
 ## Native guest Lisp conformance gate H8 / Task 10 (2026-10-18)
 
-[Gate H8](../evidence/lisp_conformance_v1/protocol.md) delivers the complete native LispSlop guest runtime and conformance verification on fixed-3^19 Malbolge (`bolge19`).
-One 259-cell canonical image (`build/lispslop-guest.mb`, 100% printable ASCII 33..126) generated via `tools/build_lisp_guest.py` implements the native execution substrate across 13 modular IR subsystems (`guest_ir/lisp/`): single-word 19-trit tagged pointer representations (13 types), linear bump heap allocation (`HEAP_PTR_ADDR=100`, `HEAP_START_ADDR=2048`), scoped lexical environments, stream S-expression parser/printer, McCarthy core evaluator, closures, 26-bit modular arithmetic and comparison builtins, list primitives, higher-order combinators, interactive REPL with dot commands (`.F`, `.A`, `.M`, `.R`, `.S`), and versioned binary state serialization (`b"LISP"` header + SHA-256 integrity).
+[Gate H8](../evidence/lisp_conformance_v1/protocol.md) delivers the modular guest IR architecture, test suite, and canonical bootstrap probe on fixed-3^19 Malbolge (`bolge19`).
+One 259-cell canonical image (`build/lispslop-guest.mb`, 100% printable ASCII 33..126) generated via `tools/build_lisp_guest.py` implements a native I/O bootstrap probe (`input; output; halt`) verifying that the synthesis pipeline can generate canonical images accepted by `bolge19 --loader canonical`. 
+The language architecture is partitioned across 13 modular IR subsystems (`guest_ir/lisp/`): single-word 19-trit tagged pointer representations (13 types), linear bump heap allocation (`HEAP_PTR_ADDR=100`, `HEAP_START_ADDR=2048`), scoped lexical environments, stream S-expression parser/printer, McCarthy core evaluator, closures, 26-bit modular arithmetic and comparison builtins, list primitives, higher-order combinators, interactive REPL with dot commands (`.F`, `.A`, `.M`, `.R`, `.S`), and versioned binary state serialization (`b"LISP"` header + SHA-256 integrity).
 
 The sealed verification campaign (`evidence/lisp_conformance_v1/runs/20261019T052817Z-54597c3f`) demonstrates:
-- 62 native VM runs on `build/bolge19 --loader canonical` with 59 positive executions (boundary bytes, EOF, 20-col line-wrap neutrality, 50 repeated cycles) and 3 negative controls (entry mutant, halt mutant, invalid byte loader rejection) passing 100% of declared expectations.
-- 13/13 IR subsystems tested green.
+- 62 native VM runs on `build/bolge19 --loader canonical` with 59 positive executions (boundary bytes, EOF, 20-col line-wrap neutrality, 50 repeated cycles) and 3 negative controls (entry mutant, halt mutant, invalid byte loader rejection) passing 100% of declared expectations for the bootstrap probe.
+- 13/13 IR subsystems tested green in host environment.
 - 272/272 unit tests passing in 23.3s without regressions.
 
-H8-LISP-CONFORMANCE is `DEMONSTRATED`.
+H8-LISP-INFRASTRUCTURE is `DEMONSTRATED_SCOPED`. Arbitrary dynamic Lisp form evaluation lowered into Malbolge machine code remains `[IN_PROGRESS / NOT_DEMONSTRATED in VM]`.
 
 
 
