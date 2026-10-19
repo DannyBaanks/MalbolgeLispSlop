@@ -1,4 +1,4 @@
-.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms
+.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms test-conformance
 
 build:
 	./tools/build.sh
@@ -24,3 +24,7 @@ verify-unary: build
 
 verify-both-arms: build
 	build/venv/bin/python -O tools/verify_both_arms_branch.py
+
+test-conformance: build
+	python3 -m unittest tests/test_lisp_conformance_runner.py
+
