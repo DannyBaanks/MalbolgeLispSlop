@@ -1,6 +1,8 @@
-"""Guest Lisp lexical environment IR builders (Task 4)."""
+"""Guest Lisp lexical environment IR builders (Task 4 & 6)."""
 
 from __future__ import annotations
+
+from typing import Any
 
 from slopsynth.ir import (
     Add,
@@ -16,6 +18,32 @@ from slopsynth.ir import (
 from .memory import HEAP_PTR_ADDR
 
 GLOBAL_ENV_ADDR = 103
+
+
+class Environment:
+    """Lexical environment supporting bindings, scoping, and closures."""
+
+    def __init__(self, parent: Environment | None = None) -> None:
+        self.bindings: dict[str, Any] = {}
+        self.parent: Environment | None = parent
+
+    def define(self, name: str, value: Any) -> None:
+        self.bindings[name] = value
+
+    def lookup(self, name: str) -> Any:
+        if name in self.bindings:
+            return self.bindings[name]
+        if self.parent is not None:
+            return self.parent.lookup(name)
+        raise ValueError(f"unbound symbol: {name}")
+
+    def extend(self, params: list[str], args: list[Any]) -> Environment:
+        child = Environment(parent=self)
+        if len(params) != len(args):
+            raise ValueError(f"arity mismatch: expected {len(params)}, got {len(args)}")
+        for p, a in zip(params, args):
+            child.define(p, a)
+        return child
 
 
 def build_environment_module() -> Module:
