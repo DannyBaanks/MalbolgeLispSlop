@@ -121,5 +121,20 @@ and data). Labels and cases do not choose an image by input: one image runs all 
 H5-SCOPED-ARITHMETIC is `DEMONSTRATED_SCOPED`. Arbitrary arithmetic expressions, variable widths,
 general ALU pipelines, calls, and Lisp remain `NOT_DEMONSTRATED`.
 
+## Native guest call and return gate H6 (2026-10-18)
+
+[Gate H6](../evidence/h6_call_return_v1/protocol.md) adds one certified call/return
+sequence through the CLI's `slopsynth.call_return` path: `main: read x; call y, identity, x; write y; halt`
+and `identity: ret x`.
+One generated 259-cell image uses native Malbolge computed jump linkage via call pointer cell 2 (`image[2]=66`, 'B', `nop` opcode)
+and return pointer cell 3 (`image[3]=95`, '_', `jump` opcode), completing function invocation and return in exactly 5 CPU steps.
+The sealed campaign covers declared boundary cases `00 -> 00`, `01 -> 01`, `ff -> ff`, exhaustive single-byte inputs across
+all 256 byte values ($0..255$), EOF, spacing neutrality, and two negative mutants (call pointer and return pointer).
+Labels and cases do not choose an image by input: one image runs all cases.
+
+H6-SCOPED-CALL-RETURN is `DEMONSTRATED_SCOPED`. Arbitrary call stacks, general recursion,
+dynamic dispatch, and Lisp remain `NOT_DEMONSTRATED`.
+
+
 
 

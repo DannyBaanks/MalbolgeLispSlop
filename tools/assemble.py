@@ -137,13 +137,20 @@ def _sha(data: bytes) -> str:
 def _assemble_branch(args, placed, profile) -> int:
     from slopsynth.arithmetic import lower_arithmetic
     from slopsynth.branch import lower_branch
-    from slopsynth.ir import Add, Jump, Load, Store, Sub
+    from slopsynth.call_return import lower_call_return
+    from slopsynth.ir import Add, Call, Jump, Load, Return, Store, Sub
     from slopsynth.loop import lower_loop
     from slopsynth.memory import lower_memory
 
     if args.against is not None:
         print("--against requires a straight-line JSON goal", file=sys.stderr)
         return 3
+    has_call = any(
+        isinstance(op, (Call, Return))
+        for func in placed.module.functions
+        for block in func.blocks
+        for op in block.operations
+    )
     has_arith = any(
         isinstance(op, (Add, Sub))
         for func in placed.module.functions
@@ -162,7 +169,10 @@ def _assemble_branch(args, placed, profile) -> int:
         for block in func.blocks
         for op in block.operations
     )
-    if has_arith:
+    if has_call:
+        lower_fn = lower_call_return
+        scope_gate = "H6"
+    elif has_arith:
         lower_fn = lower_arithmetic
         scope_gate = "H5"
     elif has_mem:

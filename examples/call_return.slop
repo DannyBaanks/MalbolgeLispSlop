@@ -1,0 +1,14 @@
+name call_return
+case 00,00
+case 01,01
+case ff,ff
+entry main
+
+main:
+    read x
+    call y, identity, x
+    write y
+    halt
+
+identity:
+    ret x

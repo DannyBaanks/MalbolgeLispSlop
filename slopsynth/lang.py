@@ -18,6 +18,7 @@ from .ir import (
     Add,
     BasicBlock,
     BranchZero,
+    Call,
     Function,
     Halt,
     Jump,
@@ -27,6 +28,7 @@ from .ir import (
     Operation,
     Program,
     ReadA,
+    Return,
     Store,
     Sub,
     ValueRef,
@@ -38,8 +40,8 @@ MAX_ADDRESS = 1_162_261_467
 _NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.-]*$")
 _INTEGER_RE = re.compile(r"^-?(0|[1-9][0-9]*)$")
 _HEX_RE = re.compile(r"^[0-9A-Fa-f]*$")
-_MODULE_MNEMONICS = frozenset({"jump", "brz", "ld", "st", "add", "sub"})
-_DECLINED_MNEMONICS = frozenset({"call", "ret", "return"})
+_MODULE_MNEMONICS = frozenset({"jump", "brz", "ld", "st", "add", "sub", "call", "ret", "return"})
+_DECLINED_MNEMONICS: frozenset[str] = frozenset()
 
 
 class LangError(ValueError):
@@ -168,6 +170,24 @@ def _parse_operation(mnemonic: str, operands: list[str], line: int) -> object:
             if mnemonic == "add"
             else Sub(destination=operands[0], left=left, right=right)
         )
+    if mnemonic == "call":
+        if not operands:
+            raise LangError(line, "call takes a function name or destination and function")
+        if len(operands) == 1:
+            if not _is_identifier(operands[0]):
+                raise LangError(line, f"call function must be an identifier, got {operands[0]!r}")
+            return Call(function=operands[0], arguments=(), destination=None)
+        if not _is_identifier(operands[0]) or not _is_identifier(operands[1]):
+            raise LangError(line, "call destination and function must be identifiers")
+        destination = operands[0]
+        function = operands[1]
+        arguments = tuple(_parse_value(arg, line, "call argument") for arg in operands[2:])
+        return Call(function=function, arguments=arguments, destination=destination)
+    if mnemonic in ("ret", "return"):
+        if len(operands) > 1:
+            raise LangError(line, f"{mnemonic} takes at most one return value")
+        value = _parse_value(operands[0], line, "return value") if operands else None
+        return Return(value=value)
     raise LangError(line, f"unknown mnemonic {mnemonic!r}")
 
 
@@ -308,24 +328,74 @@ def parse_placed(text: str) -> Placed:
         for operation in block_operations:
             if not isinstance(
                 operation,
-                (ReadA, WriteA, Halt, BranchZero, Jump, Load, Store, Add, Sub),
+                (ReadA, WriteA, Halt, BranchZero, Jump, Load, Store, Add, Sub, Call, Return),
             ):
                 raise LangError(0, f"{operation!r} cannot be a module operation")
         basic_blocks.append(BasicBlock(name=label, operations=tuple(block_operations)))
 
+    called_names = {
+        op.function
+        for block in basic_blocks
+        for op in block.operations
+        if isinstance(op, Call)
+    }
+
     try:
-        function = Function(
-            name="main",
-            parameters=(),
-            entry_block=entry,
-            blocks=tuple(basic_blocks),
-        )
-        module = Module(
-            name=name,
-            entry_function=function.name,
-            functions=(function,),
-            cases=tuple(cases),
-        )
+        if not called_names:
+            function = Function(
+                name="main",
+                parameters=(),
+                entry_block=entry,
+                blocks=tuple(basic_blocks),
+            )
+            module = Module(
+                name=name,
+                entry_function=function.name,
+                functions=(function,),
+                cases=tuple(cases),
+            )
+        else:
+            block_by_name = {b.name: b for b in basic_blocks}
+            for called_fn in sorted(called_names):
+                if called_fn not in block_by_name:
+                    raise LangError(0, f"called function {called_fn!r} has no defined block")
+            caller_blocks = tuple(b for b in basic_blocks if b.name not in called_names)
+            caller_function = Function(
+                name=entry,
+                parameters=(),
+                entry_block=entry,
+                blocks=caller_blocks,
+            )
+            functions = [caller_function]
+            for called_fn in sorted(called_names):
+                callee_block = block_by_name[called_fn]
+                call_args = [
+                    op.arguments
+                    for b in caller_blocks
+                    for op in b.operations
+                    if isinstance(op, Call) and op.function == called_fn and op.arguments
+                ]
+                if call_args and all(isinstance(a, str) for a in call_args[0]):
+                    callee_params = tuple(str(a) for a in call_args[0])
+                else:
+                    ret_ops = [op for op in callee_block.operations if isinstance(op, Return)]
+                    if ret_ops and isinstance(ret_ops[0].value, str):
+                        callee_params = (ret_ops[0].value,)
+                    else:
+                        callee_params = ()
+                callee_function = Function(
+                    name=called_fn,
+                    parameters=callee_params,
+                    entry_block=callee_block.name,
+                    blocks=(callee_block,),
+                )
+                functions.append(callee_function)
+            module = Module(
+                name=name,
+                entry_function=caller_function.name,
+                functions=tuple(functions),
+                cases=tuple(cases),
+            )
     except ValueError as exc:
         raise LangError(0, f"module is not well formed: {exc}") from exc
     return Placed(name=name, program=None, module=module)
@@ -391,6 +461,14 @@ def _format_operations(operations: tuple[object, ...]) -> list[str]:
             lines.append(f"add {operation.destination},{operation.left},{operation.right}")
         elif isinstance(operation, Sub):
             lines.append(f"sub {operation.destination},{operation.left},{operation.right}")
+        elif isinstance(operation, Call):
+            if operation.destination is not None:
+                parts = [operation.destination, operation.function, *(str(a) for a in operation.arguments)]
+            else:
+                parts = [operation.function, *(str(a) for a in operation.arguments)]
+            lines.append(f"call {','.join(parts)}")
+        elif isinstance(operation, Return):
+            lines.append("ret" if operation.value is None else f"ret {operation.value}")
         else:  # pragma: no cover - the IR type already rejects anything else
             raise LangError(0, f"cannot render operation {operation!r}")
     return lines

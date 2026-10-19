@@ -63,12 +63,19 @@ class GrammarTests(unittest.TestCase):
         self.assertEqual(caught.exception.line, 2)
         self.assertIn("unknown mnemonic", caught.exception.message)
 
-    def test_call_and_return_are_declined_not_invented(self) -> None:
-        for mnemonic in ("call", "ret", "return"):
-            with self.subTest(mnemonic=mnemonic):
-                with self.assertRaises(LangError) as caught:
-                    parse_placed(f"name g\n{mnemonic}\n")
-                self.assertIn("no lowering", caught.exception.message)
+    def test_call_and_return_parse_into_ir(self) -> None:
+        source = (
+            "name g\ncase 00,00\nentry main\nmain:\n"
+            "    read x\n    call y, identity, x\n    write y\n    halt\n"
+            "identity:\n    ret x\n"
+        )
+        placed = parse_placed(source)
+        self.assertIsNotNone(placed.module)
+        self.assertEqual(len(placed.module.functions), 2)
+        caller = placed.module.functions[0]
+        callee = placed.module.functions[1]
+        self.assertEqual(caller.name, "main")
+        self.assertEqual(callee.name, "identity")
 
     def test_name_is_mandatory_and_unique(self) -> None:
         with self.assertRaises(LangError):

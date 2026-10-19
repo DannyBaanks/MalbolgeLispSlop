@@ -55,6 +55,9 @@ latest verified result is [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md).
 - Native arithmetic gate H5, add/sub lowering:
   [protocol](evidence/h5_arithmetic_v1/protocol.md).
   This is a scoped 259-cell lowering, not arbitrary ALU pipelines or a Lisp guest.
+- Native guest call and return gate H6, call/ret lowering:
+  [protocol](evidence/h6_call_return_v1/protocol.md).
+  This is a scoped 259-cell lowering, not arbitrary call stacks or a Lisp guest.
 - Full-system specification: [SYSTEM_SPEC.md](docs/SYSTEM_SPEC.md)
 - Quine research (fixed-3^19): [QUINE_RESEARCH.md](docs/QUINE_RESEARCH.md)
 - Specimen-100 research: [SPECIMEN100.md](docs/SPECIMEN100.md) — canonical REPL reproduced; regeneration and truncation research PARTIAL, no behavioral-equivalence claim

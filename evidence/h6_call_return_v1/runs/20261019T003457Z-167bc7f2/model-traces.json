@@ -1,0 +1,146 @@
+[
+  {
+    "events": [
+      [
+        0,
+        "jump",
+        0
+      ],
+      [
+        99,
+        "input",
+        null
+      ],
+      [
+        100,
+        "jump",
+        2
+      ],
+      [
+        67,
+        "jump",
+        3
+      ],
+      [
+        96,
+        "output",
+        null
+      ],
+      [
+        97,
+        "halt",
+        null
+      ]
+    ],
+    "stdin_hex": "00",
+    "steps": 5
+  },
+  {
+    "events": [
+      [
+        0,
+        "jump",
+        0
+      ],
+      [
+        99,
+        "input",
+        null
+      ],
+      [
+        100,
+        "jump",
+        2
+      ],
+      [
+        67,
+        "jump",
+        3
+      ],
+      [
+        96,
+        "output",
+        null
+      ],
+      [
+        97,
+        "halt",
+        null
+      ]
+    ],
+    "stdin_hex": "01",
+    "steps": 5
+  },
+  {
+    "events": [
+      [
+        0,
+        "jump",
+        0
+      ],
+      [
+        99,
+        "input",
+        null
+      ],
+      [
+        100,
+        "jump",
+        2
+      ],
+      [
+        67,
+        "jump",
+        3
+      ],
+      [
+        96,
+        "output",
+        null
+      ],
+      [
+        97,
+        "halt",
+        null
+      ]
+    ],
+    "stdin_hex": "ff",
+    "steps": 5
+  },
+  {
+    "events": [
+      [
+        0,
+        "jump",
+        0
+      ],
+      [
+        99,
+        "input",
+        null
+      ],
+      [
+        100,
+        "jump",
+        2
+      ],
+      [
+        67,
+        "jump",
+        3
+      ],
+      [
+        96,
+        "output",
+        null
+      ],
+      [
+        97,
+        "halt",
+        null
+      ]
+    ],
+    "stdin_hex": "42",
+    "steps": 5
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "cells": 259,
+  "compiler": "fixed19-scoped-call-return-v1",
+  "failure": null,
+  "native_vm_sha256": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "protocol": "h6_call_return_v1",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "runs_passed": 264,
+  "runs_total": 266,
+  "timestamp": "20261019T003457Z"
+}

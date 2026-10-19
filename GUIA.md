@@ -294,6 +294,56 @@ Verificar la campaña completa de Gate H5:
 python3 tools/verify_h5_arithmetic.py
 ```
 
+## Probar invocación y retorno de función nativa (Gate H6)
+
+Ensamblar el programa de llamada y retorno:
+
+```sh
+python3 tools/assemble.py examples/call_return.slop --round-trip --out build/call_return.mb
+```
+
+Salida real:
+
+```text
+call_return.slop: guest call_return, 259 cells
+  lowering=fixed19-scoped-call-return-v1 (scoped H6; general control flow remains unsupported)
+  label main: cells 0,99,100,96,97
+  label identity: cells 67
+  walk: accepted_cells=259 verdict=ACCEPTED
+  image_sha256=71cc9ff53a33be093e548e57dd2ef4a87f1c0c196d0d4b1ff354af086ba9145c
+round-trip: identical
+wrote build/call_return.mb (259 bytes)
+```
+
+Ejecutar la llamada a función identidad y su retorno en `build/bolge19`:
+
+```sh
+python3 - <<'PY'
+import subprocess
+for stdin in (bytes.fromhex('00'), bytes.fromhex('01'), bytes.fromhex('ff'), bytes.fromhex('42')):
+    r = subprocess.run(
+        ['build/bolge19', 'build/call_return.mb', '--loader', 'canonical', '--max-steps', '512'],
+        input=stdin, capture_output=True, check=True,
+    )
+    print(f'{stdin.hex()}: stdout={r.stdout.hex()}')
+PY
+```
+
+Salida real:
+
+```text
+00: stdout=00
+01: stdout=01
+ff: stdout=ff
+42: stdout=42
+```
+
+Verificar la campaña completa de Gate H6:
+
+```sh
+python3 tools/verify_h6_call_return.py
+```
+
 ## Verificar bloques aritméticos nativos
 
 El sintetizador ya puede encontrar y certificar dos bloques pequeños que

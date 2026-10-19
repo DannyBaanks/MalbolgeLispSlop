@@ -106,7 +106,7 @@ the echo text reaching `ubO` byte-identically, and a guest placed at cells
 compiler route with nothing GPLv3 in it, but its emitted language is still the
 three-opcode straight-line subset: the search lowering this table measures has
 not gained branch, memory, arithmetic, loops or calls, and the compiler route
-gained branch in Gate H2, scoped loop in Gate H3, scoped memory in Gate H4, and scoped arithmetic in Gate H5.
+gained branch in Gate H2, scoped loop in Gate H3, scoped memory in Gate H4, scoped arithmetic in Gate H5, and scoped call/return in Gate H6.
 
 ## Reproduction
 
