@@ -1,0 +1,36 @@
+{
+  "timestamp_utc": "20261020T083040Z",
+  "revision": "92ec38fba6cc505e4b75ff2ec89c84132a1e5662",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "python": "Python 3.12.3",
+  "zig": "0.16.0",
+  "suite_command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-t",
+    "."
+  ],
+  "suite_exit_status": 0,
+  "tests_run": 290,
+  "vm_build_command": [
+    "zig",
+    "build-exe",
+    "-O",
+    "ReleaseFast",
+    "src/bolge19.zig",
+    "-lc",
+    "-femit-bin=build/h9-v2/bolge19"
+  ],
+  "native_vm_sha256": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e",
+  "image_sha256": "64f2b9d86d9348df5af28f1e0c31cf8565b813794ade02c2abd50904b5c48bfe",
+  "canonical_cells": 4837558,
+  "final_campaign": "runs/20261020T082407Z-ae2db440",
+  "native_runs": 319,
+  "native_expectations_passed": 319,
+  "independent_model_runs": 2
+}

@@ -1,0 +1,51 @@
+{
+  "cells": 4837558,
+  "general_lisp": false,
+  "image_sha256": "64f2b9d86d9348df5af28f1e0c31cf8565b813794ade02c2abd50904b5c48bfe",
+  "input_contract": "(+ a b), single decimal digits, optional LF/CRLF, EOF; at most 9 bytes",
+  "labels": [
+    [
+      "main",
+      [
+        99
+      ]
+    ],
+    [
+      "input_bytes",
+      [
+        1419,
+        1539,
+        1659,
+        1779,
+        1899,
+        2019,
+        2139,
+        2259,
+        2379
+      ]
+    ],
+    [
+      "valid_frame",
+      [
+        4477499
+      ]
+    ],
+    [
+      "decimal_output",
+      [
+        4837255,
+        4837497
+      ]
+    ]
+  ],
+  "lowering": "fixed19-framed-digit-add-v2",
+  "max_steps": 10000000,
+  "name": "eval_add",
+  "output_contract": "decimal ASCII 0..18; malformed frames up to 9 bytes halt without output",
+  "profile": "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/profiles/fixed19.json",
+  "schema_version": 2,
+  "walk": {
+    "accepted": true,
+    "accepted_cells": 4837558
+  }
+}

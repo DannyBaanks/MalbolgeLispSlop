@@ -1,0 +1,6 @@
+{
+  "cwd": "/tmp",
+  "returncode": 0,
+  "stdout": "Built eval_add image: /tmp/tmpfqu_p4d_/add.mb (4837558 bytes)\nWrote manifest: /tmp/tmpfqu_p4d_/add.json\n",
+  "stderr": ""
+}

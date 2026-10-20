@@ -1,0 +1,26 @@
+F
+======================================================================
+FAIL: test_native_addition_all_digit_pairs (tests.test_native_eval_add_v2.NativeEvalAddV2Tests.test_native_addition_all_digit_pairs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_native_eval_add_v2.py", line 13, in test_native_addition_all_digit_pairs
+    image, manifest = generate_eval_add_image()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tools/build_eval_add.py", line 31, in generate_eval_add_image
+    built = lower_eval_add(module, profile)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/slopsynth/eval_add.py", line 35, in lower_eval_add
+    raise AssemblyError(
+slopsynth.assemble.AssemblyError: H9 NOT_DEMONSTRATED: native two-operand Lisp addition is unavailable; the historical v1 lowering discards the first operand (see docs/H9_CORRECTION.md)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_native_eval_add_v2.py", line 15, in test_native_addition_all_digit_pairs
+    self.fail(f"H9 still unavailable: {exc}")
+AssertionError: H9 still unavailable: H9 NOT_DEMONSTRATED: native two-operand Lisp addition is unavailable; the historical v1 lowering discards the first operand (see docs/H9_CORRECTION.md)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)

@@ -1,0 +1,14 @@
+[
+  {
+    "status": "HALT",
+    "stdin_hex": "282b2031203129",
+    "stdout_hex": "32",
+    "steps": 4837453
+  },
+  {
+    "status": "HALT",
+    "stdin_hex": "282b2039203929",
+    "stdout_hex": "3138",
+    "steps": 4837454
+  }
+]

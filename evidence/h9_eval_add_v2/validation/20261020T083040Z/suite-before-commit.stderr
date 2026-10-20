@@ -1,0 +1,19 @@
+....................................................................................................................................................../usr/lib/python3.12/json/encoder.py:260: ResourceWarning: unclosed file <_io.FileIO name=5 mode='rb' closefd=True>
+  def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.12/json/encoder.py:260: ResourceWarning: unclosed file <_io.FileIO name=6 mode='rb' closefd=True>
+  def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..................................................................................................F........................................
+======================================================================
+FAIL: test_cli_outputs_are_reproducible_and_existing_paths_are_refused (tests.test_synth_manifest.SynthesisManifestTests.test_cli_outputs_are_reproducible_and_existing_paths_are_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/test_synth_manifest.py", line 475, in test_cli_outputs_are_reproducible_and_existing_paths_are_refused
+    self.assertEqual(completed.returncode, 0, completed.stderr)
+AssertionError: 2 != 0 : b'usage: synthesize_guest.py [-h] [--profile PROFILE] --output OUTPUT --manifest\n                           MANIFEST --max-cells MAX_CELLS --max-nodes\n                           MAX_NODES --max-steps MAX_STEPS --max-address\n                           MAX_ADDRESS [--timeout-seconds TIMEOUT_SECONDS]\n                           [--address-space-bytes ADDRESS_SPACE_BYTES]\n                           [--output-bytes OUTPUT_BYTES]\n                           goal\nsynthesize_guest.py: error: generator sources differ from generator_revision; commit them first\n'
+
+----------------------------------------------------------------------
+Ran 289 tests in 33.297s
+
+FAILED (failures=1)

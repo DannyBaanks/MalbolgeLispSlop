@@ -589,3 +589,22 @@ PASS: 319 native runs, 2 independent model runs; 4837558 canonical cells
 
 La imagen nueva ocupa 4.837.558 celdas; la afirmación antigua de 259 celdas no se
 recuperó. La v1 y sus resultados refutados se conservan como evidencia histórica.
+
+
+Verificación final de esta revisión:
+
+```sh
+python3 -B -m unittest discover -s tests -t .
+```
+
+Salida real (fragmento final):
+
+```text
+Ran 290 tests in 32.873s
+
+OK
+```
+
+El paquete de validación final conserva también la regresión inicial y el primer
+fallo de procedencia Git, antes de guardar la implementación. La comprobación de
+reproducibilidad no se desactivó.

@@ -1,0 +1,20 @@
+{
+  "cells": 4837558,
+  "command": [
+    "tools/verify_h9_eval_add.py",
+    "--engine",
+    "build/h9-v2/bolge19"
+  ],
+  "cwd": "/home/danny/Development/ISyCo Git/MalbolgeLispSlop",
+  "exit_status": 0,
+  "failure": null,
+  "model_runs": 2,
+  "native_runs": 319,
+  "native_vm_sha256": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e",
+  "passed_expectations": 319,
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "protocol": "h9_eval_add_v2",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "scope": "fixed (+ a b) frame, single decimal digits, optional LF/CRLF then EOF; general Lisp NOT_DEMONSTRATED",
+  "timestamp_utc": "20261020T082407Z"
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "command": [
+      "python3",
+      "-B",
+      "tools/build_eval_add.py",
+      "--out",
+      "build/h9-v2/eval_add.mb",
+      "--manifest",
+      "build/h9-v2/eval_add.manifest.json"
+    ],
+    "exit_status": 0,
+    "stdout": "Built eval_add image: build/h9-v2/eval_add.mb (4837558 bytes)\nWrote manifest: build/h9-v2/eval_add.manifest.json\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "tools/assemble.py",
+      "examples/eval_add.slop",
+      "--round-trip",
+      "--out",
+      "build/h9-v2/assembled.mb"
+    ],
+    "exit_status": 0,
+    "stdout": "eval_add.slop: guest eval_add, 4837558 cells\n  lowering=fixed19-framed-digit-add-v2 (scoped H9; general control flow remains unsupported)\n  label main: cells 99\n  label input_bytes: cells 1419,1539,1659,1779,1899,2019,2139,2259,2379\n  label valid_frame: cells 4477499\n  label decimal_output: cells 4837255,4837497\n  walk: accepted_cells=4837558 verdict=ACCEPTED\n  image_sha256=64f2b9d86d9348df5af28f1e0c31cf8565b813794ade02c2abd50904b5c48bfe\nround-trip: identical\nwrote build/h9-v2/assembled.mb (4837558 bytes)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "build/h9-v2/bolge19",
+      "--loader",
+      "canonical",
+      "--max-steps",
+      "10000000",
+      "build/h9-v2/eval_add.mb"
+    ],
+    "stdin": "(+ 9 9)",
+    "exit_status": 0,
+    "stdout": "18",
+    "stderr": "bolge19: imagen=4837558 celdas zona=[12106,24212) pat=[581130699,46,581130699...]\nbolge19: HALT steps=4837454 c=4837557 d=92 a=56 elapsed=0s\n"
+  }
+]

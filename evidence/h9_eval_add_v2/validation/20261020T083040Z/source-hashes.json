@@ -1,0 +1,19 @@
+{
+  "GUIA.md": "82297f490f502846c3c6a5ed68db4ca469bb873f2501cbd049dbb8f0e3c6fcc6",
+  "README.md": "0ccb30e17640df058fef4a13b701387eb483b158192b5ecc5b886ff16e0ba65f",
+  "docs/H9_CORRECTION.md": "1dc82ca0ab7a7d013acf024ade60b7eea207bfe78ca42423a0adb63542e38d6e",
+  "docs/LISP_CONFORMANCE.md": "b9222d22d6c02daf4691d1ea2d0a0d2e2760c1ec58389c3753d51cd851c65fff",
+  "evidence/h9_eval_add_v2/protocol.md": "6d88b331e8a7cbc91984153c92a73dc040b80fca774e1fa5bd2061269d335621",
+  "examples/eval_add.slop": "4f6a08419df809c32782e32da7935497d3cbd4589d2262a5dfc0ab0dd71e0772",
+  "guest_ir/lisp/evaluator.py": "752df0db73c9ff1e22f0596ac6b09d7c9c98fc2af98659e9f1b24f44b184bc4a",
+  "slopsynth/_native_eval_add.py": "2d43b547686164404a10e64ccffac6deb2be4622f3bca739e0dcfe057bb4da07",
+  "slopsynth/eval_add.py": "08b32b8e36de022cbccecd2a039344591eb69b470bb1aecd6ed0d904fb240e7e",
+  "slopsynth/ir.py": "bb8153e5b0a08fb22a5825e390c9a5511727785564872a3d8bf8cc2eb57b8b96",
+  "slopsynth/ir_json.py": "cf49ff629e57a0e48889077b2968f95343937dc125bfb099e15fee8019f7c2e4",
+  "slopsynth/lang.py": "254d708c3d49dd4f154a8eb0adf4984ca08c1acf0e6dc25aa84da96d225b70bc",
+  "tests/test_native_eval_add.py": "1aa50e8b58b84def388328196a45023ae371016c92ebfeffc2361c6db8055708",
+  "tests/test_native_eval_add_v2.py": "d0559cc7373ac4c70c2b78bbaddbffc8fbb9cfa050fef39a0b6b13c2c4edee3c",
+  "tools/assemble.py": "dfc110cede1fb6fa10dee11322ca3918ffa73f07afe741c23b78d6dbbbcef4b9",
+  "tools/build_eval_add.py": "21bc7980929bbf608e224383c8325a1acfd76d936b6ea5b875a7b2611856eff8",
+  "tools/verify_h9_eval_add.py": "0b8df50edb48e4456c78c4b6846ea59ebfc84a3580326b6ef73c98a0ef0a977d"
+}

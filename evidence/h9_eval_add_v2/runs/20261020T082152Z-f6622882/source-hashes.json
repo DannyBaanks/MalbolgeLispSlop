@@ -1,0 +1,9 @@
+{
+  "profiles/fixed19.json": "6cc0afa10b050a36673e131b2efc69fa29e9589136f52b5f27a7dabe23b6ac1f",
+  "slopsynth/_native_eval_add.py": "e035c01c88f4bee93a98d7557dd07f4d6b3584c7e9df9318e6494629def13133",
+  "slopsynth/eval_add.py": "3882a570aececc42a133b7711b184d1541a63ce6427603c39f488c1eeb9099a0",
+  "slopsynth/ir.py": "bb8153e5b0a08fb22a5825e390c9a5511727785564872a3d8bf8cc2eb57b8b96",
+  "slopsynth/model.py": "9e043c17f3c71340c0d15f180717c774e412cfe9792d0fb7d6d6b07d0fa9fb4c",
+  "src/bolge19.zig": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+  "tools/verify_h9_eval_add.py": "0b8df50edb48e4456c78c4b6846ea59ebfc84a3580326b6ef73c98a0ef0a977d"
+}
