@@ -1,145 +1,162 @@
 # MalbolgeLispSlop
 
-> **Humano ↔ IA ↔ Evidencia.**  
-> Resultados que nacen de la iteración conjunta y la verificación empírica estricta, no de una sola autoría.
+> **Humano ↔ IA ↔ Evidencia.** Resultados construidos mediante colaboración y verificación reproducible.
 
-**MalbolgeLispSlop** es un prototipo de dialecto Lisp, evaluador host y herramientas de síntesis para la máquina virtual Malbolge de 19 trits fijos (`fixed-3^19` / `bolge19`), diseñado desde cero para ejecutar expresiones Lisp de forma compacta, modular y verificable, sin requerir compiladores monolíticos ni cientos de megabytes de tablas de salto infladas.
+MalbolgeLispSlop reúne un evaluador Lisp en Python, una representación intermedia
+(IR) y herramientas de síntesis para la VM Malbolge de 19 trits fijos
+(`fixed-3^19` / `bolge19`). **H9 v2 ejecuta dentro de la VM la suma de dos dígitos
+en el formato fijo `(+ a b)`**, con salida decimal de `0` a `18`.
 
-> **H9 v2 (2026-10-20): suma nativa reparada.** Acepta el marco fijo `(+ a b)` con dos dígitos decimales, LF/CRLF opcional y EOF. Imprime `0..18` y valida el marco dentro de la VM. La imagen tiene **4.837.558 celdas**; **319 corridas nativas y dos corridas del modelo** verificadas. La versión v1 de 259 celdas sigue retirada: [corrección histórica](docs/H9_CORRECTION.md), [protocolo v2](evidence/h9_eval_add_v2/protocol.md). El intérprete Lisp general continúa pendiente.
+La ejecución nativa de Lisp general continúa en desarrollo. El evaluador Python,
+el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
----
+## Estado verificado — 20 de octubre de 2026
 
-## Sobre el nombre: ¿Por qué "Slop"?
+| Componente | Capacidad | Alcance de la evidencia |
+| :--- | :--- | :--- |
+| **H9 v2 nativo** | Guarda ambos operandos, valida el marco fijo y calcula la suma en Malbolge | Las 100 parejas de dígitos con tres finales de entrada; controles negativos y contraste con el modelo |
+| **Evaluador host** | Evaluación en Python, entornos léxicos, clausuras y funciones numéricas, de listas y de orden superior | Pruebas de integración del host; no equivalen a ejecución Lisp general en la VM |
+| **Imagen de bootstrap** | `input; output; halt`, 259 celdas canónicas | Prueba de emisión, cargador y E/S; no contiene el evaluador general |
+| **IR Lisp** | Módulos y contratos para el futuro lowering nativo | Varios cuerpos IR siguen siendo scaffolding; el evaluador general no está bajado a Malbolge |
+| **Matriz completa de Lisp** | Inventario de funciones y semánticas pendientes | `INCOMPLETE`; pasar la suite no completa esta matriz |
 
-En el discurso contemporáneo sobre inteligencia artificial, la palabra **"slop"** se utiliza con frecuencia como una etiqueta despectiva para descalificar a priori el trabajo asistido por modelos de lenguaje, asumiendo que la IA solo es capaz de generar texto superficial o código de relleno incapaz de abordar problemas matemáticos complejos o sistemas hostiles.
+La [validación final](evidence/h9_eval_add_v2/validation/20261020T083040Z/REPORT.md)
+registra **290 pruebas pasando**, **319 ejecuciones nativas verificadas** y
+**dos ejecuciones del modelo de transiciones**. Los totales se refieren a esa
+revisión y están respaldados por salidas y hashes conservados en el repositorio.
 
-**Este proyecto toma esa etiqueta y la subvierte:**
+## H9 v2: suma nativa con alcance explícito
 
-Malbolge es ampliamente reconocido como el lenguaje de programación esotérico más difícil jamás creado: aritmética ternaria, auto-modificación de código en cada ciclo de instrucción, la operación no-lineal *crazy*, y un espacio de estados hostil a la intuición humana tradicional.
-
-Demostrar que un sistema colaborativo **Humano + IA** puede:
-1. Sintetizar semillas discriminadoras algebraicas en Malbolge,
-2. Construir bifurcaciones condicionales y bucles con permanencia de salto (JMP immortality),
-3. Diseñar cadenas de involución de memoria arbitraria a través de los 256 bytes,
-4. Implementar llamadas a función y retornos en saltos computados de 5 pasos,
-5. Desarrollar un evaluador Lisp completo estilo McCarthy (con tagged pointers, bump allocator, ambientes léxicos, clausuras, combinadores funcionales y REPL), y
-6. Respaldar cada compuerta con **272 pruebas unitarias pasando al 100%** y evidencia forense ejecutable byte a byte en hardware bare-metal...
-
-...prueba que el trabajo riguroso guiado por intención humana, razonamiento de modelo y verificación matemática estricta está en las antípodas del contenido desechable. Si resolver Lisp sobre la máquina de Malbolge es *"slop"*, entonces el *slop* acaba de resolver varios de los desafíos teóricos más intrincados de la informática esotérica.
-
----
-
-## 🔬 Honestidad Técnica: Separando Infraestructura de Ejecución Nativa
-
-Siguiendo el rigor epistemológico de **ISyCo**, no vendemos stubs como productos terminados. Es fundamental distinguir con precisión dos realidades del proyecto:
-
-1. **La Infraestructura Demostrada:**
-   - **Compuertas H1 a H7 en Malbolge Real:** Síntesis y ejecución verificada de primitivas de bajo nivel en hardware bare-metal (`build/bolge19`): saltos condicionales (`brz`), bucles inmortales, lectura/escritura de memoria arbitraria (involución con byte 121), aritmética con semillas discriminadoras, llamadas y retornos en exactamente 5 ciclos de CPU, y cuenta regresiva compuesta.
-   - **Arquitectura Guest IR y Modelo Teórico:** Diseño y verificación de 13 subsistemas (empaquetado de tagged pointers en 1 sola celda de 19 trits con $13 \times 2^{26} < 3^{19}$, heap bump allocator, streaming reader/printer, y evaluador McCarthy en host respaldado por **272 pruebas unitarias pasando al 100%**).
-   - **Máquina Virtual Forense:** Implementación de `bolge19` en Zig para $3^{19}$ celdas con cargador canónico estricto.
-
-2. **La Realidad de la Imagen `build/lispslop-guest.mb` (Frontera en Progreso):**
-   - La imagen de 259 celdas generada por `tools/build_lisp_guest.py` es actualmente un **Bootstrap Harness Probe** nativo (`input; output; halt`). Demuestra que el pipeline de síntesis puede emitir imágenes canónicas de 259 celdas que el cargador estricto de la VM acepta y ejecuta limpiamente.
-   - En `guest_ir/lisp/evaluator.py`, la semántica McCarthy existe y pasa todos los tests en Python, pero su representación en el módulo IR contiene por ahora `operations=(Return("form"),)`.
-   - **Por tanto, la ejecución de expresiones Lisp arbitrarias 100% dentro de la máquina de estados de Malbolge permanece como `[EN PROGRESO / NOT_DEMONSTRATED en VM]`**. 
-   - La meta final sigue siendo bajar (*lower*) el evaluador de IR hacia secuencias de opcodes de Malbolge ensamblando los bloques H1–H7 para reemplazar el monolito inflado de 371 MB de LMFAO, pero estamos construyendo la infraestructura de compilación paso a paso, sin proclamar victorias prematuras.
-
----
-
-## 📐 Midiendo Sistemas: La Evidencia en Números
-
-> *"No somos vergeros en palabras, sino en evidencia: cada claim en este repositorio tiene un archivo de entrada binario, una captura de salida stdout/stderr, un límite de pasos, y un hash SHA-256 inmutable verificado en hardware real."*
-
-| Dimensión de Sistema | Estado Previo (LMFAO / HeLL 2020) | MalbolgeLispSlop (ISyCo 2026) | Estado de Evidencia |
-| :--- | :--- | :--- | :--- |
-| **Micro-kernels de Control de Flujo** | Tablas gigantescas no estructuradas | **259 celdas canónicas por compuerta** | `[DEMONSTRATED]` (Gates H1–H7 en VM) |
-| **Overhead de Invocación (`call`/`ret`)** | No estructurado | **Exactamente 5 ciclos de CPU** | `[DEMONSTRATED]` ($M[2]=66$, $M[3]=95$) |
-| **Involución de Memoria Arbitraria** | N/A | **100% de los 256 bytes cubiertos** | `[DEMONSTRATED]` (Byte crazy $121$) |
-| **Bifurcación Condicional (`brz`)** | N/A | **3-way landing cascade** | `[DEMONSTRATED]` (Celdas $1, 2, 247$) |
-| **Espacio de Direccionamiento** | Tablas estáticas desbordadas | **Fixed-$3^{19}$** ($1,162,261,467$ celdas) | `[DEMONSTRATED]` (Zig `bolge19`) |
-| **Empaquetado de Datos (Tagged Pointers)** | Sin tipado estructurado en celda | **13 tipos en 1 sola celda de 19-trits** | `[DEMONSTRATED]` (Tag 4b + Payload 26b) |
-| **Evaluador McCarthy en Host/IR** | Intérprete estático monolítico | **13 subsistemas modulares (Python/IR)** | `[DEMONSTRATED]` (272/272 tests verdes) |
-| **Imagen Probe de Bootstrap** | N/A | **259 bytes canónicos (`ubO`)** | `[DEMONSTRATED]` (62 corridas en VM) |
-| **Suma nativa H9 v2** | N/A | Marco fijo `(+ a b)`, dígitos `0..9`, salida decimal `0..18`; 4.837.558 celdas | `[DEMONSTRATED_SCOPED]` ([protocolo](evidence/h9_eval_add_v2/protocol.md)) |
-| **Evaluación Lisp Dinámica General** | 371 MB compilados con LMFAO | **Lowering de AST general a Malbolge** | `[IN_PROGRESS]` |
-| **Corridas Forenses de VM en Disco** | 0 evidencia ejecutable | **>1,000 corridas selladas SHA-256** | `[DEMONSTRATED]` (Replay bit a bit) |
-
----
-
-## Filosofía de Colaboración (ISyCo)
-
-Siguiendo los principios de **ISyCo (Sistemas Interactivos para la Coevolución)**:
-- **Colaboración, no jerarquía:** El humano y la IA participan como pares. El humano aporta dirección, intuición de diseño, formulación de preguntas y límites claros; el modelo aporta exploración de espacio de estados, síntesis de código y análisis formal.
-- **Evidencia como árbitro supremo:** Ninguna afirmación técnica es válida sin una prueba ejecutable, un hash SHA-256 inmutable y una corrida forense en la máquina virtual objetivo (`build/bolge19`).
-
----
-
-## Estado del Proyecto
-
-- **Gates H1 a H7 (Sustrato Nativo en Malbolge):**
-  - **H1:** Layout canónico con alineación y padding de opcodes ([protocolo](evidence/hell_frontend_v1/protocol.md)).
-  - **H2:** Bifurcación condicional nativa (`brz` if/else, 259 celdas) ([protocolo](evidence/h2_branch_v1/protocol.md)).
-  - **H3:** Bucle iterativo con permanencia de salto ([protocolo](evidence/h3_loop_v1/protocol.md)).
-  - **H4:** Memoria dinámica (`store`/`load` mediante involución con byte 121) ([protocolo](evidence/h4_memory_v1/protocol.md)).
-  - **H5:** Aritmética modular (`add`/`sub` con semillas discriminadoras) ([protocolo](evidence/h5_arithmetic_v1/protocol.md)).
-  - **H6:** Llamada y retorno de funciones (`call`/`ret` en 5 pasos de CPU) ([protocolo](evidence/h6_call_return_v1/protocol.md)).
-  - **H7:** Cuenta regresiva compuesta (`loop + branch + sub` simultáneos) ([protocolo](evidence/h7_countdown_v1/protocol.md)).
-- **Gate H8 (Infraestructura Guest y Bootstrap Probe):**
-  - **H8:** Conformance del arnés guest (62 corridas de VM, 13 subsistemas IR, 272 tests) ([protocolo](evidence/lisp_conformance_v1/protocol.md)).
-- **Gate H9 v2 (suma nativa de dos dígitos):** Guarda ambos operandos, decodifica los dígitos en un circuito lógico nativo de CRAZY/ROT y produce salida decimal con acarreo. Se comprobaron las 100 parejas con tres finales de entrada, marcos inválidos, mutaciones, neutralidad de saltos de línea y dos corridas del modelo de transiciones. Requiere EOF. No admite enteros de varias cifras, anidamiento ni sintaxis Lisp general. La v1 sigue refutada.
-- **Guest Runtime & Conformance (Tasks 3–10):**
-  - Reporte completo y arquitectura modular: [docs/LISP_CONFORMANCE.md](docs/LISP_CONFORMANCE.md).
-  - Módulos de IR en `guest_ir/lisp/`: tagged values, bump heap allocator, lexical environments, reader, printer, evaluator, closures, numeric/list builtins, higher-order combinators, REPL step, y serialización versionada de estado.
-  - Imagen canónica generada: `build/lispslop-guest.mb` (259 celdas, probe bootstrap canónico aceptado por `walk_canonical`).
-  - La imagen v2 se construye por separado en `build/h9-v2/eval_add.mb`. La imagen histórica v1 permanece bajo `evidence/h9_eval_add_v1/`.
-  - El manifiesto v2 declara el formato fijo, el límite de pasos, sus etiquetas y SHA-256.
-  - **Frontera abierta:** Lowering generalizado de formas dinámicas arbitrarias a código máquina de Malbolge.
-
----
-
-## Requisitos y Compilación
-
-Requisitos:
-- **Zig 0.16.0** (para compilar la VM forense `bolge19`)
-- **Python 3.12+**
-
-```sh
-# 1. Compilar el motor bolge19 y dependencias
-./tools/build.sh
-
-# 2. Ejecutar la suite completa de pruebas
-PYTHONPATH=. python3 -m unittest discover -s tests -t .
-
-# 3. Construir la imagen canónica de Malbolge del Guest Lisp
-make build-lisp-guest
-
-# 4. Probar la conformidad del guest y matriz
-make test-conformance
-make test-lisp-matrix
-
-# 5. Suma nativa H9 v2 (dos dígitos, marco fijo, EOF)
-python3 -B tools/build_eval_add.py --out build/h9-v2/eval_add.mb --manifest build/h9-v2/eval_add.manifest.json
-printf '%s' '(+ 9 9)' | build/bolge19 --loader canonical --max-steps 10000000 build/h9-v2/eval_add.mb
-# Salida decimal: 18
-python3 -B tools/verify_h9_eval_add.py
-
-# 6. Verificación del probe de bootstrap y helpers host (no conformidad Lisp nativa)
-make verify-lisp-conformance
+```text
+(+ 0 0)  →  0
+(+ 1 1)  →  2
+(+ 3 2)  →  5
+(+ 9 9)  →  18
 ```
 
-Para una guía paso a paso en español de cada compuerta y comando, consulta la [Guía Humana](GUIA.md).
+Contrato de entrada y salida:
 
----
+- Entrada exacta `(+ a b)`, donde `a` y `b` son dígitos ASCII de `0` a `9`.
+- Se admite LF o CRLF opcional, seguido de **EOF**: hay que cerrar stdin.
+- El contrato admite como máximo nueve bytes de entrada.
+- Salida decimal de `0` a `18`, sin salto de línea.
+- Los marcos mal formados dentro de ese límite terminan sin salida.
+- Enteros de varias cifras, anidamiento, otros formatos y flujos abiertos quedan fuera de este backend.
 
-## Licencia y Reconocimientos
+El programa conserva los operandos en memoria y ejecuta un circuito nativo de
+CRAZY/ROT con decodificación de dígitos y salida decimal con acarreo. Python
+construye la imagen; durante la ejecución, la VM recibe únicamente esa imagen y
+los bytes de entrada. Los casos de prueba no seleccionan la implementación.
 
-- Código bajo licencia MIT (ver [LICENSE](LICENSE)).
-- Diseñado y desarrollado en colaboración **Danny Baanks + Antigravity (Google DeepMind)** como parte del ecosistema de investigación ISyCo.
+La imagen tiene **4.837.558 celdas canónicas** —unos 4,84 MB de fuente sin
+espaciado— y las entradas válidas verificadas requieren **4.837.453 o 4.837.454
+pasos de VM**, excluyendo el HALT terminal. Estas son medidas de la VM, no ciclos
+físicos de CPU.
 
-## Correcciones del modelo host y cobertura
+La [campaña H9 v2](evidence/h9_eval_add_v2/protocol.md) conserva:
 
-El REPL conecta los helpers numéricos, de listas, de orden superior y combinadores; `.F` enumera solo lo registrado. `+`, `+'`, `-`, `-'` y `*` usan módulo 2^26. Se conservan los apóstrofos de identificadores y se exige una forma completa por paso.
+| Comprobación | Ejecuciones nativas |
+| :--- | ---: |
+| 100 parejas × EOF, LF+EOF y CRLF+EOF | 300 |
+| Marcos inválidos representativos | 10 |
+| Neutralidad del espaciado de la imagen | 3 |
+| Mutaciones de las lecturas de operandos y de la salida | 3 |
+| Contraejemplos de la imagen histórica v1 | 3 |
+| **Total de expectativas verificadas** | **319** |
 
-Los snapshots v2 conservan clausuras, recursión y entornos léxicos; leen snapshots v1. Los valores host opacos se rechazan explícitamente. Una importación inválida no modifica la sesión.
+Los mutantes y contraejemplos deben fallar la suma esperada: se contabilizan como
+controles negativos, no como sumas correctas. Además, el modelo Python de las
+transiciones coincide con la VM en `(+ 1 1) → 2` y `(+ 9 9) → 18`.
 
-`tools/run_lisp_conformance.py` devuelve 2/`INCOMPLETE` si faltan casos positivos/negativos o filas implementadas, incluso si no hubo fallos. La matriz declarada incluida permanece incompleta. Pasar tests del host o del probe de eco no cierra esa matriz.
+**H9 v1 sigue refutado.** Su imagen de 259 celdas descartaba el primer operando;
+`(+ 0 0)` y `(+ 1 1)` también imprimían `3`. Se conserva su evidencia histórica y
+se rechaza la plantilla IR antigua de salida de un byte. La versión nueva usa
+`WriteDecimal` para distinguir salida decimal de salida de bytes. Véase la
+[corrección histórica y transición a v2](docs/H9_CORRECTION.md).
+
+## Construir y probar H9
+
+Requisitos de la revisión verificada: **Python 3.12+** y **Zig 0.16.0**.
+
+Desde la raíz del repositorio:
+
+```sh
+./tools/build.sh
+python3 -B tools/build_eval_add.py --out build/h9-v2/eval_add.mb --manifest build/h9-v2/eval_add.manifest.json
+printf '%s' '(+ 9 9)' | build/bolge19 --loader canonical --max-steps 10000000 build/h9-v2/eval_add.mb
+```
+
+Stdout esperado: `18`, sin salto de línea. La VM escribe la telemetría de HALT en
+stderr. La tubería del ejemplo cierra la entrada; un flujo que permanezca abierto
+puede dejar el programa esperando EOF.
+
+Para repetir la campaña y crear un directorio de evidencia nuevo:
+
+```sh
+python3 -B tools/verify_h9_eval_add.py
+```
+
+La [guía humana](GUIA.md) contiene los comandos y salidas de la revisión, estados
+de ejecución y límites del contrato.
+
+## Suite de pruebas y modelo host
+
+Para instalar las dependencias de desarrollo en un entorno aislado:
+
+```sh
+python3 -m venv build/venv
+. build/venv/bin/activate
+python3 -m pip install -r requirements-dev.txt
+python3 -B -m unittest discover -s tests -t .
+```
+
+Z3 se usa en construcción y verificación; la imagen Malbolge generada no depende
+de Python ni de Z3 durante su ejecución.
+
+El host conecta los helpers numéricos, de listas, de orden superior y combinadores.
+`.F` anuncia las funciones registradas. `+`, `+'`, `-`, `-'` y `*` operan módulo
+`2^26`. El lector conserva los apóstrofos de identificadores y exige una sola forma
+completa por paso del REPL.
+
+Los snapshots v2 conservan clausuras, recursión y entornos léxicos, y permiten
+importar datos v1. Los valores opacos del host se rechazan explícitamente al
+exportar; una importación inválida conserva la sesión anterior.
+
+El runner de conformidad distingue `PASS` (código 0), `FAIL` (1) e `INCOMPLETE`
+(2). Cero casos o cobertura pendiente nunca producen un éxito de conformidad.
+La matriz de Lisp general incluida permanece incompleta.
+
+## Primitivas y evidencia anterior
+
+Los protocolos H1–H8 documentan plantillas y experimentos previos. Sus resultados
+se limitan a los casos registrados; no acreditan un compilador genérico de IR ni
+un intérprete Lisp nativo completo.
+
+| Compuerta | Protocolo |
+| :--- | :--- |
+| H1: frontend y layout canónico | [Protocolo](evidence/hell_frontend_v1/protocol.md) |
+| H2: plantillas de bifurcación | [Protocolo](evidence/h2_branch_v1/protocol.md) |
+| H3: plantilla de bucle | [Protocolo](evidence/h3_loop_v1/protocol.md) |
+| H4: plantilla de memoria | [Protocolo](evidence/h4_memory_v1/protocol.md) |
+| H5: aritmética acotada | [Protocolo](evidence/h5_arithmetic_v1/protocol.md) |
+| H6: llamada y retorno acotados | [Protocolo](evidence/h6_call_return_v1/protocol.md) |
+| H7: cuenta regresiva compuesta | [Protocolo](evidence/h7_countdown_v1/protocol.md) |
+| H8: helpers host y probe de bootstrap | [Protocolo](evidence/lisp_conformance_v1/protocol.md) |
+
+La [descripción de la arquitectura](docs/LISP_CONFORMANCE.md) distingue los helpers
+del host, los módulos IR y el bootstrap. Un hash acredita la identidad del artefacto;
+las entradas, salidas y controles determinan qué comportamiento demuestra.
+
+## Sobre el nombre y la colaboración
+
+“Slop” es una reapropiación deliberada de una etiqueta usada para descalificar el
+trabajo asistido por IA. El proyecto responde con código inspeccionable, pruebas
+reproducibles y correcciones explícitas cuando una afirmación queda refutada.
+
+Desarrollado por **Danny Baanks** en colaboración con **Antigravity (Google
+DeepMind)** y **Codex (OpenAI)**, dentro del ecosistema de investigación ISyCo.
+
+## Licencia
+
+Código bajo [licencia MIT](LICENSE). Consulte también los
+[avisos de terceros](THIRD_PARTY_NOTICES.md).
