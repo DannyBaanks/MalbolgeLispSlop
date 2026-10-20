@@ -29,6 +29,17 @@ class WriteA:
 
 
 @dataclass(frozen=True, slots=True)
+class WriteDecimal:
+    """Write a nonnegative guest integer as decimal ASCII (module backend only)."""
+
+    value: str
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.value, str) or not self.value:
+            raise ValueError("decimal output value must be a non-empty name")
+
+
+@dataclass(frozen=True, slots=True)
 class Halt:
     """Terminate the guest normally."""
 
@@ -90,7 +101,7 @@ class Return:
 
 
 ModuleOperation: TypeAlias = (
-    Operation | BranchZero | Jump | Load | Store | Add | Sub | Call | Return
+    Operation | WriteDecimal | BranchZero | Jump | Load | Store | Add | Sub | Call | Return
 )
 
 
@@ -107,7 +118,7 @@ class BasicBlock:
         if any(
             not isinstance(
                 operation,
-                (ReadA, WriteA, Halt, BranchZero, Jump, Load, Store, Add, Sub, Call, Return),
+                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, Jump, Load, Store, Add, Sub, Call, Return),
             )
             for operation in self.operations
         ):

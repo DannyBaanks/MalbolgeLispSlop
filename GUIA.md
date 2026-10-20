@@ -452,7 +452,9 @@ make verify-lisp-conformance
 
 
 
-## Correcciones de auditoría (2026-10-20)
+## Correcciones de auditoría (2026-10-20, estado histórico de 2182cce)
+
+Para el H9 actual, consulta la sección H9 v2 al final de esta guía.
 
 Para comprobar las regresiones desde este directorio:
 
@@ -519,3 +521,71 @@ recursión y entornos léxicos en snapshots v2 y leen snapshots v1. No hay coman
 REPL `.E`/`.I` implementados. Los objetos opacos del host y combinadores no
 serializables generan `ValueError` al exportar, sin omitirlos silenciosamente.
 Una importación inválida devuelve `False` y mantiene la sesión anterior.
+
+
+## H9 v2 — sumar dos dígitos dentro de Malbolge
+
+Desde este directorio:
+
+```sh
+python3 -B tools/build_eval_add.py --out build/h9-v2/eval_add.mb --manifest build/h9-v2/eval_add.manifest.json
+```
+
+Salida real:
+
+```text
+Built eval_add image: build/h9-v2/eval_add.mb (4837558 bytes)
+Wrote manifest: build/h9-v2/eval_add.manifest.json
+```
+
+**Regla de oro:** esta imagen acepta únicamente el marco fijo `(+ a b)` con dos
+dígitos de 0 a 9, LF/CRLF opcional y cierre de entrada (EOF). No es un REPL general.
+La entrada máxima del contrato es de nueve bytes. El cierre importa: el circuito
+usa el valor EOF de la VM para operar sus registros.
+
+Compilar la VM verificada con Zig 0.16.0:
+
+```sh
+zig build-exe -O ReleaseFast src/bolge19.zig -lc -femit-bin=build/h9-v2/bolge19
+```
+
+Resultado real: código 0, sin salida. Probar la suma:
+
+```sh
+printf '%s' '(+ 9 9)' | build/h9-v2/bolge19 --loader canonical --max-steps 10000000 build/h9-v2/eval_add.mb
+```
+
+Stdout real: `18` (sin salto de línea). Stderr real:
+
+```text
+bolge19: imagen=4837558 celdas zona=[12106,24212) pat=[581130699,46,581130699...]
+bolge19: HALT steps=4837454 c=4837557 d=92 a=56 elapsed=0s
+```
+
+El programa guarda ambos operandos y calcula el resultado mediante un circuito
+nativo. Las cien parejas están verificadas, con resultados de `0` a `18`.
+Marcos mal formados de hasta nueve bytes terminan sin salida. Enteros de varias
+cifras, anidamiento, otros espacios y entrada más larga quedan fuera del contrato.
+
+Para generar una campaña nueva sin reemplazar evidencia previa:
+
+```sh
+python3 -B tools/verify_h9_eval_add.py --engine build/h9-v2/bolge19
+```
+
+Salida real:
+
+```text
+H9 v2 evidence: /home/danny/Development/ISyCo Git/MalbolgeLispSlop/evidence/h9_eval_add_v2/runs/20261020T082407Z-ae2db440
+PASS: 319 native runs, 2 independent model runs; 4837558 canonical cells
+```
+
+| Observación | Significado |
+|---|---|
+| Salida decimal `0..18`, HALT | Suma válida dentro del marco fijo. |
+| Sin salida, HALT | Marco rechazado dentro del límite de nueve bytes. |
+| Espera sin terminar | Falta EOF; cierra stdin usando un archivo o una tubería como en el ejemplo. |
+| MAX_STEPS o timeout | Fallo de ejecución; no aceptarlo como una suma válida. |
+
+La imagen nueva ocupa 4.837.558 celdas; la afirmación antigua de 259 celdas no se
+recuperó. La v1 y sus resultados refutados se conservan como evidencia histórica.

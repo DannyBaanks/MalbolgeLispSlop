@@ -15,6 +15,7 @@ from slopsynth.ir import (
     Return,
     Sub,
     WriteA,
+    WriteDecimal,
 )
 from .callables import Closure, apply_callable
 from .environment import Environment
@@ -148,7 +149,7 @@ def build_evaluator_module() -> Module:
 
 
 def build_eval_add_module() -> Module:
-    """Build an IR Module for native evaluation of (+ 1 2) -> 3."""
+    """Build the H9 v2 framed single-digit adder with decimal output 0..18."""
     func = Function(
         name="eval_add",
         parameters=(),
@@ -163,10 +164,10 @@ def build_eval_add_module() -> Module:
                     ReadA("op1"),
                     ReadA("sp2"),
                     ReadA("op2"),
-                    Add("sum", "op1", "op2"),
-                    Sub("result", "sum", 48),
-                    WriteA("result"),
                     ReadA("rparen"),
+                    Add("sum", "op1", "op2"),
+                    Sub("result", "sum", 96),
+                    WriteDecimal("result"),
                     Halt(),
                 ),
             ),
@@ -179,5 +180,7 @@ def build_eval_add_module() -> Module:
         cases=(
             ModuleCase(stdin=b"(+ 1 2)", stdout=b"3", status="HALT"),
             ModuleCase(stdin=b"(+ 2 1)", stdout=b"3", status="HALT"),
+            ModuleCase(stdin=b"(+ 0 0)", stdout=b"0", status="HALT"),
+            ModuleCase(stdin=b"(+ 9 9)", stdout=b"18", status="HALT"),
         ),
     )

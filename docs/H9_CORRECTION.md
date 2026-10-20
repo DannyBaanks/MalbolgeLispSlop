@@ -1,6 +1,6 @@
 # H9 correction — 2026-10-20
 
-Status: NOT_DEMONSTRATED. The native addition claim from revision
+Status of **v1**: refuted. The native addition claim from revision
 544a9fc96ed84f74bb96a35c93721e04c5ea0b61 is withdrawn.
 
 The historical image performs six consecutive INPUT instructions. Each replaces A;
@@ -14,7 +14,7 @@ The original image, raw runs, protocol and SHA256SUMS under
 proves byte identity; it does not establish the interpretation of those bytes.
 This correction supersedes their addition claims without rewriting raw evidence.
 
-## Repair behavior
+## Historical containment behavior (commit 2182cce)
 
 - `lower_eval_add` raises AssemblyError with NOT_DEMONSTRATED for every request.
 - The builder and assembler fail before writing output or manifests.
@@ -40,3 +40,28 @@ coverage; passing the Python suite does not certify native Lisp.
 
 Repair commands, raw outputs, environment details and file hashes are recorded
 in `evidence/audit_repair_v1/runs/`. No new general native Lisp capability is claimed.
+
+## H9 v2 — scoped native implementation (2026-10-20)
+
+The containment above is superseded for the new v2 template only. The historical
+v1 byte-output template is still rejected. V2 saves both operands and implements
+an acyclic native one-hot digit-adder circuit in 4,837,558 canonical cells. The
+new `WriteDecimal` module operation distinguishes decimal output from byte output:
+seven reads, Add of the ASCII operand bytes, Sub 96, WriteDecimal, Halt.
+
+Supported input is exactly `(+ a b)` with a/b in 0..9, optional LF or CRLF,
+and EOF, at most nine bytes. Output is ASCII decimal 0..18 without a newline.
+Malformed inputs of at most nine bytes halt without output. Open streams,
+longer input, multi-digit operands, nesting and general Lisp are outside the
+contract. The decoder is a fixed-frame circuit; it is not a general reader.
+
+All arithmetic and validation execute in bolge19. Python constructs the circuit
+and checks the results; it does not supply an evaluation result to the guest.
+Input/output cases do not affect the emitted image. Native EOF controls are used
+to load and restore registers; stdin must be closed.
+
+The v2 campaign verifies all 100 pairs with EOF, LF+EOF and CRLF+EOF, malformed
+frames, source line wrapping, two operand-read mutants and an output mutant,
+plus historical v1 counterexamples. Two independent transition-model executions
+agree on 2 and 18. See `../evidence/h9_eval_add_v2/protocol.md` for sealed evidence.
+The larger size is an explicit tradeoff; no 259-cell or general-Lisp claim is made.

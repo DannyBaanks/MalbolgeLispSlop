@@ -184,7 +184,7 @@ def _assemble_branch(args, placed, profile) -> int:
     has_eval_add = placed.name in {"eval_add", "lisp_eval_add"} or (
         has_arith
         and any(
-            isinstance(op, Sub) and op.right == 48
+            isinstance(op, Sub) and op.right in {48, 96}
             for func in placed.module.functions
             for block in func.blocks
             for op in block.operations

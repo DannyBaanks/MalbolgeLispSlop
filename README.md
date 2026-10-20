@@ -5,7 +5,7 @@
 
 **MalbolgeLispSlop** es un prototipo de dialecto Lisp, evaluador host y herramientas de síntesis para la máquina virtual Malbolge de 19 trits fijos (`fixed-3^19` / `bolge19`), diseñado desde cero para ejecutar expresiones Lisp de forma compacta, modular y verificable, sin requerir compiladores monolíticos ni cientos de megabytes de tablas de salto infladas.
 
-> **Corrección de auditoría (2026-10-20): H9 retirado.** La imagen histórica no suma dos operandos: `(+ 0 0)` y `(+ 1 1)` también imprimen `3`. El compilador y el certificador H9 ahora rechazan la operación con `NOT_DEMONSTRATED`. La evidencia histórica se conserva; [corrección y controles](docs/H9_CORRECTION.md). El evaluador Python y el probe de eco nativo son capacidades distintas. Los totales históricos citados abajo no equivalen a cobertura funcional completa; la reparación tiene 286 tests pasando, con evidencia en `evidence/audit_repair_v1/runs/20261020T071902Z/`.
+> **H9 v2 (2026-10-20): suma nativa reparada.** Acepta el marco fijo `(+ a b)` con dos dígitos decimales, LF/CRLF opcional y EOF. Imprime `0..18` y valida el marco dentro de la VM. La imagen tiene **4.837.558 celdas**; **319 corridas nativas y dos corridas del modelo** verificadas. La versión v1 de 259 celdas sigue retirada: [corrección histórica](docs/H9_CORRECTION.md), [protocolo v2](evidence/h9_eval_add_v2/protocol.md). El intérprete Lisp general continúa pendiente.
 
 ---
 
@@ -60,7 +60,7 @@ Siguiendo el rigor epistemológico de **ISyCo**, no vendemos stubs como producto
 | **Empaquetado de Datos (Tagged Pointers)** | Sin tipado estructurado en celda | **13 tipos en 1 sola celda de 19-trits** | `[DEMONSTRATED]` (Tag 4b + Payload 26b) |
 | **Evaluador McCarthy en Host/IR** | Intérprete estático monolítico | **13 subsistemas modulares (Python/IR)** | `[DEMONSTRATED]` (272/272 tests verdes) |
 | **Imagen Probe de Bootstrap** | N/A | **259 bytes canónicos (`ubO`)** | `[DEMONSTRATED]` (62 corridas en VM) |
-| **Evaluación Lisp en VM (H9)** | N/A | Imagen histórica refutada; compilación rechazada | `[NOT_DEMONSTRATED]` ([corrección](docs/H9_CORRECTION.md)) |
+| **Suma nativa H9 v2** | N/A | Marco fijo `(+ a b)`, dígitos `0..9`, salida decimal `0..18`; 4.837.558 celdas | `[DEMONSTRATED_SCOPED]` ([protocolo](evidence/h9_eval_add_v2/protocol.md)) |
 | **Evaluación Lisp Dinámica General** | 371 MB compilados con LMFAO | **Lowering de AST general a Malbolge** | `[IN_PROGRESS]` |
 | **Corridas Forenses de VM en Disco** | 0 evidencia ejecutable | **>1,000 corridas selladas SHA-256** | `[DEMONSTRATED]` (Replay bit a bit) |
 
@@ -86,13 +86,13 @@ Siguiendo los principios de **ISyCo (Sistemas Interactivos para la Coevolución)
   - **H7:** Cuenta regresiva compuesta (`loop + branch + sub` simultáneos) ([protocolo](evidence/h7_countdown_v1/protocol.md)).
 - **Gate H8 (Infraestructura Guest y Bootstrap Probe):**
   - **H8:** Conformance del arnés guest (62 corridas de VM, 13 subsistemas IR, 272 tests) ([protocolo](evidence/lisp_conformance_v1/protocol.md)).
-- **Gate H9 retirado:** La imagen histórica de 259 celdas descarta el primer operando. Los casos publicados no demostraban suma. `tools/build_eval_add.py`, el ensamblador y `tools/verify_h9_eval_add.py` rechazan H9 hasta disponer de una implementación correcta y un nuevo protocolo con resultados variados. Véase [la corrección](docs/H9_CORRECTION.md).
+- **Gate H9 v2 (suma nativa de dos dígitos):** Guarda ambos operandos, decodifica los dígitos en un circuito lógico nativo de CRAZY/ROT y produce salida decimal con acarreo. Se comprobaron las 100 parejas con tres finales de entrada, marcos inválidos, mutaciones, neutralidad de saltos de línea y dos corridas del modelo de transiciones. Requiere EOF. No admite enteros de varias cifras, anidamiento ni sintaxis Lisp general. La v1 sigue refutada.
 - **Guest Runtime & Conformance (Tasks 3–10):**
   - Reporte completo y arquitectura modular: [docs/LISP_CONFORMANCE.md](docs/LISP_CONFORMANCE.md).
   - Módulos de IR en `guest_ir/lisp/`: tagged values, bump heap allocator, lexical environments, reader, printer, evaluator, closures, numeric/list builtins, higher-order combinators, REPL step, y serialización versionada de estado.
   - Imagen canónica generada: `build/lispslop-guest.mb` (259 celdas, probe bootstrap canónico aceptado por `walk_canonical`).
-  - `build/eval_add.mb`, si existe, es un artefacto histórico inválido como evaluador; no se borra ni se regenera automáticamente.
-  - El hash del manifiesto histórico acredita identidad de bytes, no corrección semántica.
+  - La imagen v2 se construye por separado en `build/h9-v2/eval_add.mb`. La imagen histórica v1 permanece bajo `evidence/h9_eval_add_v1/`.
+  - El manifiesto v2 declara el formato fijo, el límite de pasos, sus etiquetas y SHA-256.
   - **Frontera abierta:** Lowering generalizado de formas dinámicas arbitrarias a código máquina de Malbolge.
 
 ---
@@ -117,9 +117,11 @@ make build-lisp-guest
 make test-conformance
 make test-lisp-matrix
 
-# 5. H9 está retirado: ambos comandos devuelven error NOT_DEMONSTRATED
-python3 tools/build_eval_add.py
-python3 tools/verify_h9_eval_add.py
+# 5. Suma nativa H9 v2 (dos dígitos, marco fijo, EOF)
+python3 -B tools/build_eval_add.py --out build/h9-v2/eval_add.mb --manifest build/h9-v2/eval_add.manifest.json
+printf '%s' '(+ 9 9)' | build/bolge19 --loader canonical --max-steps 10000000 build/h9-v2/eval_add.mb
+# Salida decimal: 18
+python3 -B tools/verify_h9_eval_add.py
 
 # 6. Verificación del probe de bootstrap y helpers host (no conformidad Lisp nativa)
 make verify-lisp-conformance

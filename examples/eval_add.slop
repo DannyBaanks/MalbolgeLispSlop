@@ -1,7 +1,11 @@
-; Lisp native expression evaluation lowering for (+ 1 2) -> 3
+; H9 v2: fixed seven-byte (+ a b) frame, a/b decimal digits; optional LF/CRLF.
+; Decimal output 0..18. Requires EOF; not a general Lisp reader.
 name eval_add
 case 282b2031203229,33
 case 282b2032203129,33
+case 282b2030203029,30
+case 282b2031203129,32
+case 282b2039203929,3138
 entry main
 
 main:
@@ -11,8 +15,8 @@ main:
     read op1
     read sp2
     read op2
-    add sum, op1, op2
-    sub result, sum, 48
-    write result
     read rparen
+    add sum, op1, op2
+    sub result, sum, 96
+    write_decimal result
     halt

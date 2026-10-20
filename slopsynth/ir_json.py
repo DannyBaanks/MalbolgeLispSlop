@@ -24,6 +24,7 @@ from .ir import (
     Store,
     Sub,
     WriteA,
+    WriteDecimal,
 )
 
 
@@ -87,6 +88,10 @@ def _module_operation(raw: object, label: str) -> ModuleOperation:
     if not isinstance(name, str):
         raise ValueError(f"{label}.op must be a string")
 
+    if name == "write_decimal":
+        if set(operation) != {"op", "value"}:
+            raise ValueError(f"{label} write_decimal requires a value")
+        return WriteDecimal(_string(operation["value"], f"{label}.value"))
     if name in {"read_a", "write_a", "halt"}:
         if name == "read_a":
             if set(operation) not in ({"op"}, {"op", "destination"}):

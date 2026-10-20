@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and assemble the native Lisp (+ 1 2) evaluation image (Gate H9)."""
+"""Build the H9 v2 native fixed-frame digit adder (requires closed stdin)."""
 
 from __future__ import annotations
 
@@ -25,14 +25,18 @@ DEFAULT_MANIFEST = ROOT / "build/eval_add.manifest.json"
 def generate_eval_add_image(
     profile_path: Path = DEFAULT_PROFILE,
 ) -> tuple[bytes, dict]:
-    """Generate the deterministic canonical Malbolge image for (+ 1 2) -> 3."""
+    """Generate a canonical native digit-adder image, independent of test cases."""
     profile = load_profile(profile_path)
     module = build_eval_add_module()
     built = lower_eval_add(module, profile)
 
     sha256_hash = hashlib.sha256(built.image).hexdigest()
     manifest = {
-        "schema_version": 1,
+        "schema_version": 2,
+        "input_contract": "(+ a b), single decimal digits, optional LF/CRLF, EOF; at most 9 bytes",
+        "output_contract": "decimal ASCII 0..18; malformed frames up to 9 bytes halt without output",
+        "general_lisp": False,
+        "max_steps": 10_000_000,
         "name": "eval_add",
         "profile": str(profile_path),
         "cells": built.cells,

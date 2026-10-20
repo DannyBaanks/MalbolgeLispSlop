@@ -33,6 +33,7 @@ from .ir import (
     Sub,
     ValueRef,
     WriteA,
+    WriteDecimal,
 )
 
 MAX_LINE = 4096
@@ -40,7 +41,7 @@ MAX_ADDRESS = 1_162_261_467
 _NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.-]*$")
 _INTEGER_RE = re.compile(r"^-?(0|[1-9][0-9]*)$")
 _HEX_RE = re.compile(r"^[0-9A-Fa-f]*$")
-_MODULE_MNEMONICS = frozenset({"jump", "brz", "ld", "st", "add", "sub", "call", "ret", "return"})
+_MODULE_MNEMONICS = frozenset({"jump", "brz", "ld", "st", "add", "sub", "call", "ret", "return", "write_decimal"})
 _DECLINED_MNEMONICS: frozenset[str] = frozenset()
 
 
@@ -131,6 +132,10 @@ def _parse_operation(mnemonic: str, operands: list[str], line: int) -> object:
             raise LangError(line, "write takes at most one value")
         value = operands[0] if operands else "A"
         return WriteA(value=_parse_value(value, line, "write value"))
+    if mnemonic == "write_decimal":
+        if len(operands) != 1 or not _is_identifier(operands[0]):
+            raise LangError(line, "write_decimal takes one named value")
+        return WriteDecimal(operands[0])
     if mnemonic == "halt":
         if operands:
             raise LangError(line, "halt takes no operands")
@@ -328,7 +333,7 @@ def parse_placed(text: str) -> Placed:
         for operation in block_operations:
             if not isinstance(
                 operation,
-                (ReadA, WriteA, Halt, BranchZero, Jump, Load, Store, Add, Sub, Call, Return),
+                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, Jump, Load, Store, Add, Sub, Call, Return),
             ):
                 raise LangError(0, f"{operation!r} cannot be a module operation")
         basic_blocks.append(BasicBlock(name=label, operations=tuple(block_operations)))
@@ -445,6 +450,8 @@ def _format_operations(operations: tuple[object, ...]) -> list[str]:
             lines.append("read" if operation.destination == "A" else f"read {operation.destination}")
         elif isinstance(operation, WriteA):
             lines.append("write" if operation.value == "A" else f"write {operation.value}")
+        elif isinstance(operation, WriteDecimal):
+            lines.append(f"write_decimal {operation.value}")
         elif isinstance(operation, Halt):
             lines.append("halt")
         elif isinstance(operation, Jump):
