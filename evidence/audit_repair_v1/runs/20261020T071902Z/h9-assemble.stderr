@@ -1,0 +1,1 @@
+eval_add.slop: assembly refused: H9 NOT_DEMONSTRATED: native two-operand Lisp addition is unavailable; the historical v1 lowering discards the first operand (see docs/H9_CORRECTION.md)

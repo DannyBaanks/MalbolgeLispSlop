@@ -12,19 +12,10 @@ from slopsynth.ir import (
     Return,
 )
 from .environment import Environment
-from .evaluator import eval_lisp_ast
+from .evaluator import SPECIAL_FORMS, _default_builtins, eval_lisp_ast
 from .reader import parse_lisp_tokens
 
-FEATURES_TEXT = (
-    b"' ~ + - % < > = ! & | * / ^ def defun lambda\n"
-    b"cond print atom cons car cdr if let defmacro\n"
-    b"iota size nth map filter eval append append'\n"
-    b">= <= max min /= rev any every sort zip id\n"
-    b"flatten flatmap tie fold zipwith iterate iterateN\n"
-    b"where replicate count take take' drop drop' bind\n"
-    b"atop intersperse scan monad dyad selfie commute\n"
-    b"fold' scan' uniq off +' -' fork lazy lift bruijn\n"
-)
+FEATURES_TEXT = (" ".join(sorted(set(_default_builtins()) | set(SPECIAL_FORMS) | {"off"})) + "\n").encode("ascii")
 
 AUTHOR_TEXT = b"MalbolgeLisp Slop (ISyCo Research Monorepo 2026)\n"
 
@@ -41,27 +32,25 @@ class LispSession:
 
 def _tokens_to_ast(tokens: list[str]) -> tuple[Any, int]:
     if not tokens:
-        return None, 0
+        raise ValueError("expected a form")
     tok = tokens[0]
-    if tok == "(":
+    if tok in ("(", "["):
+        closing = ")" if tok == "(" else "]"
         items = []
         pos = 1
-        while pos < len(tokens) and tokens[pos] != ")":
+        while pos < len(tokens) and tokens[pos] != closing:
             sub_ast, consumed = _tokens_to_ast(tokens[pos:])
             items.append(sub_ast)
             pos += consumed
+        if pos == len(tokens):
+            raise ValueError(f"missing closing delimiter {closing}")
+        if tok == "[":
+            if len(items) < 2:
+                raise ValueError("infix form requires an operator and operand")
+            items = [items[1], items[0]] + items[2:]
         return items, pos + 1
-    if tok == "[":
-        items = []
-        pos = 1
-        while pos < len(tokens) and tokens[pos] != "]":
-            sub_ast, consumed = _tokens_to_ast(tokens[pos:])
-            items.append(sub_ast)
-            pos += consumed
-        if len(items) >= 2:
-            reordered = [items[1], items[0]] + items[2:]
-            return reordered, pos + 1
-        return items, pos + 1
+    if tok in (")", "]", "{", "}", "?"):
+        raise ValueError(f"unexpected or unsupported delimiter {tok}")
     if tok == "'":
         sub_ast, consumed = _tokens_to_ast(tokens[1:])
         return ["quote", sub_ast], consumed + 1
@@ -113,7 +102,9 @@ def repl_step(source_line: bytes, session: LispSession) -> tuple[bytes, str]:
     if not tokens:
         return b"", "RUN"
 
-    ast, _ = _tokens_to_ast(tokens)
+    ast, consumed = _tokens_to_ast(tokens)
+    if consumed != len(tokens):
+        raise ValueError("expected exactly one form per REPL step")
     res = eval_lisp_ast(ast, session.env)
     session.heap_words += 2
 

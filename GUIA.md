@@ -450,3 +450,72 @@ make verify-lisp-conformance
 ```
 
 
+
+
+## Correcciones de auditoría (2026-10-20)
+
+Para comprobar las regresiones desde este directorio:
+
+```sh
+python3 -B -m unittest discover -s tests -t .
+```
+
+Resultado real de esta revisión (fragmento final de `suite.stderr`):
+
+```text
+Ran 286 tests in 22.591s
+
+OK
+```
+
+**Regla de oro:** los tests del host no certifican un intérprete Lisp en Malbolge.
+H9 fue retirado porque pierde el primer operando. No uses una imagen antigua
+`build/eval_add.mb` como evaluador; conservar sus bytes sirve para auditarla.
+
+```sh
+python3 -B tools/build_eval_add.py
+```
+
+Salida real, código 1:
+
+```text
+Build error: H9 NOT_DEMONSTRATED: native two-operand Lisp addition is unavailable; the historical v1 lowering discards the first operand (see docs/H9_CORRECTION.md)
+```
+
+```sh
+python3 -B tools/verify_h9_eval_add.py
+```
+
+Salida real, código 1:
+
+```text
+H9 verification refused: H9 NOT_DEMONSTRATED: native two-operand Lisp addition is unavailable; the historical v1 lowering discards the first operand (see docs/H9_CORRECTION.md)
+```
+
+### Cómo leer la conformidad
+
+El runner `tools/run_lisp_conformance.py` ahora distingue:
+
+| Estado | Código | Significado |
+|---|---:|---|
+| PASS | 0 | Los casos de la matriz suministrada coinciden y todas sus filas tienen estado implementado y casos positivos/negativos. No certifica funciones omitidas de esa matriz. |
+| FAIL | 1 | Al menos un caso ejecutado no coincide. |
+| INCOMPLETE | 2 | Cero casos, filas pendientes o cobertura incompleta; no es un éxito. |
+| Error del runner | 2 | Entrada inválida u otro error; consultar stderr. |
+
+La ejecución registrada de la matriz incluida dio `Total: 0, Passed: 0, Failed: 0`
+y `Status: INCOMPLETE`, código 2. El comando exacto y la salida completa están en
+`evidence/audit_repair_v1/runs/20261020T071902Z/commands.json` y `matrix.stdout`.
+
+### REPL y estado host
+
+El REPL Python usa módulo 2^26 para `+`, `+'`, `-`, `-'` y `*`; conecta `/`, `map`,
+listas y combinadores. `.F` anuncia lo registrado, no todo el inventario futuro.
+Cada llamada a `repl_step` admite una sola forma completa y rechaza cierres
+faltantes o formas adicionales.
+
+Las APIs Python `export_state_image` e `import_state_image` conservan las funciones,
+recursión y entornos léxicos en snapshots v2 y leen snapshots v1. No hay comandos
+REPL `.E`/`.I` implementados. Los objetos opacos del host y combinadores no
+serializables generan `ValueError` al exportar, sin omitirlos silenciosamente.
+Una importación inválida devuelve `False` y mantiene la sesión anterior.

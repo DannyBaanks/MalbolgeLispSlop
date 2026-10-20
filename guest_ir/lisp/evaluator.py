@@ -20,18 +20,34 @@ from .callables import Closure, apply_callable
 from .environment import Environment
 
 
+SPECIAL_FORMS = ("quote", "'", "if", "cond", "let", "lambda", "def", "defun", "monad", "dyad")
+
+
 def _default_builtins() -> dict[str, Any]:
-    return {
-        "+": lambda args, _: args[0] + args[1],
-        "-": lambda args, _: args[0] - args[1],
-        "*": lambda args, _: args[0] * args[1],
-        "=": lambda args, _: 1 if args[0] == args[1] else 0,
-        "<": lambda args, _: 1 if args[0] < args[1] else 0,
-        ">": lambda args, _: 1 if args[0] > args[1] else 0,
-        "cons": lambda args, _: [args[0]] + (args[1] if isinstance(args[1], list) else [args[1]]),
-        "car": lambda args, _: args[0][0] if isinstance(args[0], list) and args[0] else None,
-        "cdr": lambda args, _: args[0][1:] if isinstance(args[0], list) and len(args[0]) > 1 else [],
-    }
+    """One registry for evaluation and the REPL's advertised capabilities."""
+    from .builtins_numeric import apply_numeric
+    from .builtins_lists import apply_list
+    from .builtins_higher_order import apply_higher_order
+    from .builtins_combinators import apply_combinator
+
+    groups = (
+        (apply_numeric, {1: "~ !", 2: "+ +' - -' * / % ^ & | = /= < > <= >= gcd lcm min max"}, False),
+        (apply_list, {1: "car cdr atom iota size rev", 2: "cons nth append append' tie zip"}, False),
+        (apply_higher_order, {1: "uniq sort", 2: "map filter take drop count", 3: "fold fold' zipwith iterateN"}, True),
+        (apply_combinator, {1: "id selfie commute", 2: "atop bind bind'"}, True),
+    )
+    builtins = {}
+    for helper, arities, needs_context in groups:
+        for arity, names in arities.items():
+            for name in names.split():
+                def invoke(args, env, *, name=name, arity=arity, helper=helper, needs_context=needs_context):
+                    if len(args) != arity:
+                        raise ValueError(f"arity mismatch for {name}: expected {arity}, got {len(args)}")
+                    if needs_context:
+                        return helper(name, args, env, eval_lisp_ast)
+                    return helper(name, args)
+                builtins[name] = invoke
+    return builtins
 
 
 def eval_lisp_ast(expr: Any, env: Environment) -> Any:
@@ -74,6 +90,10 @@ def eval_lisp_ast(expr: Any, env: Environment) -> Any:
                 val = eval_lisp_ast(b[1], env)
                 child_env.define(sym, val)
             return eval_lisp_ast(body, child_env)
+        if car in ("monad", "dyad"):
+            if len(args) != 1:
+                raise ValueError(f"arity mismatch for {car}: expected 1, got {len(args)}")
+            return Closure(params=["x"] if car == "monad" else ["x", "y"], body=args[0], captured_env=env)
         if car == "lambda":
             params = args[0]
             body = args[1]

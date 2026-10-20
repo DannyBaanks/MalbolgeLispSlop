@@ -29,7 +29,9 @@ class Closure:
 
 def apply_callable(fn: Any, args: list[Any], env: Environment, evaluator: Callable[[Any, Environment], Any]) -> Any:
     """Apply a callable object or builtin to evaluated arguments."""
-    if isinstance(fn, Closure):
+    from .builtins_combinators import CombinatorObject
+
+    if isinstance(fn, (Closure, CombinatorObject)):
         return fn.apply(args, evaluator)
     if callable(fn):
         return fn(args, env)

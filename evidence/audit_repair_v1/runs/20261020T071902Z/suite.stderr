@@ -1,0 +1,11 @@
+....................................................................................................................................................../usr/lib/python3.12/json/encoder.py:260: ResourceWarning: unclosed file <_io.FileIO name=5 mode='rb' closefd=True>
+  def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.12/json/encoder.py:260: ResourceWarning: unclosed file <_io.FileIO name=6 mode='rb' closefd=True>
+  def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+........................................................................................................................................
+----------------------------------------------------------------------
+Ran 286 tests in 22.591s
+
+OK

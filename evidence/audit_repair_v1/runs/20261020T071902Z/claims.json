@@ -1,0 +1,28 @@
+[
+  {
+    "claim": "Host arithmetic, helpers, reader, closure persistence regressions",
+    "status": "PASS",
+    "evidence": "suite.stderr",
+    "scope": "Python host and persistence APIs only"
+  },
+  {
+    "claim": "H9 builder, assembler and certification refuse unsupported native addition",
+    "status": "PASS",
+    "evidence": "commands.json"
+  },
+  {
+    "claim": "Empty/incomplete bundled matrix returns INCOMPLETE and exit 2",
+    "status": "PASS",
+    "evidence": "matrix.stdout"
+  },
+  {
+    "claim": "Historical H9 artifacts remain byte-identical to original sealed digests",
+    "status": "PASS",
+    "evidence": "historical-integrity.json"
+  },
+  {
+    "claim": "Native two-operand addition and general Lisp evaluation",
+    "status": "NOT_DEMONSTRATED",
+    "evidence": "docs/H9_CORRECTION.md"
+  }
+]

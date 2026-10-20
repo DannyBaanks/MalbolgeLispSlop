@@ -3,7 +3,9 @@
 > **Humano ↔ IA ↔ Evidencia.**  
 > Resultados que nacen de la iteración conjunta y la verificación empírica estricta, no de una sola autoría.
 
-**MalbolgeLispSlop** es un dialecto e intérprete nativo de Lisp para la máquina virtual Malbolge de 19 trits fijos (`fixed-3^19` / `bolge19`), diseñado desde cero para ejecutar expresiones Lisp de forma compacta, modular y verificable, sin requerir compiladores monolíticos ni cientos de megabytes de tablas de salto infladas.
+**MalbolgeLispSlop** es un prototipo de dialecto Lisp, evaluador host y herramientas de síntesis para la máquina virtual Malbolge de 19 trits fijos (`fixed-3^19` / `bolge19`), diseñado desde cero para ejecutar expresiones Lisp de forma compacta, modular y verificable, sin requerir compiladores monolíticos ni cientos de megabytes de tablas de salto infladas.
+
+> **Corrección de auditoría (2026-10-20): H9 retirado.** La imagen histórica no suma dos operandos: `(+ 0 0)` y `(+ 1 1)` también imprimen `3`. El compilador y el certificador H9 ahora rechazan la operación con `NOT_DEMONSTRATED`. La evidencia histórica se conserva; [corrección y controles](docs/H9_CORRECTION.md). El evaluador Python y el probe de eco nativo son capacidades distintas. Los totales históricos citados abajo no equivalen a cobertura funcional completa; la reparación tiene 286 tests pasando, con evidencia en `evidence/audit_repair_v1/runs/20261020T071902Z/`.
 
 ---
 
@@ -58,7 +60,7 @@ Siguiendo el rigor epistemológico de **ISyCo**, no vendemos stubs como producto
 | **Empaquetado de Datos (Tagged Pointers)** | Sin tipado estructurado en celda | **13 tipos en 1 sola celda de 19-trits** | `[DEMONSTRATED]` (Tag 4b + Payload 26b) |
 | **Evaluador McCarthy en Host/IR** | Intérprete estático monolítico | **13 subsistemas modulares (Python/IR)** | `[DEMONSTRATED]` (272/272 tests verdes) |
 | **Imagen Probe de Bootstrap** | N/A | **259 bytes canónicos (`ubO`)** | `[DEMONSTRATED]` (62 corridas en VM) |
-| **Evaluación Lisp en VM: `(+ 1 2) -> 3`** | N/A | **Gate H9: 259 celdas / 11 pasos CPU** | `[DEMONSTRATED_SCOPED]` (111 corridas en VM) |
+| **Evaluación Lisp en VM (H9)** | N/A | Imagen histórica refutada; compilación rechazada | `[NOT_DEMONSTRATED]` ([corrección](docs/H9_CORRECTION.md)) |
 | **Evaluación Lisp Dinámica General** | 371 MB compilados con LMFAO | **Lowering de AST general a Malbolge** | `[IN_PROGRESS]` |
 | **Corridas Forenses de VM en Disco** | 0 evidencia ejecutable | **>1,000 corridas selladas SHA-256** | `[DEMONSTRATED]` (Replay bit a bit) |
 
@@ -84,14 +86,13 @@ Siguiendo los principios de **ISyCo (Sistemas Interactivos para la Coevolución)
   - **H7:** Cuenta regresiva compuesta (`loop + branch + sub` simultáneos) ([protocolo](evidence/h7_countdown_v1/protocol.md)).
 - **Gate H8 (Infraestructura Guest y Bootstrap Probe):**
   - **H8:** Conformance del arnés guest (62 corridas de VM, 13 subsistemas IR, 272 tests) ([protocolo](evidence/lisp_conformance_v1/protocol.md)).
-- **Gate H9 (Evaluación Nativa de S-Expresión Lisp `(+ 1 2) -> 3`):**
-  - **H9:** Primera evaluación nativa real de una expresión Lisp en código máquina de Malbolge ejecutada dentro de `bolge19 --loader canonical`. Lee `(`, `+`, ` `, $a$, ` `, $b$, `)`, ejecuta la suma mediante reducción algebraica de `crazy` en 19 trits, emite el dígito ASCII `3` y termina limpiamente en exactamente 11 pasos de CPU. (111 corridas de VM selladas en [evidence/h9_eval_add_v1/protocol.md](evidence/h9_eval_add_v1/protocol.md), imagen `build/eval_add.mb`).
+- **Gate H9 retirado:** La imagen histórica de 259 celdas descarta el primer operando. Los casos publicados no demostraban suma. `tools/build_eval_add.py`, el ensamblador y `tools/verify_h9_eval_add.py` rechazan H9 hasta disponer de una implementación correcta y un nuevo protocolo con resultados variados. Véase [la corrección](docs/H9_CORRECTION.md).
 - **Guest Runtime & Conformance (Tasks 3–10):**
   - Reporte completo y arquitectura modular: [docs/LISP_CONFORMANCE.md](docs/LISP_CONFORMANCE.md).
   - Módulos de IR en `guest_ir/lisp/`: tagged values, bump heap allocator, lexical environments, reader, printer, evaluator, closures, numeric/list builtins, higher-order combinators, REPL step, y serialización versionada de estado.
   - Imagen canónica generada: `build/lispslop-guest.mb` (259 celdas, probe bootstrap canónico aceptado por `walk_canonical`).
-  - Imagen canónica evaluadora: `build/eval_add.mb` (259 celdas, evaluación nativa de `(+ 1 2) -> 3`).
-  - Manifiesto verificable: `build/eval_add.manifest.json`.
+  - `build/eval_add.mb`, si existe, es un artefacto histórico inválido como evaluador; no se borra ni se regenera automáticamente.
+  - El hash del manifiesto histórico acredita identidad de bytes, no corrección semántica.
   - **Frontera abierta:** Lowering generalizado de formas dinámicas arbitrarias a código máquina de Malbolge.
 
 ---
@@ -106,7 +107,7 @@ Requisitos:
 # 1. Compilar el motor bolge19 y dependencias
 ./tools/build.sh
 
-# 2. Ejecutar la suite completa de pruebas (278 tests)
+# 2. Ejecutar la suite completa de pruebas
 PYTHONPATH=. python3 -m unittest discover -s tests -t .
 
 # 3. Construir la imagen canónica de Malbolge del Guest Lisp
@@ -116,14 +117,12 @@ make build-lisp-guest
 make test-conformance
 make test-lisp-matrix
 
-# 5. Construir y probar la imagen de evaluación Lisp (+ 1 2)
+# 5. H9 está retirado: ambos comandos devuelven error NOT_DEMONSTRATED
 python3 tools/build_eval_add.py
-echo "(+ 1 2)" | ./build/bolge19 --loader canonical build/eval_add.mb
-# Imprime: 3 (HALT steps=11)
-
-# 6. Ejecutar la campaña formal de verificación y sellar evidencia
-make verify-lisp-conformance
 python3 tools/verify_h9_eval_add.py
+
+# 6. Verificación del probe de bootstrap y helpers host (no conformidad Lisp nativa)
+make verify-lisp-conformance
 ```
 
 Para una guía paso a paso en español de cada compuerta y comando, consulta la [Guía Humana](GUIA.md).
@@ -134,3 +133,11 @@ Para una guía paso a paso en español de cada compuerta y comando, consulta la 
 
 - Código bajo licencia MIT (ver [LICENSE](LICENSE)).
 - Diseñado y desarrollado en colaboración **Danny Baanks + Antigravity (Google DeepMind)** como parte del ecosistema de investigación ISyCo.
+
+## Correcciones del modelo host y cobertura
+
+El REPL conecta los helpers numéricos, de listas, de orden superior y combinadores; `.F` enumera solo lo registrado. `+`, `+'`, `-`, `-'` y `*` usan módulo 2^26. Se conservan los apóstrofos de identificadores y se exige una forma completa por paso.
+
+Los snapshots v2 conservan clausuras, recursión y entornos léxicos; leen snapshots v1. Los valores host opacos se rechazan explícitamente. Una importación inválida no modifica la sesión.
+
+`tools/run_lisp_conformance.py` devuelve 2/`INCOMPLETE` si faltan casos positivos/negativos o filas implementadas, incluso si no hubo fallos. La matriz declarada incluida permanece incompleta. Pasar tests del host o del probe de eco no cierra esa matriz.

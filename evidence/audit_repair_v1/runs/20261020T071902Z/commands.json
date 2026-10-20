@@ -1,0 +1,58 @@
+[
+  {
+    "label": "h9-build",
+    "command": [
+      "python3",
+      "-B",
+      "tools/build_eval_add.py"
+    ],
+    "exit_status": 1
+  },
+  {
+    "label": "h9-verify",
+    "command": [
+      "python3",
+      "-B",
+      "tools/verify_h9_eval_add.py"
+    ],
+    "exit_status": 1
+  },
+  {
+    "label": "h9-assemble",
+    "command": [
+      "python3",
+      "-B",
+      "tools/assemble.py",
+      "examples/eval_add.slop",
+      "--round-trip",
+      "--out",
+      "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/evidence/audit_repair_v1/runs/20261020T071902Z/should-not-exist.mb"
+    ],
+    "exit_status": 3
+  },
+  {
+    "label": "matrix",
+    "command": [
+      "python3",
+      "-B",
+      "tools/run_lisp_conformance.py",
+      "--matrix",
+      "spec/lisp-feature-matrix.json",
+      "--image",
+      "build/lispslop-guest.mb",
+      "--evidence-root",
+      "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/evidence/audit_repair_v1/runs/20261020T071902Z/matrix"
+    ],
+    "exit_status": 2
+  },
+  {
+    "label": "host",
+    "command": [
+      "python3",
+      "-B",
+      "-c",
+      "from guest_ir.lisp.repl import LispSession, repl_step; s=LispSession(); print(repl_step(b'(+ 67108863 1)',s)); print(repl_step(b'(/ 8 2)',s))"
+    ],
+    "exit_status": 0
+  }
+]

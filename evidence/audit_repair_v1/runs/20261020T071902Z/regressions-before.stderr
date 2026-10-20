@@ -1,0 +1,361 @@
+FFEEEEEEEEFFFFFFFFFFFFEFFF
+======================================================================
+ERROR: test_connected_builtins (tests.guest.test_audit_regressions.AuditRegressions.test_connected_builtins) (source=b'(/ 8 2)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 39, in test_connected_builtins
+    self.assertEqual(self.evaluate(source), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 36, in apply_callable
+    raise ValueError(f"cannot call non-callable: {fn}")
+ValueError: cannot call non-callable: /
+
+======================================================================
+ERROR: test_connected_builtins (tests.guest.test_audit_regressions.AuditRegressions.test_connected_builtins) (source=b"(map (lambda (x) (+ x 1)) '(1 2))")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 39, in test_connected_builtins
+    self.assertEqual(self.evaluate(source), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 36, in apply_callable
+    raise ValueError(f"cannot call non-callable: {fn}")
+ValueError: cannot call non-callable: map
+
+======================================================================
+ERROR: test_connected_builtins (tests.guest.test_audit_regressions.AuditRegressions.test_connected_builtins) (source=b"(fold + 0 '(1 2 3))")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 39, in test_connected_builtins
+    self.assertEqual(self.evaluate(source), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 36, in apply_callable
+    raise ValueError(f"cannot call non-callable: {fn}")
+ValueError: cannot call non-callable: fold
+
+======================================================================
+ERROR: test_connected_builtins (tests.guest.test_audit_regressions.AuditRegressions.test_connected_builtins) (source=b"(append' '(1 2) 3)")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 39, in test_connected_builtins
+    self.assertEqual(self.evaluate(source), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 36, in apply_callable
+    raise ValueError(f"cannot call non-callable: {fn}")
+ValueError: cannot call non-callable: append
+
+======================================================================
+ERROR: test_connected_builtins (tests.guest.test_audit_regressions.AuditRegressions.test_connected_builtins) (source=b'((atop (bind + 1) (bind * 2)) 3)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 39, in test_connected_builtins
+    self.assertEqual(self.evaluate(source), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 101, in eval_lisp_ast
+    fn = eval_lisp_ast(car, env)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 102, in eval_lisp_ast
+    eval_args = [eval_lisp_ast(a, env) for a in args]
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 36, in apply_callable
+    raise ValueError(f"cannot call non-callable: {fn}")
+ValueError: cannot call non-callable: bind
+
+======================================================================
+ERROR: test_connected_builtins (tests.guest.test_audit_regressions.AuditRegressions.test_connected_builtins) (source=b"((bind' - 2) 7)")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 39, in test_connected_builtins
+    self.assertEqual(self.evaluate(source), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 101, in eval_lisp_ast
+    fn = eval_lisp_ast(car, env)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 36, in apply_callable
+    raise ValueError(f"cannot call non-callable: {fn}")
+ValueError: cannot call non-callable: bind
+
+======================================================================
+ERROR: test_connected_builtins (tests.guest.test_audit_regressions.AuditRegressions.test_connected_builtins) (source=b'((monad (+ x 1)) 4)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 39, in test_connected_builtins
+    self.assertEqual(self.evaluate(source), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 101, in eval_lisp_ast
+    fn = eval_lisp_ast(car, env)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 102, in eval_lisp_ast
+    eval_args = [eval_lisp_ast(a, env) for a in args]
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 35, in apply_callable
+    return fn(args, env)
+           ^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 25, in <lambda>
+    "+": lambda args, _: args[0] + args[1],
+                         ~~~~~~~~^~~~~~~~~
+TypeError: can only concatenate str (not "int") to str
+
+======================================================================
+ERROR: test_connected_builtins (tests.guest.test_audit_regressions.AuditRegressions.test_connected_builtins) (source=b'((dyad (+ x y)) 4 5)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 39, in test_connected_builtins
+    self.assertEqual(self.evaluate(source), expected)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 101, in eval_lisp_ast
+    fn = eval_lisp_ast(car, env)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 36, in apply_callable
+    raise ValueError(f"cannot call non-callable: {fn}")
+ValueError: cannot call non-callable: dyad
+
+======================================================================
+ERROR: test_rejects_malformed_forms_before_evaluation (tests.guest.test_audit_regressions.AuditRegressions.test_rejects_malformed_forms_before_evaluation) (source=b'(+ 1)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 52, in test_rejects_malformed_forms_before_evaluation
+    self.evaluate(source)
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 14, in evaluate
+    return repl_step(source, LispSession())[0].strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/repl.py", line 117, in repl_step
+    res = eval_lisp_ast(ast, session.env)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 103, in eval_lisp_ast
+    return apply_callable(fn, eval_args, env, eval_lisp_ast)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/callables.py", line 35, in apply_callable
+    return fn(args, env)
+           ^^^^^^^^^^^^^
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/guest_ir/lisp/evaluator.py", line 25, in <lambda>
+    "+": lambda args, _: args[0] + args[1],
+                                   ~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+FAIL: test_advertises_only_registered_features (tests.guest.test_audit_regressions.AuditRegressions.test_advertises_only_registered_features)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 57, in test_advertises_only_registered_features
+    self.assertIn(b"bind'", features)
+AssertionError: b"bind'" not found in [b"'", b'~', b'+', b'-', b'%', b'<', b'>', b'=', b'!', b'&', b'|', b'*', b'/', b'^', b'def', b'defun', b'lambda', b'cond', b'print', b'atom', b'cons', b'car', b'cdr', b'if', b'let', b'defmacro', b'iota', b'size', b'nth', b'map', b'filter', b'eval', b'append', b"append'", b'>=', b'<=', b'max', b'min', b'/=', b'rev', b'any', b'every', b'sort', b'zip', b'id', b'flatten', b'flatmap', b'tie', b'fold', b'zipwith', b'iterate', b'iterateN', b'where', b'replicate', b'count', b'take', b"take'", b'drop', b"drop'", b'bind', b'atop', b'intersperse', b'scan', b'monad', b'dyad', b'selfie', b'commute', b"fold'", b"scan'", b'uniq', b'off', b"+'", b"-'", b'fork', b'lazy', b'lift', b'bruijn']
+
+======================================================================
+FAIL: test_apostrophe_in_identifier_and_quote (tests.guest.test_audit_regressions.AuditRegressions.test_apostrophe_in_identifier_and_quote)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 42, in test_apostrophe_in_identifier_and_quote
+    self.assertEqual(parse_lisp_tokens(b"(+' 1 2)"), ["(", "+'", "1", "2", ")"])
+AssertionError: Lists differ: ['(', '+', "'", '1', '2', ')'] != ['(', "+'", '1', '2', ')']
+
+First differing element 1:
+'+'
+"+'"
+
+First list contains 1 additional elements.
+First extra element 5:
+')'
+
+- ['(', '+', "'", '1', '2', ')']
+?       ^ ----
+
++ ['(', "+'", '1', '2', ')']
+?       ^
+
+
+======================================================================
+FAIL: test_failed_import_is_atomic (tests.guest.test_audit_regressions.AuditRegressions.test_failed_import_is_atomic)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 90, in test_failed_import_is_atomic
+    self.assertEqual(export_state_image(session), before)
+AssertionError: b'LISP\x01\x00-\x00\x00\x00{"bindings": {"keep": 42}, "[106 chars]\xf3' != b'LISP\x01\x00+\x00\x00\x00{"bindings": {"keep": 42}, "[111 chars]xae{'
+
+======================================================================
+FAIL: test_modular_arithmetic_through_repl (tests.guest.test_audit_regressions.AuditRegressions.test_modular_arithmetic_through_repl) (source=b'(+ 67108863 1)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 23, in test_modular_arithmetic_through_repl
+    self.assertEqual(self.evaluate(source), expected)
+AssertionError: b'67108864' != b'0'
+
+======================================================================
+FAIL: test_modular_arithmetic_through_repl (tests.guest.test_audit_regressions.AuditRegressions.test_modular_arithmetic_through_repl) (source=b'(- 0 1)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 23, in test_modular_arithmetic_through_repl
+    self.assertEqual(self.evaluate(source), expected)
+AssertionError: b'-1' != b'67108863'
+
+======================================================================
+FAIL: test_modular_arithmetic_through_repl (tests.guest.test_audit_regressions.AuditRegressions.test_modular_arithmetic_through_repl) (source=b'(* 67108863 2)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 23, in test_modular_arithmetic_through_repl
+    self.assertEqual(self.evaluate(source), expected)
+AssertionError: b'134217726' != b'67108862'
+
+======================================================================
+FAIL: test_modular_arithmetic_through_repl (tests.guest.test_audit_regressions.AuditRegressions.test_modular_arithmetic_through_repl) (source=b"(+' 67108863 1)")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 23, in test_modular_arithmetic_through_repl
+    self.assertEqual(self.evaluate(source), expected)
+AssertionError: b'67108864' != b'0'
+
+======================================================================
+FAIL: test_modular_arithmetic_through_repl (tests.guest.test_audit_regressions.AuditRegressions.test_modular_arithmetic_through_repl) (source=b"(-' 0 1)")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 23, in test_modular_arithmetic_through_repl
+    self.assertEqual(self.evaluate(source), expected)
+AssertionError: b'-1' != b'67108863'
+
+======================================================================
+FAIL: test_modular_arithmetic_through_repl (tests.guest.test_audit_regressions.AuditRegressions.test_modular_arithmetic_through_repl)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 24, in test_modular_arithmetic_through_repl
+    self.assertEqual(apply_numeric("+'", [67108863, 1]), 0)
+AssertionError: 67108864 != 0
+
+======================================================================
+FAIL: test_rejects_malformed_forms_before_evaluation (tests.guest.test_audit_regressions.AuditRegressions.test_rejects_malformed_forms_before_evaluation) (source=b'(+ 1 2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 48, in test_rejects_malformed_forms_before_evaluation
+    with self.subTest(source=source), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_rejects_malformed_forms_before_evaluation (tests.guest.test_audit_regressions.AuditRegressions.test_rejects_malformed_forms_before_evaluation) (source=b'(+ 1 2])')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 48, in test_rejects_malformed_forms_before_evaluation
+    with self.subTest(source=source), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_rejects_malformed_forms_before_evaluation (tests.guest.test_audit_regressions.AuditRegressions.test_rejects_malformed_forms_before_evaluation) (source=b"'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 48, in test_rejects_malformed_forms_before_evaluation
+    with self.subTest(source=source), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_rejects_malformed_forms_before_evaluation (tests.guest.test_audit_regressions.AuditRegressions.test_rejects_malformed_forms_before_evaluation) (source=b')')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 48, in test_rejects_malformed_forms_before_evaluation
+    with self.subTest(source=source), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_rejects_malformed_forms_before_evaluation (tests.guest.test_audit_regressions.AuditRegressions.test_rejects_malformed_forms_before_evaluation) (source=b'(+ 1 2) (+ 3 4)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 48, in test_rejects_malformed_forms_before_evaluation
+    with self.subTest(source=source), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_rejects_malformed_forms_before_evaluation (tests.guest.test_audit_regressions.AuditRegressions.test_rejects_malformed_forms_before_evaluation) (source=b'(+ 1 2 3)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 51, in test_rejects_malformed_forms_before_evaluation
+    with self.subTest(source=source), self.assertRaisesRegex(ValueError, "arity"):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_state_roundtrip_preserves_closures_and_recursion (tests.guest.test_audit_regressions.AuditRegressions.test_state_roundtrip_preserves_closures_and_recursion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 69, in test_state_roundtrip_preserves_closures_and_recursion
+    self.assertNotIn("stale", restored.env.bindings)
+AssertionError: 'stale' unexpectedly found in {'stale': 99, 'pair': [1, 2]}
+
+======================================================================
+FAIL: test_unsupported_state_fails_explicitly (tests.guest.test_audit_regressions.AuditRegressions.test_unsupported_state_fails_explicitly)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/danny/Development/ISyCo Git/MalbolgeLispSlop/tests/guest/test_audit_regressions.py", line 77, in test_unsupported_state_fails_explicitly
+    with self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.004s
+
+FAILED (failures=17, errors=9)

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-t",
+    "."
+  ],
+  "cwd": "/home/danny/Development/ISyCo Git/MalbolgeLispSlop",
+  "exit_status": 0
+}

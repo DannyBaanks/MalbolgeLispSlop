@@ -23,11 +23,11 @@ def apply_numeric(name: str, args: list[Any]) -> Any:
     if name == "+":
         return (args[0] + args[1]) % MOD26
     if name == "+'":
-        return (args[0] + args[1]) % MOD19
+        return (args[0] + args[1]) % MOD26
     if name == "-":
         return (args[0] - args[1]) % MOD26
     if name == "-'":
-        return (args[0] - args[1]) % MOD19
+        return (args[0] - args[1]) % MOD26
     if name == "*":
         return (args[0] * args[1]) % MOD26
     if name == "/":

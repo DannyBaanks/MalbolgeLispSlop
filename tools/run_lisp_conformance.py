@@ -131,7 +131,18 @@ def run_matrix(
                     }
                 )
 
+    incomplete_features = [
+        feature.get("id", "unknown") for feature in features
+        if feature.get("state") not in {"IMPLEMENTED", "DEMONSTRATED"}
+        or not feature.get("positive_cases") or not feature.get("negative_cases")
+    ]
+    complete = total_cases > 0 and not incomplete_features
+    status = "FAIL" if passed_cases != total_cases else ("PASS" if complete else "INCOMPLETE")
+
     summary = {
+        "status": status,
+        "coverage_complete": complete,
+        "incomplete_features": incomplete_features,
         "run_id": run_id,
         "run_dir": str(run_dir),
         "image_sha256": image_sha256,
@@ -173,7 +184,8 @@ def main(argv: list[str] | None = None) -> int:
             f"  Total: {report['total_cases']}, Passed: {report['passed_cases']}, Failed: {report['failed_cases']}"
         )
         print(f"  Evidence: {report['run_dir']}")
-        return 0 if report["failed_cases"] == 0 else 1
+        print(f"  Status: {report['status']}")
+        return {"PASS": 0, "FAIL": 1, "INCOMPLETE": 2}[report["status"]]
     except Exception as exc:
         print(f"Conformance runner error: {exc}", file=sys.stderr)
         return 2

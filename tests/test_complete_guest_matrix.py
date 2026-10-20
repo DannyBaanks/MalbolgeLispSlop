@@ -65,7 +65,7 @@ class CompleteGuestMatrixTests(unittest.TestCase):
         self.assertNotIn("reference.lisp_reference", sys.modules)
         self.assertEqual(res.status.value, "HALT")
 
-    def test_complete_guest_matrix_has_no_open_rows(self) -> None:
+    def test_inventory_integrity_does_not_imply_guest_completeness(self) -> None:
         matrix_path = ROOT / "spec/lisp-feature-matrix.json"
         data = json.loads(matrix_path.read_text(encoding="utf-8"))
         features = data.get("features", [])
@@ -73,6 +73,10 @@ class CompleteGuestMatrixTests(unittest.TestCase):
         # Ensure all feature IDs are defined and unique
         ids = [f["id"] for f in features]
         self.assertEqual(len(ids), len(set(ids)))
+        from slopsynth.feature_matrix import validate_matrix
+        validate_matrix(data)
+        with self.assertRaisesRegex(ValueError, "incomplete feature"):
+            validate_matrix(data, require_complete=True)
 
 
 if __name__ == "__main__":

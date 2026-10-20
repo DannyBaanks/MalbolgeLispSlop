@@ -1,6 +1,6 @@
 # LispSlop Guest Conformance & Architecture Report
 
-**Status:** Task 10 Complete (Modular Guest IR Architecture & Fixed-3^19 Canonical Bootstrap Probe).
+**Status (2026-10-20 correction):** Host helpers and canonical bootstrap probe. Native general Lisp remains NOT_DEMONSTRATED; H9 is withdrawn ([details](H9_CORRECTION.md)). The inventory is incomplete. Historical test totals below are not current completeness claims.
 
 ## 1. Executive Summary
 
@@ -30,7 +30,7 @@ The guest runtime is partitioned into clear, verified IR modules:
    - `lookup_symbol(env, sym)` and `bind_symbol(env, sym, val)`.
 
 4. **`guest_ir.lisp.reader`:**
-   - Stream tokenizer handling comments (`; ...`), nested parentheses `(...)`, infix square brackets `[a + b] -> (+ a b)`, fork braces `{f g} -> (fork f g)`, quote `'`, and lazy `?`.
+   - Tokenizer recognizes delimiters and identifiers with trailing apostrophes. The host parser supports parentheses, infix brackets and quote; unsupported braces/lazy syntax and malformed or trailing forms are rejected.
    - Delimiter balancing validation.
 
 5. **`guest_ir.lisp.printer`:**
@@ -53,10 +53,10 @@ The guest runtime is partitioned into clear, verified IR modules:
     - Function combinators: `id`, `atop`, `bind`, `bind'`, `selfie`, `commute`, `monad`, `dyad`.
 
 11. **`guest_ir.lisp.repl` & `state_image`:**
-    - Interactive command loop supporting dot commands (`.F`, `.A`, `.R`, `.M`, `.S`, `.E`, `.I`, `off`).
-    - Binary state persistence with magic header `b"LISP"` and SHA-256 integrity verification.
+    - Host step API supporting `.F`, `.A`, `.R`, `.M`, `.S` and `off`. `.E`/`.I` are not wired into the REPL; persistence is exposed through Python APIs.
+    - Version 2 state persistence with magic header `b"LISP"`, SHA-256 verification, lexical environment graphs and closures (including recursion). Imports are atomic and accept legacy v1 data. Opaque host values/combinators are explicitly rejected on export.
 
-## 3. Conformance & Test Suite
+## 3. Historical Conformance & Test Suite (2026-10-19)
 
 - **Unit Test Suite:** 272 comprehensive unit tests across all 13 layers, executing 100% green without regressions (`Ran 272 tests in 23.395s - OK`).
 - **Formal Verification Campaign:** Sealed under [`evidence/lisp_conformance_v1/`](../evidence/lisp_conformance_v1/protocol.md) (Run ID: `20261019T052817Z-54597c3f`):

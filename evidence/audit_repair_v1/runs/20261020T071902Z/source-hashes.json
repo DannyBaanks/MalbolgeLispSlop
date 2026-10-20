@@ -1,0 +1,22 @@
+{
+  "GUIA.md": "fdacd1fccdf6b21523a4a908833d006faf8df90eb0f115c802c2940a902f442b",
+  "README.md": "11c5b1e661d3d4e3d26c4684adcf653160a3502dc8269a0e6e56e886b48d1872",
+  "build/bolge19": "04b294d37f8f200ea30ba1b301424d4c0358551817cdd94db12a7235ddd10c4e",
+  "docs/H9_CORRECTION.md": "fcc43889e085716a84eca68219d91a8852a6567121ceefbad31833257c90ea6f",
+  "docs/LISP_CONFORMANCE.md": "95c278fdf612363eb451e8296d787326dbd6c568cbe4b83cd079d9d93682c722",
+  "guest_ir/lisp/builtins_numeric.py": "849f9a9d7671f42efda35d216c32fb4cfc3bea8530de56210d3ec122d60dfb39",
+  "guest_ir/lisp/callables.py": "3f4b7cffb22c4cc57ca8bad2a603ba0f5703cb672dec89468ebeb170dd722991",
+  "guest_ir/lisp/evaluator.py": "c831e74f540464f11d5b22f52ed6e5f4aa1182872a71e5207c2637d888383fb1",
+  "guest_ir/lisp/reader.py": "e3ed8c275d890d24fad621ea92f3113bd1d359d7cc9fbdd8bac9164d3969b76a",
+  "guest_ir/lisp/repl.py": "0ce3fd2ee26767b2de39a68d3f12c0f010a7c85283f7ec50fc04cdfddb4e8923",
+  "guest_ir/lisp/state_image.py": "3f85387b8c1ba7d5275922922b4f15a46fd90a697afa664fabdbe9cdd01f1fc4",
+  "slopsynth/eval_add.py": "80ef9eb72f0e98817649d098854002f4a4790d78d6b30b009cce0c70b3b861a7",
+  "spec/lisp-feature-matrix.json": "8c21a47c28ab2787b3e27c931bc97a11b0a984acabb510c29e9839488d024ccf",
+  "src/bolge19.zig": "47758a3f667f4089f6029d86130b94f14f082d4c113a212b8ff571d84113e8a3",
+  "tests/guest/test_audit_regressions.py": "667b703d5a9bd5dedf192578ea28579b10e2100aadfdc536a00d29978480b99a",
+  "tests/test_complete_guest_matrix.py": "a00f352ed360e36aeda67d6dc89a55efd7f7f797ad14c144dfc2f856a42b71ed",
+  "tests/test_lisp_conformance_runner.py": "21b209e607458f9aa0234d1fe4292124010411c23f518993bf7c7282c56b1cae",
+  "tests/test_native_eval_add.py": "420459daf8523aaa1101116a32a4c15b47d6a41a4796e2cd388da345e1d76576",
+  "tools/run_lisp_conformance.py": "3de1823bd5f8cf3887536ba2aa10a1020c8e7cbcd95b99bec39ac0a94078e914",
+  "tools/verify_h9_eval_add.py": "e8188f85133b109c944fde60fbfa1dbe2ac29b50f4ad6526449b12b64a4bac91"
+}

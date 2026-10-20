@@ -33,7 +33,7 @@ def parse_lisp_tokens(source: bytes) -> list[str]:
             continue
         # Accumulate symbol or number
         start = i
-        while i < n and text[i] not in " \t\r\n()[]{}'?;":
+        while i < n and text[i] not in " \t\r\n()[]{}?;":
             i += 1
         tokens.append(text[start:i])
     return tokens

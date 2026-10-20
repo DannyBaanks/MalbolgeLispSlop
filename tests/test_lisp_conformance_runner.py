@@ -212,6 +212,36 @@ class LispConformanceRunnerTests(unittest.TestCase):
         self.assertIn("LOAD_ERROR", statuses)
         self.assertIn("WALL_TIMEOUT", statuses)
 
+    def test_empty_cases_and_declared_rows_are_incomplete(self):
+        from tools.run_lisp_conformance import main, run_matrix
+        matrix = self._make_dummy_matrix([])
+        report = run_matrix(matrix, self.image, self.evidence_root)
+        self.assertEqual(report["status"], "INCOMPLETE")
+        self.assertFalse(report["coverage_complete"])
+        self.assertNotEqual(main(["--matrix", str(matrix), "--image", str(self.image), "--evidence-root", str(self.evidence_root)]), 0)
+
+    def test_complete_fixture_set_can_pass_but_missing_coverage_cannot(self):
+        from tools.run_lisp_conformance import main, run_matrix
+        case = {"name": "echo", "stdin_hex": "41", "stdout_hex": "41", "status": "HALT", "limits": {
+            "loader": "canonical", "max_steps": 100, "timeout_seconds": 2.0,
+            "address_space_bytes": 512 * 1024 * 1024, "output_bytes": 64,
+        }}
+        matrix = self._make_dummy_matrix([case])
+        doc = json.loads(matrix.read_text())
+        doc["features"][0]["state"] = "IMPLEMENTED"
+        doc["features"][0]["negative_cases"] = [dict(case, name="eof", stdin_hex="", stdout_hex="da")]
+        matrix.write_text(json.dumps(doc))
+        report = run_matrix(matrix, self.image, self.evidence_root)
+        self.assertEqual(report["status"], "PASS")
+        self.assertTrue(report["coverage_complete"])
+        self.assertEqual(main(["--matrix", str(matrix), "--image", str(self.image), "--evidence-root", str(self.evidence_root)]), 0)
+        doc["features"].append({"id": "missing", "state": "DECLARED", "positive_cases": [], "negative_cases": []})
+        matrix.write_text(json.dumps(doc))
+        report = run_matrix(matrix, self.image, self.evidence_root)
+        self.assertEqual(report["failed_cases"], 0)
+        self.assertEqual(report["status"], "INCOMPLETE")
+        self.assertEqual(report["incomplete_features"], ["missing"])
+
 
 if __name__ == "__main__":
     unittest.main()
