@@ -27,7 +27,7 @@ from pathlib import Path
 
 from .assemble import AssemblyError, format_image
 from .canonical import CanonicalWalk, walk_canonical
-from .ir import Add, And, BranchZero, Eq, Halt, Jump, Lt, Module, Mul, Or, ReadA, Sub, WriteA, WriteDecimal
+from .ir import Add, And, BranchZero, Eq, Halt, Jump, Load, Lt, Module, Mul, Or, ReadA, Store, Sub, WriteA, WriteDecimal
 from .profile import Profile, load_profile
 from ._native_eval_add import MASK, ONE, P, PTR, RESERVED, SLOTS, TWO, Z
 from ._native_eval_add_v3 import _AdderCircuit, rounds_for
@@ -35,6 +35,7 @@ from ._native_eval_add_v3 import _AdderCircuit, rounds_for
 ID = (0, 1, 2)
 WORD_TRITS = 17  # landing addresses must stay below 3^17 cells (VM region 0 is 3^18)
 LOWERING = "fixed19-predicated-v1"
+MEMORY_SPAN = 64  # widest dynamic address range a Load/Store may cover
 EOF_VALUE = 3**19 - 1
 
 
@@ -327,6 +328,27 @@ def _instances(shape, bound):
 
 # ------------------------------------------------------------------ SSA ----
 
+SET_LIMIT = 64  # exact value sets are tracked while they stay this small
+
+
+class Rng(tuple):
+    """(lo, hi) interval that may also carry the exact set of possible values."""
+
+    def __new__(cls, lo, hi, vals=None):
+        r = tuple.__new__(cls, (lo, hi))
+        r.vals = frozenset(vals) if vals is not None and len(vals) <= SET_LIMIT else None
+        return r
+
+
+def _vals(r):
+    return getattr(r, "vals", None)
+
+
+def _cells(r):
+    """Addresses a Load/Store may touch."""
+    vals = _vals(r)
+    return sorted(vals) if vals is not None else list(range(r[0], r[1] + 1))
+
 
 @dataclass
 class Node:
@@ -405,20 +427,23 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
                 raise AssemblyError(f"paths into {target[0]!r} read different numbers of bytes")
             count = None
         merged = {}
-        for var in sorted(set(old_env) & set(env)):
+        for var in sorted(set(old_env) & set(env), key=repr):
             (v1, (lo1, hi1)), (v2, (lo2, hi2)) = old_env[var], env[var]
             lo, hi = min(lo1, lo2), max(hi1, hi2)
+            s1, s2 = _vals(old_env[var][1]), _vals(env[var][1])
+            rng = Rng(lo, hi, s1 | s2 if s1 is not None and s2 is not None else None)
             if v1 == v2:
-                merged[var] = (v1, (lo, hi))
+                merged[var] = (v1, rng)
             else:
-                merged[var] = (g.add("select", (old_flag, v1, flag, v2), lo, hi), (lo, hi))
+                merged[var] = (g.add("select", (old_flag, v1, flag, v2), lo, hi), rng)
         incoming[target] = (g.or_(old_flag, flag), merged, count)
 
     def ref(env, r):
         if isinstance(r, bool) or not isinstance(r, (str, int)):
             raise AssemblyError(f"operand {r!r} is not a name or integer")
         if isinstance(r, int):
-            return g.const(r), (r % g.mod, r % g.mod)
+            k = r % g.mod
+            return g.const(r), Rng(k, k, {k})
         if r not in env:
             raise AssemblyError(f"{r!r} is not defined on every path to its use")
         return env[r]
@@ -442,9 +467,19 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
                 meta = (alo, ahi, blo, bhi)
                 if isinstance(op, Add):
                     lo, hi = g.wrap(alo + blo, ahi + bhi)
+                    sa, sb = _vals(ref(env, op.left)[1]), _vals(ref(env, op.right)[1])
+                    if sa is not None and sb is not None and len(sa) * len(sb) <= SET_LIMIT:
+                        s = {(x + y) % g.mod for x in sa for y in sb}
+                        lo, hi = min(s), max(s)
+                        node = g.add("add", (a, b), lo, hi, meta)
+                        env[op.destination] = (node, Rng(lo, hi, s))
+                        continue
                     node = g.add("add", (a, b), lo, hi, meta)
                 elif isinstance(op, Sub):
-                    lo, hi = g.wrap(alo - bhi, ahi - blo)
+                    if ahi - blo < 0:  # always negative: the modular result is exact too
+                        lo, hi = g.wrap(alo - bhi + g.mod, ahi - blo + g.mod)
+                    else:
+                        lo, hi = g.wrap(alo - bhi, ahi - blo)
                     node = g.add("sub", (a, b), lo, hi, meta)
                 elif isinstance(op, Mul):
                     lo, hi = g.wrap(alo * blo, ahi * bhi)
@@ -453,6 +488,34 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
                     lo, hi = (1, 1) if ahi < blo else (0, 0) if alo >= bhi else (0, 1)
                     node = g.add("lt", (a, b), lo, hi, meta)
                 env[op.destination] = (node, (lo, hi))
+            elif isinstance(op, Store):
+                v, vrange = ref(env, op.value)
+                addr, arange = ref(env, op.address)
+                cells = _cells(arange)
+                if len(cells) == 1:
+                    env[("@", cells[0])] = (v, vrange)
+                else:
+                    if len(cells) > MEMORY_SPAN:
+                        raise AssemblyError(f"store may touch {len(cells)} cells")
+                    for k in cells:
+                        here = g.add("eq", (addr, g.const(k)), 0, 1)
+                        old, (olo, ohi) = env.get(("@", k), (g.const(0), (0, 0)))
+                        node = g.add("select", (here, v, g.not_(here), old), min(olo, vrange[0]), max(ohi, vrange[1]))
+                        env[("@", k)] = (node, (min(olo, vrange[0]), max(ohi, vrange[1])))
+            elif isinstance(op, Load):
+                addr, arange = ref(env, op.address)
+                where = _cells(arange)
+                cells = [env.get(("@", k), (g.const(0), (0, 0))) for k in where]
+                lo, hi = min(c[1][0] for c in cells), max(c[1][1] for c in cells)
+                if len(where) == 1:
+                    env[op.destination] = (cells[0][0], (lo, hi))
+                else:
+                    if len(where) > MEMORY_SPAN:
+                        raise AssemblyError(f"load may touch {len(where)} cells")
+                    pairs = []
+                    for k, (cell, _) in zip(where, cells):
+                        pairs += [g.add("eq", (addr, g.const(k)), 0, 1), cell]
+                    env[op.destination] = (g.add("select", tuple(pairs), lo, hi), (lo, hi))
             elif isinstance(op, Eq):
                 (a, (alo, ahi)), (b, (blo, bhi)) = ref(env, op.left), ref(env, op.right)
                 node = g.add("eq", (a, b), 0, 1, (alo, ahi, blo, bhi))
@@ -887,7 +950,7 @@ def reference(module: Module, stdin: bytes, width: int = 7, bound: int = 0, max_
     function = module.functions[0]
     shape = Shape.of(function)
     mod = 3**width
-    env, out, pos = {}, bytearray(), 0
+    env, out, pos, memory = {}, bytearray(), 0, {}
     name = function.entry_block
     count = 0 if name in shape.cyclic else -1
     val = lambda r: r % mod if isinstance(r, int) else env[r]
@@ -905,6 +968,10 @@ def reference(module: Module, stdin: bytes, width: int = 7, bound: int = 0, max_
                 env[op.destination] = (val(op.left) * val(op.right)) % mod
             elif isinstance(op, Lt):
                 env[op.destination] = int(val(op.left) < val(op.right))
+            elif isinstance(op, Store):
+                memory[val(op.address)] = val(op.value)
+            elif isinstance(op, Load):
+                env[op.destination] = memory.get(val(op.address), 0)
             elif isinstance(op, Eq):
                 env[op.destination] = int(val(op.left) == val(op.right))
             elif isinstance(op, And):
