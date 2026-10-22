@@ -89,6 +89,22 @@ class Sub:
 
 
 @dataclass(frozen=True, slots=True)
+class Mul:
+    destination: str
+    left: ValueRef
+    right: ValueRef
+
+
+@dataclass(frozen=True, slots=True)
+class Lt:
+    """destination = 1 if left < right else 0 (unsigned)."""
+
+    destination: str
+    left: ValueRef
+    right: ValueRef
+
+
+@dataclass(frozen=True, slots=True)
 class Call:
     function: str
     arguments: tuple[ValueRef, ...] = ()
@@ -101,7 +117,7 @@ class Return:
 
 
 ModuleOperation: TypeAlias = (
-    Operation | WriteDecimal | BranchZero | Jump | Load | Store | Add | Sub | Call | Return
+    Operation | WriteDecimal | BranchZero | Jump | Load | Store | Add | Sub | Mul | Lt | Call | Return
 )
 
 
@@ -118,7 +134,7 @@ class BasicBlock:
         if any(
             not isinstance(
                 operation,
-                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, Jump, Load, Store, Add, Sub, Call, Return),
+                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, Jump, Load, Store, Add, Sub, Mul, Lt, Call, Return),
             )
             for operation in self.operations
         ):
