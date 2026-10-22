@@ -105,6 +105,33 @@ class Lt:
 
 
 @dataclass(frozen=True, slots=True)
+class Eq:
+    """destination = 1 if left == right else 0."""
+
+    destination: str
+    left: ValueRef
+    right: ValueRef
+
+
+@dataclass(frozen=True, slots=True)
+class And:
+    """destination = 1 if both operands are nonzero else 0."""
+
+    destination: str
+    left: ValueRef
+    right: ValueRef
+
+
+@dataclass(frozen=True, slots=True)
+class Or:
+    """destination = 1 if either operand is nonzero else 0."""
+
+    destination: str
+    left: ValueRef
+    right: ValueRef
+
+
+@dataclass(frozen=True, slots=True)
 class Call:
     function: str
     arguments: tuple[ValueRef, ...] = ()
@@ -117,7 +144,7 @@ class Return:
 
 
 ModuleOperation: TypeAlias = (
-    Operation | WriteDecimal | BranchZero | Jump | Load | Store | Add | Sub | Mul | Lt | Call | Return
+    Operation | WriteDecimal | BranchZero | Jump | Load | Store | Add | Sub | Mul | Lt | Eq | And | Or | Call | Return
 )
 
 
@@ -134,7 +161,7 @@ class BasicBlock:
         if any(
             not isinstance(
                 operation,
-                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, Jump, Load, Store, Add, Sub, Mul, Lt, Call, Return),
+                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, Jump, Load, Store, Add, Sub, Mul, Lt, Eq, And, Or, Call, Return),
             )
             for operation in self.operations
         ):

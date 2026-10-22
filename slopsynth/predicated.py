@@ -27,18 +27,35 @@ from pathlib import Path
 
 from .assemble import AssemblyError, format_image
 from .canonical import CanonicalWalk, walk_canonical
-from .ir import Add, BranchZero, Halt, Jump, Lt, Module, Mul, ReadA, Sub, WriteA, WriteDecimal
+from .ir import Add, And, BranchZero, Eq, Halt, Jump, Lt, Module, Mul, Or, ReadA, Sub, WriteA, WriteDecimal
 from .profile import Profile, load_profile
-from ._native_eval_add import ONE, PTR, SLOTS, TWO, Z
+from ._native_eval_add import MASK, ONE, P, PTR, RESERVED, SLOTS, TWO, Z
 from ._native_eval_add_v3 import _AdderCircuit, rounds_for
 
 ID = (0, 1, 2)
-WORD_TRITS = 16  # landing addresses must stay below 3^16 cells
+WORD_TRITS = 17  # landing addresses must stay below 3^17 cells (VM region 0 is 3^18)
 LOWERING = "fixed19-predicated-v1"
 EOF_VALUE = 3**19 - 1
 
 
 # ---------------------------------------------------------------- gates ----
+
+
+def _slot_initial(r):
+    """Image byte that is a valid opcode at r and has no 2 in its low six trits."""
+    valid = set(P.dispatch.values())
+    return next(
+        (b for b in range(33, 127) if (b + r) % 94 in valid and all((b // 3**k) % 3 != 2 for k in range(6))),
+        None,
+    )
+
+
+# Ring cells that can hold extra input bytes. The v2 bootstrap pairs
+# `crazy slot; crazy 62` leave every slot at 1...1 for any such list
+# (`tests/test_predicated.py` replays the sequence).
+EXTRA_SLOTS = tuple(
+    r for r in range(41, 94) if r not in RESERVED and r not in SLOTS and _slot_initial(r) is not None
+)
 
 
 class Gates(_AdderCircuit):
@@ -142,6 +159,34 @@ class Gates(_AdderCircuit):
             b = n
             s *= 2
         return b
+
+    def bootstrap_inputs(self, count):
+        """v2 bootstrap with `count` input slots. All bytes are read here: the gates
+        later execute INPUT expecting EOF, so stdin must hold at most `count` bytes."""
+        slots = list(SLOTS) + list(EXTRA_SLOTS[: max(0, count - len(SLOTS))])
+        if len(slots) < count:
+            raise AssemblyError(f"at most {len(SLOTS) + len(EXTRA_SLOTS)} input bytes are supported")
+        for r in slots[len(SLOTS):]:
+            self.free.discard(r)
+            self.initial[r] = _slot_initial(r)
+        self.act("crazy", 58)
+        self.act("crazy", 62)
+        for r in slots:
+            self.act("crazy", r)
+            self.act("crazy", 62)
+        self.act("crazy", 40)
+        self.act("crazy", 41)
+        self.input_sites = []
+        for r in slots:
+            self.input_sites.append(len(self.code))
+            self.act("input")
+            self.act("crazy", r)
+        self.copy(ONE, TWO)
+        self.ctrl(2, TWO)
+        self.reset(MASK)
+        self.load(TWO)
+        self.act("crazy", MASK)
+        return slots
 
     def add_cin(self, x, y, rounds, carry_in=False):
         s = self.s_full(x, y)
@@ -346,7 +391,28 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
     order, edges_out = _instances(shape, bound)
     g = Graph(width)
     full = (0, g.mod - 1)
-    incoming = {order[0]: [(g.flag_true(), {}, 0)]}
+    incoming = {order[0]: (g.flag_true(), {}, 0)}
+
+    def add_edge(target, flag, env, count):
+        """Merge an edge into the pending entry of its target right away, so only
+        one predicate and one environment per target stay live."""
+        if target not in incoming:
+            incoming[target] = (flag, env, count)
+            return
+        old_flag, old_env, old_count = incoming[target]
+        if old_count != count:
+            if target[0] in shape.reads_ahead:
+                raise AssemblyError(f"paths into {target[0]!r} read different numbers of bytes")
+            count = None
+        merged = {}
+        for var in sorted(set(old_env) & set(env)):
+            (v1, (lo1, hi1)), (v2, (lo2, hi2)) = old_env[var], env[var]
+            lo, hi = min(lo1, lo2), max(hi1, hi2)
+            if v1 == v2:
+                merged[var] = (v1, (lo, hi))
+            else:
+                merged[var] = (g.add("select", (old_flag, v1, flag, v2), lo, hi), (lo, hi))
+        incoming[target] = (g.or_(old_flag, flag), merged, count)
 
     def ref(env, r):
         if isinstance(r, bool) or not isinstance(r, (str, int)):
@@ -360,30 +426,10 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
     for instance in order:
         name, _ = instance
         block = shape.blocks[name]
-        edges = incoming.pop(instance, [])
-        if not edges:
+        if instance not in incoming:
             continue
-        reads = {count for _, _, count in edges}
-        if len(reads) == 1:
-            count = reads.pop()
-        elif name in shape.reads_ahead:
-            raise AssemblyError(f"paths into {name!r} read different numbers of bytes")
-        else:
-            count = None
-        pred = edges[0][0]
-        for flag, _, _ in edges[1:]:
-            pred = g.or_(pred, flag)
-        env = {}
-        names = set(edges[0][1]).intersection(*(e for _, e, _ in edges[1:]))
-        for var in sorted(names):
-            values = [e[var] for _, e, _ in edges]
-            lo = min(v[1][0] for v in values)
-            hi = max(v[1][1] for v in values)
-            if all(v[0] == values[0][0] for v in values):
-                env[var] = (values[0][0], (lo, hi))
-            else:
-                pairs = tuple(x for (flag, _, _), v in zip(edges, values) for x in (flag, v[0]))
-                env[var] = (g.add("select", pairs, lo, hi), (lo, hi))
+        pred, env, count = incoming.pop(instance)
+        env = dict(env)
         successors = []
         for op in block.operations:
             if isinstance(op, ReadA):
@@ -407,6 +453,17 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
                     lo, hi = (1, 1) if ahi < blo else (0, 0) if alo >= bhi else (0, 1)
                     node = g.add("lt", (a, b), lo, hi, meta)
                 env[op.destination] = (node, (lo, hi))
+            elif isinstance(op, Eq):
+                (a, (alo, ahi)), (b, (blo, bhi)) = ref(env, op.left), ref(env, op.right)
+                node = g.add("eq", (a, b), 0, 1, (alo, ahi, blo, bhi))
+                env[op.destination] = (node, (0, 1))
+            elif isinstance(op, (And, Or)):
+                flags = []
+                for operand in (op.left, op.right):
+                    v, (lo, hi) = ref(env, operand)
+                    flags.append(v if hi <= 1 else g.not_(g.add("eqz", (v,), 0, 1)))
+                node = (g.and_ if isinstance(op, And) else g.or_)(*flags)
+                env[op.destination] = (node, (0, 1))
             elif isinstance(op, WriteA):
                 v, _ = ref(env, op.value)
                 g.add("out", (pred, v))
@@ -426,7 +483,7 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
                 raise AssemblyError(f"the predicated compiler cannot lower {type(op).__name__}")
         for target, (flag, target_env) in zip(edges_out[instance], successors):
             if target is not None:
-                incoming.setdefault(target, []).append((flag, target_env, count))
+                add_edge(target, flag, target_env, count)
     _fuse_and_prune(g)
     return g
 
@@ -443,6 +500,11 @@ def _refine(g, env, name, v):
                 zero[var] = (val, (max(lo, k), hi))
             elif val == a:
                 zero[var] = (val, (k, k))
+    if node.op == "eq" and g.nodes[node.args[1]].op == "const":
+        a, k = node.args[0], g.nodes[node.args[1]].args[0]
+        for var, (val, _) in env.items():
+            if val == a:
+                nonzero[var] = (val, (k, k))
     for var, (val, _) in env.items():
         if val == v:
             zero[var] = (val, (0, 0))
@@ -509,6 +571,14 @@ class _Emitter:
         self.c.drop(r)
         return k
 
+    def r(self, j):
+        """Register of node j; constants are built on demand for the current node."""
+        if self.g.nodes[j].op != "const":
+            return self.reg[j]
+        if j not in self.temps:
+            self.temps[j] = self.c.const(self.g.nodes[j].args[0])
+        return self.temps[j]
+
     def release(self, i):
         self.left[i] -= 1
         if self.left[i] == 0 and i in self.reg:
@@ -517,16 +587,7 @@ class _Emitter:
     # -- bytes
     def read(self, index):
         c = self.c
-        if index < len(SLOTS):
-            raw = SLOTS[index]
-        else:
-            while self.physical <= index:
-                raw = c.uniform(1)
-                c.act("input")
-                c.act("crazy", raw)
-                self.pending[self.physical] = raw
-                self.physical += 1
-            raw = self.pending.pop(index)
+        raw = self.slots[index]
         value = c.unary_ip(c.copy(raw), (1, 0, 2))  # the store swapped 0 and 1
         c.drop(raw)
         return self.canonical(value)
@@ -542,6 +603,27 @@ class _Emitter:
         total = self.c.add_cin(a, comp, self.W, carry_in=True)
         self.c.drop(comp)
         return total  # caller masks or reads the borrow trit
+
+    def sub_any(self, args, meta):
+        """x - y + 3^W (borrow trit W is 1 iff x >= y); constant y skips the complement."""
+        x, y = args
+        node = self.g.nodes[y]
+        if node.op == "const":
+            k = node.args[0]
+            offset = self.c.const(self.MOD - k) if k else None
+            if offset is None:
+                total = self.c.add_cin(self.r(x), self.shared_const(self.MOD - 1), self.W, carry_in=True)
+            else:
+                total = self.c.add_cin(self.r(x), offset, rounds_for(meta[1] + self.MOD - k))
+                self.c.drop(offset)
+            return total
+        return self.sub(self.r(x), self.r(y))
+
+    def mul_flag(self, x, f):
+        b = self.c.broadcast(f)
+        r = self.c.keep(x, b)
+        self.c.drop(b)
+        return r
 
     def mul_const(self, x, k, hi_x):
         """x * k for a constant k: shifted copies of x and 2x, no conditionals."""
@@ -712,30 +794,31 @@ class _Emitter:
     # -- driver
     def run(self):
         c, g = self.c, self.g
-        c.bootstrap()
         used = {n.args[0] for n in g.nodes if n.op == "read"}
-        for index, slot in enumerate(SLOTS):
+        self.slots = c.bootstrap_inputs(max(len(SLOTS), max(used, default=-1) + 1))
+        for index, slot in enumerate(self.slots):
             if index not in used:
                 c.drop(slot)
-        self.physical, self.pending = len(SLOTS), {}
         self.mask_w()
         for i, n in enumerate(g.nodes):
             if n.op == "dead" or (n.uses == 0 and n.op not in ("out", "outdec")):
                 continue
             a = n.args
-            reg = self.reg.__getitem__
             if n.op == "const":
-                r = c.const(a[0])
-            elif n.op == "true":
+                continue  # rematerialized at each use: constants never hold a register
+            self.temps = temps = {}
+            reg = self.r
+
+            if n.op == "true":
                 r = c.copy(ONE)
             elif n.op == "read":
                 r = self.read(a[0])
             elif n.op == "add":
                 r = self.add(reg(a[0]), reg(a[1]), n.meta[1] + n.meta[3])
             elif n.op == "sub":
-                r = self.canonical(self.sub(reg(a[0]), reg(a[1])))
+                r = self.canonical(self.sub_any(a, n.meta))
             elif n.op == "lt":
-                total = self.sub(reg(a[0]), reg(a[1]))
+                total = self.sub_any(a, n.meta)
                 no_borrow = c.flag(total, self.W)
                 c.drop(total)
                 r = c.not01(no_borrow)
@@ -746,13 +829,16 @@ class _Emitter:
                     x, y, hx, hy = y, x, hy, hx
                 if g.nodes[y].op == "const":
                     r = self.mul_const(reg(x), g.nodes[y].args[0], min(hx, self.MOD - 1))
+                elif min(hx, hy) <= 1 and g.nodes[x if hx <= 1 else y].lo >= 0:
+                    flag, value = (x, y) if hx <= 1 else (y, x)
+                    r = self.mul_flag(reg(value), reg(flag))
                 else:
                     if hy > hx:
                         x, y, hx, hy = y, x, hy, hx
                     r = self.mul(reg(x), reg(y), min(hx, self.MOD - 1), hy)
             elif n.op == "eqz":
                 r = self.eqc(reg(a[0]), Z)
-            elif n.op == "eqc":
+            elif n.op in ("eqc", "eq"):
                 r = self.eqc(reg(a[0]), reg(a[1]))
             elif n.op == "and":
                 r = c.and01(reg(a[0]), reg(a[1]))
@@ -770,9 +856,11 @@ class _Emitter:
                 r = None
             else:
                 raise AssemblyError(f"no emitter for {n.op}")
+            for temp in temps.values():
+                c.drop(temp)
             if r is not None:
                 self.reg[i] = r
-            if n.op not in ("const", "read"):
+            if n.op != "read":
                 for arg in a:
                     self.release(arg)
         c.code.append("halt")
@@ -783,6 +871,7 @@ def compile_graph(g: Graph):
     probe = _Emitter(g, ())
     probe.run()
     bases = probe.landings
+    del probe
     final = _Emitter(g, bases)
     final.run()
     if final.landings != bases:
@@ -816,6 +905,12 @@ def reference(module: Module, stdin: bytes, width: int = 7, bound: int = 0, max_
                 env[op.destination] = (val(op.left) * val(op.right)) % mod
             elif isinstance(op, Lt):
                 env[op.destination] = int(val(op.left) < val(op.right))
+            elif isinstance(op, Eq):
+                env[op.destination] = int(val(op.left) == val(op.right))
+            elif isinstance(op, And):
+                env[op.destination] = int(val(op.left) != 0 and val(op.right) != 0)
+            elif isinstance(op, Or):
+                env[op.destination] = int(val(op.left) != 0 or val(op.right) != 0)
             elif isinstance(op, WriteA):
                 out.append(val(op.value) & 255)
             elif isinstance(op, WriteDecimal):
