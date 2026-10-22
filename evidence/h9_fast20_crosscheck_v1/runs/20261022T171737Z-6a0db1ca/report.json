@@ -1,0 +1,35 @@
+{
+  "agree": 498,
+  "bolge19_pass": 498,
+  "cases": 498,
+  "claim": "The sealed H9 v2 image computes the framed digit contract on upstream fast20.c, not only on bolge19.",
+  "compile_command": [
+    "gcc",
+    "-O2",
+    "-w",
+    "-o",
+    "fast20",
+    "fast20.c"
+  ],
+  "fast20_pass": 498,
+  "host": {
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "image_sha256": "64f2b9d86d9348df5af28f1e0c31cf8565b813794ade02c2abd50904b5c48bfe",
+  "not_demonstrated": [
+    "Inputs longer than nine bytes or streams left open.",
+    "Arithmetic performed inside the VM: decimal sums are wired at build time (one-hot table).",
+    "General Lisp evaluation."
+  ],
+  "status": "PASS",
+  "upstream": {
+    "license": "CC0-1.0",
+    "patched": false,
+    "path": "fast20.c",
+    "repository": "https://github.com/kspalaiologos/malbolge-lisp",
+    "revision": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "sha256": "607467b591f3446e7e54dfccfee0fff867a03f325ca2767ff49be71e8a431143"
+  },
+  "valid_cases": 300
+}

@@ -47,3 +47,13 @@ Each run is sealed by its own SHA256SUMS.txt. No v1 raw evidence is changed.
 A first v2 campaign under `runs/20261020T082152Z-f6622882/` also passed; the final
 campaign additionally uses the fresh VM binary and the anchored backend profile
 path. Source snapshots are identified by their hashes, not assumed from prose.
+
+## Scope correction (2026-10-22, appended)
+
+The title above says "addition"; the recorded runs remain valid, but the term
+overstates the mechanism. The image decodes each digit to one-hot flags and ANDs
+all 100 pairs; the sum `i + j` that wires each pair to its output rail is
+computed in Python at build time (`slopsynth/_native_eval_add.py`). The VM
+performs a 100-entry selection, not ternary addition. `lower_eval_add` checks the
+IR shape and emits a fixed template; it does not lower the IR. The same image was
+later run on upstream fast20.c: `evidence/h9_fast20_crosscheck_v1/protocol.md`.

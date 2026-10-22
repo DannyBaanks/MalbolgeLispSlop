@@ -1,6 +1,6 @@
 # LispSlop Guest Conformance & Architecture Report
 
-**Status (2026-10-20 correction):** Host helpers and canonical bootstrap probe. Native general Lisp remains NOT_DEMONSTRATED; H9 v1 is withdrawn; v2 implements only the fixed two-digit addition frame ([details](H9_CORRECTION.md)). The inventory is incomplete. Historical test totals below are not current completeness claims.
+**Status (2026-10-20 correction):** Host helpers and canonical bootstrap probe. Native general Lisp remains NOT_DEMONSTRATED; H9 v1 is withdrawn; v2 implements only the fixed two-digit frame, as a 100-entry one-hot selection circuit whose sums are wired at build time (the VM does not add) ([details](H9_CORRECTION.md)). The inventory is incomplete. Historical test totals below are not current completeness claims.
 
 ## 1. Executive Summary
 

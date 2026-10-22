@@ -4,8 +4,10 @@
 
 MalbolgeLispSlop reúne un evaluador Lisp en Python, una representación intermedia
 (IR) y herramientas de síntesis para la VM Malbolge de 19 trits fijos
-(`fixed-3^19` / `bolge19`). **H9 v2 ejecuta dentro de la VM la suma de dos dígitos
-en el formato fijo `(+ a b)`**, con salida decimal de `0` a `18`.
+(`fixed-3^19` / `bolge19`). **H9 v2 responde dentro de la VM a `(+ a b)` con dos
+dígitos en formato fijo**, con salida decimal de `0` a `18`. Lo hace con un circuito
+combinacional de selección de 100 entradas; la VM no ejecuta la suma ternaria (véase
+[qué hace y qué no](#h9-v2-circuito-nativo-con-alcance-explícito)).
 
 La ejecución nativa de Lisp general continúa en desarrollo. El evaluador Python,
 el probe de bootstrap y el circuito H9 son capacidades diferentes.
@@ -14,7 +16,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
-| **H9 v2 nativo** | Guarda ambos operandos, valida el marco fijo y calcula la suma en Malbolge | Las 100 parejas de dígitos con tres finales de entrada; controles negativos y contraste con el modelo |
+| **H9 v2 nativo** | Guarda ambos operandos, valida el marco fijo y selecciona la salida con un circuito one-hot de 100 entradas | Las 100 parejas de dígitos con tres finales de entrada; controles negativos, contraste con el modelo y **ejecución en `fast20.c` original de MalbolgeLISP** |
 | **Evaluador host** | Evaluación en Python, entornos léxicos, clausuras y funciones numéricas, de listas y de orden superior | Pruebas de integración del host; no equivalen a ejecución Lisp general en la VM |
 | **Imagen de bootstrap** | `input; output; halt`, 259 celdas canónicas | Prueba de emisión, cargador y E/S; no contiene el evaluador general |
 | **IR Lisp** | Módulos y contratos para el futuro lowering nativo | Varios cuerpos IR siguen siendo scaffolding; el evaluador general no está bajado a Malbolge |
@@ -25,7 +27,7 @@ registra **290 pruebas pasando**, **319 ejecuciones nativas verificadas** y
 **dos ejecuciones del modelo de transiciones**. Los totales se refieren a esa
 revisión y están respaldados por salidas y hashes conservados en el repositorio.
 
-## H9 v2: suma nativa con alcance explícito
+## H9 v2: circuito nativo con alcance explícito
 
 ```text
 (+ 0 0)  →  0
@@ -44,9 +46,20 @@ Contrato de entrada y salida:
 - Enteros de varias cifras, anidamiento, otros formatos y flujos abiertos quedan fuera de este backend.
 
 El programa conserva los operandos en memoria y ejecuta un circuito nativo de
-CRAZY/ROT con decodificación de dígitos y salida decimal con acarreo. Python
-construye la imagen; durante la ejecución, la VM recibe únicamente esa imagen y
-los bytes de entrada. Los casos de prueba no seleccionan la implementación.
+CRAZY/ROT: decodifica cada dígito en diez banderas one-hot, combina con AND las
+100 parejas posibles y une cada resultado en el riel de su suma. Las decenas son
+el OR de los rieles 10 a 18. Python construye la imagen; durante la ejecución, la
+VM recibe únicamente esa imagen y los bytes de entrada. Los casos de prueba no
+seleccionan la implementación.
+
+**Qué no hace:** la VM no suma. El valor `i + j` que conecta cada pareja con su
+riel se calcula en Python al generar la imagen (`slopsynth/_native_eval_add.py`);
+dentro de la VM ocurre una selección en una tabla de 100 entradas construida con
+compuertas. El circuito es acíclico: cada compuerta se ejecuta una vez, sin bucles.
+El IR de `build_eval_add_module()` no genera este código: `lower_eval_add` solo
+valida que el módulo tenga la forma exacta esperada y después emite la plantilla
+fija. Una suma ternaria con acarreo ejecutada en la VM sigue
+**NOT_DEMONSTRATED**.
 
 La imagen tiene **4.837.558 celdas canónicas** —unos 4,84 MB de fuente sin
 espaciado— y las entradas válidas verificadas requieren **4.837.453 o 4.837.454
@@ -67,6 +80,19 @@ La [campaña H9 v2](evidence/h9_eval_add_v2/protocol.md) conserva:
 Los mutantes y contraejemplos deben fallar la suma esperada: se contabilizan como
 controles negativos, no como sumas correctas. Además, el modelo Python de las
 transiciones coincide con la VM en `(+ 1 1) → 2` y `(+ 9 9) → 18`.
+
+### Ejecución en un intérprete externo
+
+La misma imagen corre sin cambios en el `fast20.c` original de MalbolgeLISP
+(revisión `0dc37eb`, sin parches, CC0), que también usa 19 trits. En
+[la campaña de contraste](evidence/h9_fast20_crosscheck_v1/protocol.md),
+`fast20.c` y `bolge19` dan la salida esperada en **498 de 498 casos**: las 300
+entradas válidas y 198 marcos inválidos, mutados o aleatorios. El resultado no
+depende de nuestra VM.
+
+```sh
+python3 -B tools/verify_h9_fast20.py
+```
 
 **H9 v1 sigue refutado.** Su imagen de 259 celdas descartaba el primer operando;
 `(+ 0 0)` y `(+ 1 1)` también imprimían `3`. Se conserva su evidencia histórica y
