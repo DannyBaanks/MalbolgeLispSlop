@@ -79,3 +79,10 @@ The lowering combines bootstrap discriminator arithmetic, landing cascades, poin
 - 50 repeated execution cycles per boundary case.
 - Negative controls: mutant discriminator seed (`mutant-discrim.mb`) and mutant move pointer (`mutant-step.mb`) fail closed.
 - Total: 158 real VM executions bit-exact on native binary.
+
+## Correction (2026-10-22, appended)
+
+Run beyond its recorded cases, this image does not loop: see
+`../h3_h7_loop_audit_v1/protocol.md` (H3 passes 4/28 extended cases, H7 only
+n in {0, 1, 3}). The runs above stay valid for the inputs they recorded; the
+loop claim is refuted beyond them.

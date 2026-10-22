@@ -1,0 +1,23 @@
+{
+  "H3_cases": 28,
+  "H3_pass": [
+    "014100",
+    "024100",
+    "0241024200",
+    "034100"
+  ],
+  "H7_cases": 12,
+  "H7_pass_n": [
+    0,
+    1,
+    3
+  ],
+  "images": {
+    "H3": "5c60f8d9c144c8408ca992b96a0451bb486e7e9e61356e39220e7fdbf461d917",
+    "H7": "d1f8aa1bf02790483db2efa017d9a3f34d36581164fc7e421a0448d2c1b98518"
+  },
+  "upstream_fast20": {
+    "revision": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "sha256": "607467b591f3446e7e54dfccfee0fff867a03f325ca2767ff49be71e8a431143"
+  }
+}

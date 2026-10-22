@@ -49,3 +49,10 @@ The lowering uses native opcodes and pointer/data constraints over the fixed19 p
 - Spacing neutrality on formatted images (`loop-spaced.mb`).
 - Negative mutant controls (`always-stop.mb`, `zero-falls-through.mb`).
 - Total: 271 real VM executions bit-exact on native binary.
+
+## Correction (2026-10-22, appended)
+
+Run beyond its recorded cases, this image does not loop: see
+`../h3_h7_loop_audit_v1/protocol.md` (H3 passes 4/28 extended cases, H7 only
+n in {0, 1, 3}). The runs above stay valid for the inputs they recorded; the
+loop claim is refuted beyond them.
