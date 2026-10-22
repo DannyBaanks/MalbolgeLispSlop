@@ -4,28 +4,67 @@
 
 MalbolgeLispSlop reúne un evaluador Lisp en Python, una representación intermedia
 (IR) y herramientas de síntesis para la VM Malbolge de 19 trits fijos
-(`fixed-3^19` / `bolge19`). **H9 v2 responde dentro de la VM a `(+ a b)` con dos
-dígitos en formato fijo**, con salida decimal de `0` a `18`. Lo hace con un circuito
-combinacional de selección de 100 entradas; la VM no ejecuta la suma ternaria (véase
-[qué hace y qué no](#h9-v2-circuito-nativo-con-alcance-explícito)).
+(`fixed-3^19` / `bolge19`). **H9 v3 suma dentro de la VM**: para `(+ a b)` con dos
+dígitos en formato fijo, el IR se compila a un sumador ternario con acarreo hecho de
+compuertas CRAZY, y la VM calcula la suma y la imprime en decimal (`0` a `18`). La
+misma imagen corre sin cambios en el `fast20.c` original de MalbolgeLISP (véase
+[H9 v3](#h9-v3-sumador-ternario-nativo-compilado-desde-el-ir)). H9 v2, que
+seleccionaba la salida en una tabla, se conserva como histórico.
 
 La ejecución nativa de Lisp general continúa en desarrollo. El evaluador Python,
 el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
-## Estado verificado — 20 de octubre de 2026
+## Estado verificado — 22 de octubre de 2026
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
-| **H9 v2 nativo** | Guarda ambos operandos, valida el marco fijo y selecciona la salida con un circuito one-hot de 100 entradas | Las 100 parejas de dígitos con tres finales de entrada; controles negativos, contraste con el modelo y **ejecución en `fast20.c` original de MalbolgeLISP** |
+| **H9 v3 nativo** | Compila `Add`, `Sub` por constante y `WriteDecimal` del IR a un sumador ternario con acarreo; valida dígitos con aritmética | 498 casos del IR por defecto y cuatro variantes de IR en `fast20.c` original y en `bolge19`; tres programas rechazados por análisis de intervalos |
+| **H9 v2 nativo (histórico)** | Guarda ambos operandos, valida el marco fijo y selecciona la salida con un circuito one-hot de 100 entradas | Las 100 parejas de dígitos con tres finales de entrada; controles negativos, contraste con el modelo y **ejecución en `fast20.c` original de MalbolgeLISP** |
 | **Evaluador host** | Evaluación en Python, entornos léxicos, clausuras y funciones numéricas, de listas y de orden superior | Pruebas de integración del host; no equivalen a ejecución Lisp general en la VM |
 | **Imagen de bootstrap** | `input; output; halt`, 259 celdas canónicas | Prueba de emisión, cargador y E/S; no contiene el evaluador general |
-| **IR Lisp** | Módulos y contratos para el futuro lowering nativo | Varios cuerpos IR siguen siendo scaffolding; el evaluador general no está bajado a Malbolge |
+| **IR Lisp** | Módulos y contratos para el lowering nativo | La aritmética del marco H9 se baja a Malbolge (v3); otros cuerpos IR siguen siendo scaffolding y el evaluador general no está bajado |
 | **Matriz completa de Lisp** | Inventario de funciones y semánticas pendientes | `INCOMPLETE`; pasar la suite no completa esta matriz |
 
 La [validación final](evidence/h9_eval_add_v2/validation/20261020T083040Z/REPORT.md)
 registra **290 pruebas pasando**, **319 ejecuciones nativas verificadas** y
 **dos ejecuciones del modelo de transiciones**. Los totales se refieren a esa
 revisión y están respaldados por salidas y hashes conservados en el repositorio.
+
+## H9 v3: sumador ternario nativo compilado desde el IR
+
+El contrato de entrada y salida es el mismo que en v2 (abajo). Cambia lo que hace la VM:
+
+- **Suma de verdad.** Las palabras de 19 trits se suman en paralelo: la suma trit a
+  trit módulo 3 y el acarreo se calculan con compuertas CRAZY y tablas unarias, y el
+  acarreo se desplaza un trit por ronda. Ningún resultado se precalcula en Python.
+- **Dígitos validados con aritmética.** `x` es dígito si `x + 195` acarrea al trit 5
+  y `x + 185` no. Solo la puntuación del marco se compara byte a byte.
+- **Decimal con acarreo.** Las decenas salen del acarreo de `v + 233` al trit 5; las
+  unidades son `v + 38 + 10·(1 − decenas)`.
+- **Compilado desde el IR.** `slopsynth/eval_add_v3.py` recorre el IR, asigna un
+  rango a cada valor, elige las rondas de acarreo de cada operación y rechaza
+  programas que pueden dar negativo, pasar de `3^6` o imprimir más de 19. Otro IR
+  produce otra imagen.
+
+| IR | Celdas | `fast20.c` | `bolge19` |
+| :--- | ---: | ---: | ---: |
+| `sum = op1 + op2; result = sum − 96` (por defecto) | 2.847.163 | 498/498 | 498/498 |
+| `s = op1 + op1; result = s − 96` | 2.847.163 | 103/103 | 103/103 |
+| `result = op2 − 48` | 2.758.063 | 103/103 | 103/103 |
+| `x = op1 − 48; y = op2 − 48; result = x + y` | 3.056.986 | 103/103 | 103/103 |
+| `s = op1 + op2; t = s − 96; result = t + 1` | 2.908.156 | 103/103 | 103/103 |
+
+La imagen por defecto ocupa 2.847.163 celdas, un 41 % menos que v2. La
+[campaña v3](evidence/h9_eval_add_v3/protocol.md) conserva imágenes, salidas por
+VM, rechazos y hashes:
+
+```sh
+./tools/build.sh
+python3 -B tools/verify_h9_v3.py
+```
+
+Sigue **NOT_DEMONSTRATED**: otros marcos, operandos de varias cifras, anidamiento,
+restar un valor con nombre, bucles (el circuito es acíclico) y Lisp general.
 
 ## H9 v2: circuito nativo con alcance explícito
 

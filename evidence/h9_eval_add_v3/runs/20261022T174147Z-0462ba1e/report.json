@@ -1,0 +1,106 @@
+{
+  "host": {
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "lowering": "fixed19-framed-ternary-adder-v3",
+  "not_demonstrated": [
+    "Frames other than (+ a b) with single digits; inputs longer than nine bytes or open streams.",
+    "Subtraction of a named value, multiplication, nesting, or general Lisp evaluation.",
+    "Loops: the circuit is acyclic and executes each gate once."
+  ],
+  "rejected": {
+    "decimal_out_of_range": "H9 v3 decimal output 'result' may reach 24 (> 19)",
+    "name_minus_name": "H9 v3 subtracts only integer constants",
+    "negative_difference": "H9 v3 difference 'result' may be negative"
+  },
+  "status": "PASS",
+  "upstream_fast20": {
+    "revision": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "sha256": "607467b591f3446e7e54dfccfee0fff867a03f325ca2767ff49be71e8a431143"
+  },
+  "variants": {
+    "a_plus_a": {
+      "bolge19": 103,
+      "cases": 103,
+      "cells": 2847163,
+      "fast20": 103,
+      "image_sha256": "3688cf60a1e72e59635a28ca9e3a13b706b6b0ffd334050631d5f1c93efab5d2",
+      "ir_body": [
+        "Add(destination='s', left='op1', right='op1')",
+        "Sub(destination='result', left='s', right=96)"
+      ],
+      "steps": [
+        "Step(kind='add', destination='s', left='op1', right='op1', rounds=4)",
+        "Step(kind='sub_const', destination='result', left='s', right=96, rounds=6)",
+        "Step(kind='write_decimal', destination=None, left='result', right=None, rounds=0)"
+      ]
+    },
+    "a_plus_b": {
+      "bolge19": 498,
+      "cases": 498,
+      "cells": 2847163,
+      "fast20": 498,
+      "image_sha256": "f2306b45ae2ebaca248e3401b259c1f76714bf92654748249d4b69edd58c45aa",
+      "ir_body": [
+        "Add(destination='sum', left='op1', right='op2')",
+        "Sub(destination='result', left='sum', right=96)"
+      ],
+      "steps": [
+        "Step(kind='add', destination='sum', left='op1', right='op2', rounds=4)",
+        "Step(kind='sub_const', destination='result', left='sum', right=96, rounds=6)",
+        "Step(kind='write_decimal', destination=None, left='result', right=None, rounds=0)"
+      ]
+    },
+    "a_plus_b_plus_1": {
+      "bolge19": 103,
+      "cases": 103,
+      "cells": 2908156,
+      "fast20": 103,
+      "image_sha256": "567cd4d0bec0ef79123c98f726649bb0a9122024cb8eea6ecb6ce7a6e4e5b517",
+      "ir_body": [
+        "Add(destination='s', left='op1', right='op2')",
+        "Sub(destination='t', left='s', right=96)",
+        "Add(destination='result', left='t', right=1)"
+      ],
+      "steps": [
+        "Step(kind='add', destination='s', left='op1', right='op2', rounds=4)",
+        "Step(kind='sub_const', destination='t', left='s', right=96, rounds=6)",
+        "Step(kind='add', destination='result', left='t', right=1, rounds=2)",
+        "Step(kind='write_decimal', destination=None, left='result', right=None, rounds=0)"
+      ]
+    },
+    "b_only": {
+      "bolge19": 103,
+      "cases": 103,
+      "cells": 2758063,
+      "fast20": 103,
+      "image_sha256": "b91301b027b3bc34b0691df52bb94479eedeb3435142f24ba04e4f896ca93904",
+      "ir_body": [
+        "Sub(destination='result', left='op2', right=48)"
+      ],
+      "steps": [
+        "Step(kind='sub_const', destination='result', left='op2', right=48, rounds=6)",
+        "Step(kind='write_decimal', destination=None, left='result', right=None, rounds=0)"
+      ]
+    },
+    "digits_then_add": {
+      "bolge19": 103,
+      "cases": 103,
+      "cells": 3056986,
+      "fast20": 103,
+      "image_sha256": "2215e6023a06addb4bf117091a3c12221e34ff79b7e172590b6ce1552f6b0cee",
+      "ir_body": [
+        "Sub(destination='x', left='op1', right=48)",
+        "Sub(destination='y', left='op2', right=48)",
+        "Add(destination='result', left='x', right='y')"
+      ],
+      "steps": [
+        "Step(kind='sub_const', destination='x', left='op1', right=48, rounds=6)",
+        "Step(kind='sub_const', destination='y', left='op2', right=48, rounds=6)",
+        "Step(kind='add', destination='result', left='x', right='y', rounds=2)",
+        "Step(kind='write_decimal', destination=None, left='result', right=None, rounds=0)"
+      ]
+    }
+  }
+}
