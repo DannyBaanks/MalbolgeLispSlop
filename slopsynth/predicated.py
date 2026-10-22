@@ -144,11 +144,13 @@ class Gates(_AdderCircuit):
         s = self.s_full(x, y)
         c = self.shl(self.g_full(x, y))
         if carry_in:
+            # A carry-in starts the chain at trit 0 instead of trit 1: one more round.
             one = self.copy(ONE)
             n = self.oradd(c, one)
             self.drop(c)
             self.drop(one)
             c = n
+            rounds += 1
         for _ in range(rounds):
             s2 = self.s_01(s, c)
             c2 = self.shl(self.g_01(s, c))
