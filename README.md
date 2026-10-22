@@ -11,6 +11,11 @@ misma imagen corre sin cambios en el `fast20.c` original de MalbolgeLISP (véase
 [H9 v3](#h9-v3-sumador-ternario-nativo-compilado-desde-el-ir)). H9 v2, que
 seleccionaba la salida en una tabla, se conserva como histórico.
 
+Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
+acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
+la VM: `(- 1 (* 2 3))` → `-5`, `(* 99 99)` → `9801`. Véase
+[H10–H12](#h10h12-compilador-predicado-de-ir-a-malbolge).
+
 La ejecución nativa de Lisp general continúa en desarrollo. El evaluador Python,
 el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
@@ -18,6 +23,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H10–H12 nativos** | Compilador predicado de IR (ramas, bucles desenrollados con cota, memoria con direcciones dinámicas); evaluadores IR de `(op a b)` con `+ - *`, operandos de 1–2 cifras y expresiones anidadas de profundidad 2 | 3.293 casos en `fast20.c` original y en `bolge19`, todos correctos; bucles **desenrollados**, no nativos |
 | **H9 v3 nativo** | Compila `Add`, `Sub` por constante y `WriteDecimal` del IR a un sumador ternario con acarreo; valida dígitos con aritmética | 498 casos del IR por defecto y cuatro variantes de IR en `fast20.c` original y en `bolge19`; tres programas rechazados por análisis de intervalos |
 | **H9 v2 nativo (histórico)** | Guarda ambos operandos, valida el marco fijo y selecciona la salida con un circuito one-hot de 100 entradas | Las 100 parejas de dígitos con tres finales de entrada; controles negativos, contraste con el modelo y **ejecución en `fast20.c` original de MalbolgeLISP** |
 | **Evaluador host** | Evaluación en Python, entornos léxicos, clausuras y funciones numéricas, de listas y de orden superior | Pruebas de integración del host; no equivalen a ejecución Lisp general en la VM |
@@ -29,6 +35,33 @@ La [validación final](evidence/h9_eval_add_v2/validation/20261020T083040Z/REPOR
 registra **290 pruebas pasando**, **319 ejecuciones nativas verificadas** y
 **dos ejecuciones del modelo de transiciones**. Los totales se refieren a esa
 revisión y están respaldados por salidas y hashes conservados en el repositorio.
+
+## H10–H12: compilador predicado de IR a Malbolge
+
+`slopsynth/predicated.py` compila programas IR completos. Cada bloque se ejecuta con
+un predicado 0/1 (if-conversion); solo las salidas son condicionales. Los bucles
+del IR se **desenrollan hasta una cota declarada**, y `Load`/`Store` con dirección
+dinámica se vuelven selectores sobre las celdas posibles. Un análisis de intervalos
+y de conjuntos de valores decide rondas de acarreo, dígitos decimales y celdas
+alcanzables. El intérprete de referencia en Python aplica la misma cota.
+
+Los evaluadores son programas IR normales; el compilador no sabe nada de Lisp:
+
+| Compuerta | Lenguaje | Celdas | Casos (`fast20.c` y `bolge19`) |
+| :--- | :--- | ---: | ---: |
+| H10 | `(op a b)`, `op` en `+ - *`, un dígito, resultado con signo | 9.612.592 | 1110/1110 |
+| H11 | `(op a b)` con operandos de 1–2 cifras; un byte por vuelta, cota 11 | 57.978.001 | 1113/1113 |
+| H12 | `expr := dígito \| (op expr expr)`, profundidad ≤ 2, descenso recursivo sobre memoria | 28.245.709 | 1070/1070 |
+
+```sh
+python3 -B tools/verify_predicated.py   # unos 12 minutos
+```
+
+Límites que la [campaña](evidence/h10_h12_predicated_v1/protocol.md) deja escritos:
+los bucles **no son bucles nativos de Malbolge** (H11 copia su cuerpo doce veces);
+la entrada debe caber en el máximo de cada compuerta (9, 12 o 22 bytes) y stdin debe
+cerrarse; no hay división, variables, `lambda`, listas ni profundidad mayor que 2.
+Las imágenes son grandes porque se emiten todas las vueltas y todos los caminos.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 
@@ -201,11 +234,11 @@ un intérprete Lisp nativo completo.
 | :--- | :--- |
 | H1: frontend y layout canónico | [Protocolo](evidence/hell_frontend_v1/protocol.md) |
 | H2: plantillas de bifurcación | [Protocolo](evidence/h2_branch_v1/protocol.md) |
-| H3: plantilla de bucle | [Protocolo](evidence/h3_loop_v1/protocol.md) |
+| H3: plantilla de bucle — **no itera más allá de sus casos** ([auditoría](evidence/h3_h7_loop_audit_v1/protocol.md)) | [Protocolo](evidence/h3_loop_v1/protocol.md) |
 | H4: plantilla de memoria | [Protocolo](evidence/h4_memory_v1/protocol.md) |
 | H5: aritmética acotada | [Protocolo](evidence/h5_arithmetic_v1/protocol.md) |
 | H6: llamada y retorno acotados | [Protocolo](evidence/h6_call_return_v1/protocol.md) |
-| H7: cuenta regresiva compuesta | [Protocolo](evidence/h7_countdown_v1/protocol.md) |
+| H7: cuenta regresiva compuesta — **solo n ∈ {0, 1, 3}** ([auditoría](evidence/h3_h7_loop_audit_v1/protocol.md)) | [Protocolo](evidence/h7_countdown_v1/protocol.md) |
 | H8: helpers host y probe de bootstrap | [Protocolo](evidence/lisp_conformance_v1/protocol.md) |
 
 La [descripción de la arquitectura](docs/LISP_CONFORMANCE.md) distingue los helpers
