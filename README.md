@@ -1,10 +1,14 @@
-# MalbolgeLispSlop
+# MalbolgeLispSlop v2.0 — Evaluador e IR para Malbolge 3^19 con Sumador Ternario Nativo
+
+[![Version](https://img.shields.io/badge/version-2.0-blue.svg)](https://github.com/DannyBaanks/MalbolgeLispSlop)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://python.org)
+[![Fast20 / Bolge19](https://img.shields.io/badge/execution-fast20%20%7C%20bolge19-brightgreen.svg)]()
 
 > **Humano ↔ IA ↔ Evidencia.** Resultados construidos mediante colaboración y verificación reproducible.
 
 MalbolgeLispSlop reúne un evaluador Lisp en Python, una representación intermedia
 (IR) y herramientas de síntesis para la VM Malbolge de 19 trits fijos
-(`fixed-3^19` / `bolge19`). **H9 v3 suma dentro de la VM**: para `(+ a b)` con dos
+(`fixed-3^19` / `bolge19`). Parte de la **Suite Lingüística y Lisp v2.0** del ecosistema Malbolge de ISyCo. **H9 v3 suma dentro de la VM**: para `(+ a b)` con dos
 dígitos en formato fijo, el IR se compila a un sumador ternario con acarreo hecho de
 compuertas CRAZY, y la VM calcula la suma y la imprime en decimal (`0` a `18`). La
 misma imagen corre sin cambios en el `fast20.c` original de MalbolgeLISP (véase
