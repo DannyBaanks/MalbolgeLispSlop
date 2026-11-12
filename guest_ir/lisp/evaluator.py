@@ -24,6 +24,37 @@ from .environment import Environment
 SPECIAL_FORMS = ("quote", "'", "if", "cond", "let", "lambda", "def", "defun", "monad", "dyad")
 
 
+# Operand counts each special form accepts (monad and dyad check their own).
+_FORM_SHAPES = {"quote": (1, 1), "'": (1, 1), "if": (3, 3), "cond": (0, None), "let": (2, 2),
+                "lambda": (2, 2), "def": (2, 2), "defun": (3, 3)}
+
+
+def _names(value: Any, what: str) -> None:
+    if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
+        raise ValueError(f"{what} must be a list of symbols")
+
+
+def _check_form(form: str, args: list[Any]) -> None:
+    """Reject malformed special forms before any operand is evaluated."""
+    low, high = _FORM_SHAPES[form]
+    if len(args) < low or (high is not None and len(args) > high):
+        wanted = f"{low}" if low == high else f"at least {low}"
+        raise ValueError(f"malformed {form}: expected {wanted} operands, got {len(args)}")
+    if form == "cond" and not all(isinstance(branch, list) and len(branch) == 2 for branch in args):
+        raise ValueError("malformed cond: every branch must be (test value)")
+    if form == "let":
+        if not isinstance(args[0], list) or not all(
+            isinstance(b, list) and len(b) == 2 and isinstance(b[0], str) for b in args[0]
+        ):
+            raise ValueError("malformed let: bindings must be ((symbol value) ...)")
+    if form == "lambda":
+        _names(args[0], "lambda parameters")
+    if form == "defun":
+        _names(args[1], "defun parameters")
+    if form in ("def", "defun") and not isinstance(args[0], str):
+        raise ValueError(f"malformed {form}: the name must be a symbol")
+
+
 def _default_builtins() -> dict[str, Any]:
     """One registry for evaluation and the REPL's advertised capabilities."""
     from .builtins_numeric import apply_numeric
@@ -70,6 +101,8 @@ def eval_lisp_ast(expr: Any, env: Environment) -> Any:
         args = expr[1:]
 
         # Special forms
+        if isinstance(car, str) and car in _FORM_SHAPES:
+            _check_form(car, args)
         if car == "quote" or car == "'":
             return args[0]
         if car == "if":

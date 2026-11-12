@@ -88,3 +88,37 @@ class AuditRegressions(unittest.TestCase):
         blob = b"LISP" + (1).to_bytes(2, "little") + len(payload).to_bytes(4, "little") + payload + hashlib.sha256(payload).digest()
         self.assertFalse(import_state_image(blob, session))
         self.assertEqual(export_state_image(session), before)
+
+
+class ReplHardeningTests(unittest.TestCase):
+    """Malformed input is a Lisp error (ValueError), and printing is deterministic."""
+
+    def step(self, source, session=None):
+        return repl_step(source, session or LispSession())[0]
+
+    def test_malformed_special_forms_are_lisp_errors(self):
+        for source in (b"(quote)", b"(if)", b"(if 1 2)", b"(lambda)", b"(lambda x x)", b"(def)", b"(def x)",
+                       b"(def 1 2)", b"(defun f)", b"(let (x 1) x)", b"(cond (1))"):
+            with self.assertRaises(ValueError, msg=source):
+                self.step(source)
+
+    def test_ill_typed_operands_are_lisp_errors(self):
+        for source in (b"(+ 'a 1)", b"(map car 3)"):
+            with self.assertRaises(ValueError, msg=source):
+                self.step(source)
+
+    def test_runaway_recursion_is_a_lisp_error_and_the_session_survives(self):
+        session = LispSession()
+        self.step(b"(defun down (n) (if (= n 0) 0 (down (- n 1))))", session)
+        with self.assertRaisesRegex(ValueError, "recursion"):
+            self.step(b"(down 100000)", session)
+        self.assertEqual(self.step(b"(down 5)", session), b"0\n")
+
+    def test_callables_print_without_host_addresses(self):
+        self.assertEqual(self.step(b"(lambda (x) (+ x 1))"), b"(lambda (x) (+ x 1))\n")
+        self.assertEqual(self.step(b"(monad (+ x 1))"), b"(lambda (x) (+ x 1))\n")
+        self.assertEqual(self.step(b"car"), b"#<builtin:car>\n")
+        for source in (b"(commute -)", b"(atop car cdr)"):
+            printed = self.step(source)
+            self.assertTrue(printed.startswith(b"#<"), printed)
+            self.assertNotIn(b"0x", printed)

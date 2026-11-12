@@ -15,6 +15,10 @@ misma imagen corre sin cambios en el `fast20.c` original de MalbolgeLISP (véase
 [H9 v3](#h9-v3-sumador-ternario-nativo-compilado-desde-el-ir)). H9 v2, que
 seleccionaba la salida en una tabla, se conserva como histórico.
 
+**H13a** añade el primer bucle nativo que itera de verdad: 161 celdas que hacen
+eco de la entrada reejecutando el mismo cuerpo en cada vuelta (véase
+[H13a](#h13a-un-bucle-nativo-que-se-vuelve-a-ejecutar)); todavía no termina en EOF.
+
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
 la VM: `(- 1 (* 2 3))` → `-5`, `(* 99 99)` → `9801`. Véase
@@ -23,10 +27,11 @@ la VM: `(- 1 (* 2 3))` → `-5`, `(* 99 99)` → `9801`. Véase
 La ejecución nativa de Lisp general continúa en desarrollo. El evaluador Python,
 el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
-## Estado verificado — 22 de octubre de 2026
+## Estado verificado — 12 de noviembre de 2026
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H13a: bucle nativo** | Eco `input; output; jump` cuyo cuerpo de 82 celdas se vuelve a ejecutar en cada vuelta; el número de vueltas lo decide la entrada | 272 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes; **no termina en EOF** y el cuerpo no calcula |
 | **H10–H12 nativos** | Compilador predicado de IR (ramas, bucles desenrollados con cota, memoria con direcciones dinámicas); evaluadores IR de `(op a b)` con `+ - *`, operandos de 1–2 cifras y expresiones anidadas de profundidad 2 | 3.293 casos en `fast20.c` original y en `bolge19`, todos correctos; bucles **desenrollados**, no nativos |
 | **H9 v3 nativo** | Compila `Add`, `Sub` por constante y `WriteDecimal` del IR a un sumador ternario con acarreo; valida dígitos con aritmética | 498 casos del IR por defecto y cuatro variantes de IR en `fast20.c` original y en `bolge19`; tres programas rechazados por análisis de intervalos |
 | **H9 v2 nativo (histórico)** | Guarda ambos operandos, valida el marco fijo y selecciona la salida con un circuito one-hot de 100 entradas | Las 100 parejas de dígitos con tres finales de entrada; controles negativos, contraste con el modelo y **ejecución en `fast20.c` original de MalbolgeLISP** |
@@ -66,6 +71,45 @@ los bucles **no son bucles nativos de Malbolge** (H11 copia su cuerpo doce veces
 la entrada debe caber en el máximo de cada compuerta (9, 12 o 22 bytes) y stdin debe
 cerrarse; no hay división, variables, `lambda`, listas ni profundidad mayor que 2.
 Las imágenes son grandes porque se emiten todas las vueltas y todos los caminos.
+
+El compilador se contrasta además con un fuzzer diferencial: programas IR
+aleatorios, intérprete de referencia contra `bolge19`.
+
+```sh
+python3 -B tools/fuzz_predicated.py --seed 100 --count 50
+```
+
+## H13a: un bucle nativo que se vuelve a ejecutar
+
+La VM cifra cada celda de código después de ejecutarla, así que el código no se
+puede repetir sin más. [`slopsynth/native_loop.py`](slopsynth/native_loop.py)
+construye una imagen de **161 celdas** con un solo bucle, `input; output; jump`,
+que hace eco de un byte por vuelta durante tantas vueltas como bytes tenga la
+entrada. Nada está desenrollado: son las mismas 82 celdas cada vez.
+
+- El cifrado es una permutación de los valores 33..126 con ciclos de longitud
+  68, 9, 6, 5, 4 y 2. Una celda en el ciclo de longitud 2, {70, 74}, ejecuta su
+  instrucción una visita sí y otra no.
+- Cada instrucción del cuerpo son dos de esas celdas en fases opuestas, a cuatro
+  posiciones: en cada vuelta se ejecuta exactamente una.
+- `jump` cifra la celda de aterrizaje, no la del propio salto: un salto no cambia nunca.
+
+```sh
+python3 -B tools/verify_h13_echo_loop.py
+```
+
+La [campaña](evidence/h13_echo_loop_v1/protocol.md) pasa 272 de 272 casos en
+`fast20.c` original y en `bolge19`, con entradas de hasta 1.000.000 de bytes
+(82.000.699 pasos de VM) y dos controles negativos; el modelo Python coincide en
+las entradas de hasta 300 bytes.
+
+**Qué no hace:** no detecta el final de la entrada. Tras EOF imprime `0xDA` hasta
+que algo externo lo detiene, así que cada ejecución se corta por pasos o por bytes
+leídos. El cuerpo no calcula ni decide nada, y el compilador predicado sigue
+desenrollando sus bucles: bucles nativos con aritmética, ramas y salida
+condicional siguen **NOT_DEMONSTRATED**. La imagen usa celdas inertes que no son
+opcodes válidos, por lo que se carga con `--loader raw` (como hace siempre
+`fast20.c`) y no con el cargador canónico.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 
@@ -220,6 +264,11 @@ El host conecta los helpers numéricos, de listas, de orden superior y combinado
 `2^26`. El lector conserva los apóstrofos de identificadores y exige una sola forma
 completa por paso del REPL.
 
+Las formas especiales mal formadas, los operandos de tipo incorrecto y la
+recursión que agota la pila del host se informan como error Lisp (`ValueError`),
+y la sesión sigue utilizable. Clausuras y funciones se imprimen sin direcciones
+de memoria del host.
+
 Los snapshots v2 conservan clausuras, recursión y entornos léxicos, y permiten
 importar datos v1. Los valores opacos del host se rechazan explícitamente al
 exportar; una importación inválida conserva la sesión anterior.
@@ -238,7 +287,7 @@ un intérprete Lisp nativo completo.
 | :--- | :--- |
 | H1: frontend y layout canónico | [Protocolo](evidence/hell_frontend_v1/protocol.md) |
 | H2: plantillas de bifurcación | [Protocolo](evidence/h2_branch_v1/protocol.md) |
-| H3: plantilla de bucle — **no itera más allá de sus casos** ([auditoría](evidence/h3_h7_loop_audit_v1/protocol.md)) | [Protocolo](evidence/h3_loop_v1/protocol.md) |
+| H3: plantilla de bucle — **no itera más allá de sus casos** ([auditoría](evidence/h3_h7_loop_audit_v1/protocol.md)); el primer bucle que sí itera es [H13a](evidence/h13_echo_loop_v1/protocol.md) | [Protocolo](evidence/h3_loop_v1/protocol.md) |
 | H4: plantilla de memoria | [Protocolo](evidence/h4_memory_v1/protocol.md) |
 | H5: aritmética acotada | [Protocolo](evidence/h5_arithmetic_v1/protocol.md) |
 | H6: llamada y retorno acotados | [Protocolo](evidence/h6_call_return_v1/protocol.md) |
