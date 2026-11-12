@@ -12,6 +12,7 @@ from slopsynth.ir import (
     Return,
 )
 from .environment import Environment
+from .callables import Closure
 from .evaluator import SPECIAL_FORMS, _default_builtins, eval_lisp_ast
 from .reader import parse_lisp_tokens
 
@@ -62,6 +63,14 @@ def _tokens_to_ast(tokens: list[str]) -> tuple[Any, int]:
 
 
 def _format_res(v: Any) -> str:
+    if isinstance(v, Closure):
+        return f"(lambda {_format_res(v.params)} {_format_res(v.body)})"
+    if callable(v):
+        name = (getattr(v, "__kwdefaults__", None) or {}).get("name")
+        return f"#<builtin:{name}>" if name else f"#<{type(v).__name__}>"
+    if not isinstance(v, (int, str, list, tuple)):
+        kind = getattr(v, "kind", None)
+        return f"#<combinator:{kind}>" if isinstance(kind, str) else f"#<{type(v).__name__}>"
     if isinstance(v, list):
         if not v:
             return "()"
@@ -105,7 +114,13 @@ def repl_step(source_line: bytes, session: LispSession) -> tuple[bytes, str]:
     ast, consumed = _tokens_to_ast(tokens)
     if consumed != len(tokens):
         raise ValueError("expected exactly one form per REPL step")
-    res = eval_lisp_ast(ast, session.env)
+    try:
+        res = eval_lisp_ast(ast, session.env)
+    except RecursionError:
+        raise ValueError("evaluation exceeded the host recursion depth") from None
+    except (TypeError, IndexError, KeyError, AttributeError) as error:
+        # Host exceptions from ill-typed operands are reported as Lisp errors.
+        raise ValueError(f"invalid operands: {error}") from error
     session.heap_words += 2
 
     formatted = _format_res(res) + "\n"

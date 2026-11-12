@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Z3 and Zig 0.16.0
+        run: |
+          python3 -m pip install -r requirements-dev.txt ziglang==0.16.0
+          mkdir -p "$RUNNER_TEMP/bin"
+          printf '#!/bin/sh\nexec python3 -m ziglang "$@"\n' > "$RUNNER_TEMP/bin/zig"
+          chmod +x "$RUNNER_TEMP/bin/zig"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      - name: Build bolge19
+        run: ./tools/build.sh
+      - name: Unit tests
+        run: python3 -B -m unittest discover -s tests -t .
+      - name: Native echo loop on upstream fast20.c and bolge19
+        run: python3 -B tools/verify_h13_echo_loop.py --output-root "$RUNNER_TEMP/h13"
+      - name: Differential fuzz of the predicated compiler
+        run: python3 -B tools/fuzz_predicated.py --seed 100 --count 15
