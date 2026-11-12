@@ -1,0 +1,71 @@
+{
+  "cases": 326,
+  "cells": 4515,
+  "host": {
+    "platform": "Linux-6.18.44-fc-v378-x86_64-with-glibc2.39",
+    "python": "3.13.18"
+  },
+  "image_sha256": "b4e4b2c0d1b837728e3c5d95b3468a4995b9b61dbf79095af9586e1a449ab8e2",
+  "largest_image_byte": 126,
+  "longest_input_bytes": 1000000,
+  "longest_run_vm_steps": 1875001279,
+  "loop": {
+    "cells": {
+      "U": 113,
+      "V": 72,
+      "W": 111,
+      "Y": 68,
+      "Z": 233,
+      "eof_cell": 2076,
+      "halt": 46,
+      "landing": 2592,
+      "prologue": 2107,
+      "resume": 3402,
+      "table": 376
+    },
+    "end": 4514,
+    "eof_word": 1700,
+    "head": 2592,
+    "startup_and_exit_steps": 1279,
+    "steps_per_byte": 1875
+  },
+  "lowering": "fixed19-native-cat-v1",
+  "negative_controls": [
+    {
+      "differs_from_cat": true,
+      "halted": {
+        "bolge19": false,
+        "fast20": false
+      },
+      "image": "mutant-no-exit.mb",
+      "stdout_hex": {
+        "bolge19": "48414c54204d45204d41594245a4a4a4a4a4a4a4a4",
+        "fast20": "48414c54204d45204d41594245a4a4a4a4a4a4a4a4"
+      }
+    },
+    {
+      "differs_from_cat": true,
+      "halted": {
+        "bolge19": true,
+        "fast20": true
+      },
+      "image": "mutant-early-exit.mb",
+      "stdout_hex": {
+        "bolge19": "48414c5420",
+        "fast20": "48414c5420"
+      }
+    }
+  ],
+  "not_demonstrated": [
+    "Loop bodies other than this one: the layout is generated for `cat` only, not compiled from IR.",
+    "Integration with the predicated compiler, which still unrolls IR loops.",
+    "Loading with the canonical loader: the image contains inert cells that are not valid opcodes.",
+    "A proof for all inputs: the campaign is a finite set of inputs, including every single byte."
+  ],
+  "pass": 326,
+  "status": "PASS",
+  "upstream_fast20": {
+    "revision": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "sha256": "607467b591f3446e7e54dfccfee0fff867a03f325ca2767ff49be71e8a431143"
+  }
+}

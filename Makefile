@@ -49,6 +49,7 @@ verify-h9-eval-add: build-eval-add
 
 verify-h13: build
 	python3 -B tools/verify_h13_echo_loop.py
+	python3 -B tools/verify_h13_cat.py
 
 fuzz: build
 	python3 -B tools/fuzz_predicated.py

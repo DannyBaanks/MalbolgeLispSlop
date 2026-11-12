@@ -17,7 +17,9 @@ seleccionaba la salida en una tabla, se conserva como histórico.
 
 **H13a** añade el primer bucle nativo que itera de verdad: 161 celdas que hacen
 eco de la entrada reejecutando el mismo cuerpo en cada vuelta (véase
-[H13a](#h13a-un-bucle-nativo-que-se-vuelve-a-ejecutar)); todavía no termina en EOF.
+[H13a](#h13a-un-bucle-nativo-que-se-vuelve-a-ejecutar)). **H13b** le añade la
+salida: un `cat` nativo que detecta el final de la entrada y se detiene solo
+(véase [H13b](#h13b-un-cat-nativo-que-termina-en-eof)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -31,7 +33,8 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
-| **H13a: bucle nativo** | Eco `input; output; jump` cuyo cuerpo de 82 celdas se vuelve a ejecutar en cada vuelta; el número de vueltas lo decide la entrada | 272 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes; **no termina en EOF** y el cuerpo no calcula |
+| **H13b: `cat` nativo** | Bucle que lee, comprueba EOF con dos celdas `crazy`, imprime, restaura sus datos y **se detiene al acabar la entrada**; 4.515 celdas, 1.875 pasos por byte | 326 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes, todos terminan solos; el cuerpo es fijo, no sale de un compilador |
+| **H13a: bucle nativo** | Eco `input; output; jump` cuyo cuerpo de 82 celdas se vuelve a ejecutar en cada vuelta; el número de vueltas lo decide la entrada | 272 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes; no termina en EOF (eso lo hace H13b) y el cuerpo no calcula |
 | **H10–H12 nativos** | Compilador predicado de IR (ramas, bucles desenrollados con cota, memoria con direcciones dinámicas); evaluadores IR de `(op a b)` con `+ - *`, operandos de 1–2 cifras y expresiones anidadas de profundidad 2 | 3.293 casos en `fast20.c` original y en `bolge19`, todos correctos; bucles **desenrollados**, no nativos |
 | **H9 v3 nativo** | Compila `Add`, `Sub` por constante y `WriteDecimal` del IR a un sumador ternario con acarreo; valida dígitos con aritmética | 498 casos del IR por defecto y cuatro variantes de IR en `fast20.c` original y en `bolge19`; tres programas rechazados por análisis de intervalos |
 | **H9 v2 nativo (histórico)** | Guarda ambos operandos, valida el marco fijo y selecciona la salida con un circuito one-hot de 100 entradas | Las 100 parejas de dígitos con tres finales de entrada; controles negativos, contraste con el modelo y **ejecución en `fast20.c` original de MalbolgeLISP** |
@@ -110,6 +113,41 @@ desenrollando sus bucles: bucles nativos con aritmética, ramas y salida
 condicional siguen **NOT_DEMONSTRATED**. La imagen usa celdas inertes que no son
 opcodes válidos, por lo que se carga con `--loader raw` (como hace siempre
 `fast20.c`) y no con el cargador canónico.
+
+
+## H13b: un `cat` nativo que termina en EOF
+
+[`slopsynth/native_cat.py`](slopsynth/native_cat.py) genera una imagen de **4.515
+celdas** que copia la entrada a la salida y ejecuta `halt` cuando la entrada se
+acaba. Es el bucle de H13a con lo que le faltaba: una prueba de EOF, datos que se
+escriben y se restauran en cada vuelta, y una salida condicional.
+
+- **La prueba.** Tras `input`, dos `crazy` sobre las celdas Y (diecinueve trits a 1)
+  y W (850) devuelven el byte intacto, pero convierten EOF (diecinueve trits a 2)
+  en 1700. Un `move` a través de W lleva D a una tabla: 256 punteros iguales para
+  los bytes y una celda aparte para EOF. El `jump` siguiente continúa el bucle o
+  aterriza junto a un `halt`.
+- **La restauración.** Siete `crazy` y un `rotate` devuelven Y y W a su valor,
+  leyendo dos constantes (1700 y el complemento de 850) sin modificarlas.
+- **Las constantes.** `fast20.c` carga los bytes con signo, así que la imagen no
+  puede contener valores mayores que 127. Un prólogo de un solo uso fabrica los
+  que hacen falta (850, 1700, las direcciones de salto) con `rotate` y `crazy` a
+  partir de semillas de un byte.
+
+```sh
+python3 -B tools/verify_h13_cat.py
+printf 'hola\n' | ./build/bolge19 evidence/h13_cat_v1/runs/*/cat.mb --loader raw
+```
+
+La [campaña](evidence/h13_cat_v1/protocol.md) pasa 326 de 326 casos en `fast20.c`
+original y en `bolge19`: todos los bytes sueltos, entradas de hasta 1.000.000 de
+bytes (1.875.001.279 pasos de VM) y dos controles negativos. Ninguna ejecución se
+corta desde fuera: cada una termina en el paso `1279 + 1875 × bytes`.
+
+**Qué no hace:** el cuerpo está generado a mano para este programa. No hay todavía
+un compilador de IR a bucles nativos, y el compilador predicado sigue
+desenrollando los suyos. Cada byte cuesta 1.875 pasos, casi todos en celdas
+inertes. La imagen solo carga con el cargador crudo.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 
@@ -287,7 +325,7 @@ un intérprete Lisp nativo completo.
 | :--- | :--- |
 | H1: frontend y layout canónico | [Protocolo](evidence/hell_frontend_v1/protocol.md) |
 | H2: plantillas de bifurcación | [Protocolo](evidence/h2_branch_v1/protocol.md) |
-| H3: plantilla de bucle — **no itera más allá de sus casos** ([auditoría](evidence/h3_h7_loop_audit_v1/protocol.md)); el primer bucle que sí itera es [H13a](evidence/h13_echo_loop_v1/protocol.md) | [Protocolo](evidence/h3_loop_v1/protocol.md) |
+| H3: plantilla de bucle — **no itera más allá de sus casos** ([auditoría](evidence/h3_h7_loop_audit_v1/protocol.md)); el primer bucle que sí itera es [H13a](evidence/h13_echo_loop_v1/protocol.md) y el primero que termina, [H13b](evidence/h13_cat_v1/protocol.md) | [Protocolo](evidence/h3_loop_v1/protocol.md) |
 | H4: plantilla de memoria | [Protocolo](evidence/h4_memory_v1/protocol.md) |
 | H5: aritmética acotada | [Protocolo](evidence/h5_arithmetic_v1/protocol.md) |
 | H6: llamada y retorno acotados | [Protocolo](evidence/h6_call_return_v1/protocol.md) |
