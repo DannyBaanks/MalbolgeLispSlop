@@ -12,8 +12,8 @@ take more than `bound` back edges halts there (outputs already made stay). Block
 outside cycles are not cloned. Every path into a block that can still read must
 have read the same number of bytes, so each read has a static input index.
 
-Supported operations: ReadA, Add, Sub, Mul, Lt, WriteA (low byte), WriteDecimal,
-BranchZero, Jump, Halt. Interval analysis is path sensitive for `Lt(x, k)` and
+Supported operations: ReadA, Add, Sub, Mul, Lt, Eq, And, Or, Load, Store, WriteA
+(low byte), WriteDecimal, BranchZero, Jump, Halt. Memory cells start at zero. Interval analysis is path sensitive for `Lt(x, k)` and
 `Sub(x, k) == 0` used as branch conditions; it picks carry rounds and the number
 of decimal digits. Code on an inactive path may compute garbage; it never
 reaches an output. `reference` is an independent host interpreter with the same
@@ -427,10 +427,16 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
                 raise AssemblyError(f"paths into {target[0]!r} read different numbers of bytes")
             count = None
         merged = {}
-        for var in sorted(set(old_env) & set(env), key=repr):
-            (v1, (lo1, hi1)), (v2, (lo2, hi2)) = old_env[var], env[var]
+        # Names must be defined on both paths. Memory cells default to zero, so a
+        # cell stored on one path only still meets the untouched zero of the other.
+        names = set(old_env) & set(env)
+        names |= {var for var in set(old_env) ^ set(env) if isinstance(var, tuple)}
+        for var in sorted(names, key=repr):
+            e1 = old_env[var] if var in old_env else (g.const(0), Rng(0, 0, {0}))
+            e2 = env[var] if var in env else (g.const(0), Rng(0, 0, {0}))
+            (v1, (lo1, hi1)), (v2, (lo2, hi2)) = e1, e2
             lo, hi = min(lo1, lo2), max(hi1, hi2)
-            s1, s2 = _vals(old_env[var][1]), _vals(env[var][1])
+            s1, s2 = _vals(e1[1]), _vals(e2[1])
             rng = Rng(lo, hi, s1 | s2 if s1 is not None and s2 is not None else None)
             if v1 == v2:
                 merged[var] = (v1, rng)
@@ -492,6 +498,8 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
                 v, vrange = ref(env, op.value)
                 addr, arange = ref(env, op.address)
                 cells = _cells(arange)
+                if not cells:
+                    continue  # refined to an empty range: this path is never taken
                 if len(cells) == 1:
                     env[("@", cells[0])] = (v, vrange)
                 else:
@@ -505,6 +513,9 @@ def build_graph(module: Module, width: int = 7, bound: int = 0) -> Graph:
             elif isinstance(op, Load):
                 addr, arange = ref(env, op.address)
                 where = _cells(arange)
+                if not where:  # refined to an empty range: this path is never taken
+                    env[op.destination] = (g.const(0), Rng(0, 0, {0}))
+                    continue
                 cells = [env.get(("@", k), (g.const(0), (0, 0))) for k in where]
                 lo, hi = min(c[1][0] for c in cells), max(c[1][1] for c in cells)
                 if len(where) == 1:
@@ -932,7 +943,12 @@ class _Emitter:
 
 def compile_graph(g: Graph):
     probe = _Emitter(g, ())
-    probe.run()
+    try:
+        probe.run()
+    except RuntimeError as error:
+        if str(error) != "no registers":
+            raise
+        raise AssemblyError("the program keeps more values live than the register ring holds") from error
     bases = probe.landings
     del probe
     final = _Emitter(g, bases)

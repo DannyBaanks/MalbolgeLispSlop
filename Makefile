@@ -1,4 +1,4 @@
-.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms test-conformance build-lisp-guest test-lisp-matrix verify-lisp-conformance
+.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms test-conformance build-lisp-guest test-lisp-matrix verify-lisp-conformance build-eval-add test-eval-add verify-h9-eval-add
 
 build:
 	./tools/build.sh

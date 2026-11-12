@@ -11,7 +11,7 @@ from guest_ir.lisp.nested import WIDTH as NESTED_WIDTH, build_nested_module
 from slopsynth._native_eval_add import RESERVED, SLOTS, T, _Circuit
 from slopsynth.assemble import AssemblyError
 from slopsynth.ir import (
-    Add, BasicBlock, BranchZero, Function, Halt, Jump, Load, Lt, Module, ModuleCase, ReadA, Store,
+    Add, BasicBlock, BranchZero, Function, Halt, Jump, Load, Lt, Module, ModuleCase, ReadA, Store, Sub,
     WriteDecimal,
 )
 from slopsynth.model import _crazy
@@ -119,6 +119,23 @@ def _module(blocks, cases=(ModuleCase(stdin=b"x", stdout=b""),)):
     return Module("m", "f", (Function("f", (), blocks[0].name, tuple(blocks)),), tuple(cases))
 
 
+ONE_ARM_STORE = _module([
+    BasicBlock("entry", (ReadA("x"), Sub("t", "x", 48), BranchZero("t", "skip", "store"))),
+    BasicBlock("skip", (Jump("join"),)),
+    BasicBlock("store", (Store(5, 7), Jump("join"))),
+    BasicBlock("join", (Load("y", 5), WriteDecimal("y"), Halt())),
+], cases=(ModuleCase(stdin=b"0", stdout=b"0"), ModuleCase(stdin=b"1", stdout=b"7")))
+
+EMPTY_RANGE_LOAD = _module([
+    BasicBlock("entry", (ReadA("x"), Sub("d", "x", 48), Lt("ok", "d", 3), BranchZero("ok", "end", "small"))),
+    BasicBlock("small", (Lt("ok2", "d", 2), BranchZero("ok2", "two", "end"))),
+    BasicBlock("two", (Add("a", "d", 10), Lt("q", "a", 5), BranchZero("q", "show", "never"))),
+    BasicBlock("never", (Store("a", 1), Load("y", "a"), WriteDecimal("y"), Halt())),
+    BasicBlock("show", (WriteDecimal("a"), Halt())),
+    BasicBlock("end", (Halt(),)),
+], cases=(ModuleCase(stdin=b"2", stdout=b"12"),))
+
+
 class SemanticsTests(unittest.TestCase):
     def test_guest_cases_match_reference(self):
         for module, width, bound in (
@@ -173,6 +190,19 @@ class SemanticsTests(unittest.TestCase):
         self.assertTrue(selects)  # two candidate cells {0, 5}, not six
         self.assertEqual(reference(memory, b"\x07"), b"7")
 
+    def test_store_on_one_arm_survives_the_join(self):
+        graph = build_graph(ONE_ARM_STORE)
+        merged = [n for n in graph.nodes if n.op == "select" and len(n.args) == 4]
+        self.assertTrue(merged)  # stored value on one edge, the untouched zero on the other
+        self.assertEqual(reference(ONE_ARM_STORE, b"0"), b"0")
+        self.assertEqual(reference(ONE_ARM_STORE, b"1"), b"7")
+
+    def test_memory_on_a_never_taken_path_compiles(self):
+        # d == 2 in "two", so a == 12 and the nonzero arm of a < 5 has an empty range.
+        graph = build_graph(EMPTY_RANGE_LOAD)
+        self.assertTrue(any(n.op == "outdec" for n in graph.nodes))
+        self.assertEqual(reference(EMPTY_RANGE_LOAD, b"2"), b"12")
+
     def test_declared_cases_are_checked(self):
         bad = replace(build_arith_module(), cases=(ModuleCase(stdin=b"(+ 1 1)", stdout=b"3"),))
         with self.assertRaisesRegex(AssemblyError, "contradicts"):
@@ -209,6 +239,17 @@ class NativeTests(unittest.TestCase):
     def test_malformed_frames_print_nothing(self):
         for stdin in (b"", b"(/ 1 2)", b"(+ 1 2", b"(+ : 2)", b"(+ 1 2)\r", b"\xff" * 9):
             self.assertEqual(self.run_vm(stdin), b"", stdin)
+
+    def test_small_memory_programs_match_the_reference(self):
+        original = self.path
+        try:
+            for module, inputs in ((ONE_ARM_STORE, (b"0", b"1", b"")), (EMPTY_RANGE_LOAD, (b"2", b"1", b"9"))):
+                self.path = ROOT / "build/test_predicated_memory.mb"
+                self.path.write_bytes(lower_predicated(module, PROFILE).image)
+                for stdin in inputs:
+                    self.assertEqual(self.run_vm(stdin), reference(module, stdin), stdin)
+        finally:
+            self.path = original
 
 
 if __name__ == "__main__":
