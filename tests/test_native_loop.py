@@ -13,7 +13,17 @@ PROFILE = load_profile(ROOT / "profiles/fixed19.json")
 ENGINE = ROOT / "build/bolge19"
 
 
+# Olmstead's xlat2 (malbolge.c, 1998): the post-execution translation of classic Malbolge.
+OLMSTEAD_XLAT2 = (
+    '5z]&gqtyfr$(we4{WP)H-Zn,[%\\3dL+Q;>U!pJS72FhOA1CB6v^=I_0/8|jsb9m<.TVac`uY*MK\'X~xDl}REokN:#?G"i@'
+)
+
+
 class CycleTests(unittest.TestCase):
+    def test_translation_is_olmsteads_xlat2(self):
+        from slopsynth.model import _TRANSLATION
+        self.assertEqual(_TRANSLATION[33:127], OLMSTEAD_XLAT2)
+
     def test_translation_is_a_permutation_with_one_two_cycle(self):
         found = cycles.cycles()
         self.assertEqual(sorted(len(c) for c in found), [2, 4, 5, 6, 9, 68])
