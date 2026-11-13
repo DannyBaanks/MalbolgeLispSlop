@@ -35,7 +35,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
-| **H14: cuenta atrás nativa** | `rotate` divide un contador en memoria entre 3 en cada vuelta, `output` lo imprime y un `move`+`jump` por tabla decide la salida; imprime 3^(n-1)…3, 1 y se detiene | n = 0..5 en `fast20.c` original, `bolge19` y el modelo; no hay compilador desde IR y n ≥ 6 no tiene layout |
+| **H14: cuenta atrás nativa** | `rotate` divide un contador en memoria entre 3 en cada vuelta, `output` lo imprime y un `move`+`jump` por tabla decide la salida; imprime 3^(n-1)…3, 1 y se detiene | n = 0..6 en `fast20.c` original, `bolge19` y el modelo; no hay compilador desde IR y no se encontró layout para n = 7, 8 |
 | **H13b: `cat` nativo** | Bucle que lee, comprueba EOF con dos celdas `crazy`, imprime, restaura sus datos y **se detiene al acabar la entrada**; 4.515 celdas, 1.875 pasos por byte | 326 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes, todos terminan solos; el cuerpo es fijo, no sale de un compilador |
 | **H13a: bucle nativo** | Eco `input; output; jump` cuyo cuerpo de 82 celdas se vuelve a ejecutar en cada vuelta; el número de vueltas lo decide la entrada | 272 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes; no termina en EOF (eso lo hace H13b) y el cuerpo no calcula |
 | **H10–H12 nativos** | Compilador predicado de IR (ramas, bucles desenrollados con cota, memoria con direcciones dinámicas); evaluadores IR de `(op a b)` con `+ - *`, operandos de 1–2 cifras y expresiones anidadas de profundidad 2 | 3.293 casos en `fast20.c` original y en `bolge19`, todos correctos; bucles **desenrollados**, no nativos |
@@ -170,11 +170,11 @@ valor apunte a un `halt`.
 python3 -B tools/verify_h14_countdown.py
 ```
 
-La [campaña](evidence/h14_countdown_v1/protocol.md) pasa 6 de 6 cuentas (n de 0 a 5) en
+La [campaña](evidence/h14_countdown_v1/protocol.md) pasa 7 de 7 cuentas (n de 0 a 6) en
 `fast20.c` original, `bolge19` y el modelo, todas terminan solas, más dos controles
 negativos. **Qué no hace:** no hay compilador desde IR (cada n tiene un layout
-encontrado por búsqueda y congelado), n ≥ 6 no tiene layout porque el prólogo se
-queda sin celdas de puntero, y la salida depende del relleno de memoria sobre la imagen,
+encontrado por búsqueda y congelado), no se encontró layout para n = 7 ni 8 (la tabla choca con el arranque y el prólogo; los
+punteros a celdas lejanas se construyen con `rotate`), y la salida depende del relleno de memoria sobre la imagen,
 que ambas VM de referencia comparten pero que no es parte de ninguna especificación.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR

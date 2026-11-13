@@ -13,7 +13,7 @@ code with D tracked), `Laps` (alternating-pair cells placed at their residues
 in laps of 94) and `bootstrap`. The refactor is checked by an unchanged image:
 `native_cat` still builds sha256 `b4e4b2c0…ab8e2` (a test).
 
-`slopsynth/native_count.py` builds `countdown(n)`, 0 ≤ n ≤ 5: it prints
+`slopsynth/native_count.py` builds `countdown(n)`, 0 ≤ n ≤ 6: it prints
 3^(n-1), …, 9, 3, 1 and halts. The counter is a memory cell holding 3^n.
 
 - lap 1: `rotate` on the counter divides it by 3 in place (A = new value);
@@ -40,25 +40,29 @@ changed. Both must differ on both VMs. (A first control that only deleted the
 `halt` cell was dropped: cells never written hold 0, which decodes to `halt`
 at address 81, so the run still ended and the control proved nothing.)
 
-## Result — `runs/20261113T030638Z-ccc541cb`
+## Result — `runs/20261113T033321Z-00e605f0`
 
 | Check | Result |
 |---|---:|
-| Counts 0..5 correct and self-halting on `fast20.c`, `bolge19` and the model | 6 / 6 |
-| Steps for counts 0..5 | 739, 1136, 1535, 1857, 1942, 2827 |
+| Counts 0..6 correct and self-halting on `fast20.c`, `bolge19` and the model | 7 / 7 |
+| Steps for counts 0..6 | 739, 1136, 1535, 2363, 1942, 2827, 4413 |
 | Negative controls that differ | 2 / 2 |
 
 ## Scope
 
 **DEMONSTRATED:** native loops whose body rewrites a data cell on every pass and
-whose exit depends on that cell, for counts 0 to 5, on both reference VMs.
+whose exit depends on that cell, for counts 0 to 6, on both reference VMs.
 
 **NOT_DEMONSTRATED:**
 
 - A compiler from IR to native loops. Layouts come from a seeded search, one per
   count (frozen in `FROZEN`), and the body is always `rotate; output; exit`.
-- Counts above 5. For n ≥ 6 the search found no layout: the one-shot prologue
-  needs a free pointer cell for every constant it builds and runs out.
+- Counts above 6. No layout was found: the search for 8 exhausted its 20 000 random
+  layouts and the search for 7 was stopped after several minutes, so neither
+  is proven impossible. The likely cause: counter values are table addresses, so the table crosses the bootstrap
+  and the prologue. A byte pointer reaches only cells below 128; farther cells
+  are reached with a pointer built by rotation (the multiple of 27 below the
+  cell, then D walks the rest), which this campaign does exercise for n = 6.
 - Loop bodies with several cells, arithmetic or other exits. H13b's `cat` shows
   an input-driven exit; the two exits are not combined.
 - The canonical loader (the images contain inert cells that are not valid opcodes).

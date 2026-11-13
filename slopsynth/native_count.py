@@ -24,9 +24,11 @@ above the image (cells filled from the image's last two bytes, see
 chooses the last two image bytes so that p is a small address whose next cell
 holds `halt`.
 
-Limits: the count is bounded by the image size (counter values are table addresses, and the
-one-shot prologue needs a free pointer cell for every constant it builds: n <= 5 here),
-and the loop body is this one. The image loads only with the raw loader.
+Limits: n <= 6. Counter values are table addresses, so the table spreads over
+the low image, where it competes for cells with the bootstrap and the prologue
+(whose far pointers are built by rotation, because a byte pointer reaches only
+cells below 128); a seeded search found no layout for 8 (20 000 tries) and was stopped for 7. The loop body is
+this one, and the image loads only with the raw loader.
 """
 
 from __future__ import annotations
@@ -44,7 +46,7 @@ from pathlib import Path
 LOWERING = "fixed19-native-countdown-v1"
 END = 3**19
 FAR_VALUE = 3**17  # what rotating 3^0 gives
-MAX_COUNT = 5
+MAX_COUNT = 6
 _PROFILE = load_profile(Path(__file__).resolve().parents[1] / "profiles/fixed19.json")
 PAGE = 65536
 
@@ -98,7 +100,9 @@ def _layout(n: int, p: dict[str, int]):
     constants: list[tuple[int, int]] = [(z, 3**n)]
     memory.claim(z, seed(3**n)[0], "seed")
 
-    landing = FAR + p["budget"]
+    table_end = max(values, default=0) + PAIR_GAP + 1 + slack_a
+    far = max(FAR, -(-(table_end + 320) // STEP) * STEP)  # the prologue starts above every table cell
+    landing = far + p["budget"]
     landing += -landing % STEP
     base = (landing - 60) // LAP * LAP + LAP
     laps = Laps(memory, base)
@@ -141,7 +145,7 @@ def _layout(n: int, p: dict[str, int]):
         if address != z:
             memory.claim(address, seed(value)[0], "seed")
     return memory, laps, constants, dict(first=first, jump_a=jump_a, jump_b=jump_b, resume=resume,
-                                         landing=landing, exit_cell=exit_cell, entry=entry, Z=z, delta=delta)
+                                         landing=landing, far=far, exit_cell=exit_cell, entry=entry, Z=z, delta=delta)
 
 
 @dataclass(slots=True)
@@ -158,7 +162,7 @@ def _prepare(n: int, p: dict[str, int]) -> _Prepared:
         raise ValueError(f"count must be in 0..{MAX_COUNT}")
     memory, laps, constants, at = _layout(n, p)
     first, landing = at["first"], at["landing"]
-    code = bootstrap(memory)
+    code = bootstrap(memory, at["far"])
     for address, value in constants:
         code.at(address, "rotate", seed(value)[1])
     for _ in range(250):
@@ -201,7 +205,7 @@ def _finish(n: int, prep: _Prepared, tail: tuple[int, int]) -> Countdown:
         if cells[where] is not None:
             raise Conflict("jump overlaps")
         cells[where] = jump_cell(where)
-    body = bytes((padding(i) if i >= FAR else 0) if v is None else v for i, v in enumerate(cells))
+    body = bytes((padding(i) if i >= at["far"] else 0) if v is None else v for i, v in enumerate(cells))
     names = {"Z": at["Z"], "landing": at["landing"], "resume": at["resume"], "exit_cell": at["exit_cell"],
              "halt": target + 1, "delta": at["delta"], "jump_a": at["jump_a"], "jump_b": at["jump_b"]}
     return Countdown(body + bytes(tail), n, (at["jump_b"] - at["landing"],) * 2, names)
@@ -220,9 +224,10 @@ FROZEN: dict[int, tuple[dict[str, int], tuple[int, int]]] = {
     0: ({'Z': 94, 'slack_a': 24, 'slack_b': 13, 'P': 108, 'budget': 380}, (0, 29)),
     1: ({'Z': 115, 'slack_a': 32, 'slack_b': 27, 'P': 48, 'budget': 340}, (0, 29)),
     2: ({'Z': 94, 'slack_a': 28, 'slack_b': 17, 'P': 58, 'budget': 280}, (0, 32)),
-    3: ({'Z': 114, 'slack_a': 31, 'slack_b': 30, 'P': 29, 'budget': 180}, (0, 29)),
+    3: ({'Z': 95, 'slack_a': 33, 'slack_b': 14, 'P': 112, 'budget': 780}, (0, 29)),
     4: ({'Z': 125, 'slack_a': 35, 'slack_b': 14, 'P': 88, 'budget': 440}, (0, 29)),
     5: ({'Z': 114, 'slack_a': 31, 'slack_b': 6, 'P': 47, 'budget': 260}, (0, 29)),
+    6: ({'Z': 97, 'slack_a': 30, 'slack_b': 23, 'P': 51, 'budget': 1440}, (0, 29)),
 }
 
 

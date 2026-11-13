@@ -85,7 +85,22 @@ class Once:
         """Make the next instruction run with D at `address`."""
         if self.d == address:
             return
-        for _ in range(16):
+        if address - 1 >= 128:
+            # A byte pointer cannot reach it. Rotation builds byte * 3^k, so point at the
+            # multiple of 27 just below and let D walk the rest (D moves one cell per step).
+            pointer = 27 * ((address - 1) // 27)
+            slot = next((a for a in range(BOOT_CELL + 1, 127) if self.memory.free(a)), None)
+            if slot is None:
+                raise Conflict("no free cell for a far pointer")
+            self.memory.claim(slot, seed(pointer)[0], "seed")
+            self.at(slot, "rotate", seed(pointer)[1])
+            self.goto(slot)
+            self.emit("move")
+            self.d = pointer + 1
+            while self.d < address:
+                self.nop()
+            return
+        for _ in range(96):
             if self.memory.fits(self.d, address - 1):
                 self.emit("move")
                 self.d = address
@@ -160,18 +175,18 @@ class Laps:
         self.crazy(cell)
 
 
-def bootstrap(memory: Memory) -> Once:
+def bootstrap(memory: Memory, far: int = FAR) -> Once:
     """Cells 0..BOOT_CELL: rotate a seed up to FAR and jump there. Returns the
     one-shot writer positioned at FAR + 1 with D as the jump leaves it."""
-    memory.claim(BOOT_CELL, seed(FAR)[0], "seed")
+    memory.claim(BOOT_CELL, seed(far)[0], "seed")
     code = Once(memory, 0, 0)
     code.emit("move")  # D = C here: the cell is its own pointer
     code.d = once("move", 0) + 1
     if code.d != BOOT_CELL:
         raise AssertionError("bootstrap cell moved")
-    code.at(BOOT_CELL, "rotate", seed(FAR)[1])
+    code.at(BOOT_CELL, "rotate", seed(far)[1])
     code.goto(BOOT_CELL)
     if code.c >= BOOT_CELL:
         raise Conflict("bootstrap overruns its data")
-    code.jump(BOOT_CELL, FAR)
+    code.jump(BOOT_CELL, far)
     return code

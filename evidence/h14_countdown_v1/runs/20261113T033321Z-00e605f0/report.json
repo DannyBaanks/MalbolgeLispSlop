@@ -1,12 +1,13 @@
 {
-  "cases": 6,
+  "cases": 7,
   "counts": [
     0,
     1,
     2,
     3,
     4,
-    5
+    5,
+    6
   ],
   "host": {
     "platform": "Linux-6.18.44-fc-v445-x86_64-with-glibc2.39",
@@ -41,11 +42,11 @@
   ],
   "not_demonstrated": [
     "A compiler from IR: each count has a generated layout, and the body is always `rotate; output; exit on far value`.",
-    "Counts above 5: counter values are table addresses and must fit in the image.",
+    "Counts above 6: counter values are table addresses and must fit in the image.",
     "Loop bodies that compute with several cells, or branch on more than the counter.",
     "Loading with the canonical loader: the image contains inert cells that are not valid opcodes."
   ],
-  "pass": 6,
+  "pass": 7,
   "status": "PASS",
   "upstream_fast20": {
     "revision": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
