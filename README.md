@@ -19,7 +19,9 @@ seleccionaba la salida en una tabla, se conserva como histórico.
 eco de la entrada reejecutando el mismo cuerpo en cada vuelta (véase
 [H13a](#h13a-un-bucle-nativo-que-se-vuelve-a-ejecutar)). **H13b** le añade la
 salida: un `cat` nativo que detecta el final de la entrada y se detiene solo
-(véase [H13b](#h13b-un-cat-nativo-que-termina-en-eof)).
+(véase [H13b](#h13b-un-cat-nativo-que-termina-en-eof)). **H14** comparte el
+ensamblador entre dos bucles nativos y añade uno cuyo contador se reescribe en
+cada vuelta (véase [H14](#h14-bucle-nativo-con-contador)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -33,6 +35,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H14: cuenta atrás nativa** | `rotate` divide un contador en memoria entre 3 en cada vuelta, `output` lo imprime y un `move`+`jump` por tabla decide la salida; imprime 3^(n-1)…3, 1 y se detiene | n = 0..5 en `fast20.c` original, `bolge19` y el modelo; no hay compilador desde IR y n ≥ 6 no tiene layout |
 | **H13b: `cat` nativo** | Bucle que lee, comprueba EOF con dos celdas `crazy`, imprime, restaura sus datos y **se detiene al acabar la entrada**; 4.515 celdas, 1.875 pasos por byte | 326 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes, todos terminan solos; el cuerpo es fijo, no sale de un compilador |
 | **H13a: bucle nativo** | Eco `input; output; jump` cuyo cuerpo de 82 celdas se vuelve a ejecutar en cada vuelta; el número de vueltas lo decide la entrada | 272 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes; no termina en EOF (eso lo hace H13b) y el cuerpo no calcula |
 | **H10–H12 nativos** | Compilador predicado de IR (ramas, bucles desenrollados con cota, memoria con direcciones dinámicas); evaluadores IR de `(op a b)` con `+ - *`, operandos de 1–2 cifras y expresiones anidadas de profundidad 2 | 3.293 casos en `fast20.c` original y en `bolge19`, todos correctos; bucles **desenrollados**, no nativos |
@@ -148,6 +151,31 @@ corta desde fuera: cada una termina en el paso `1279 + 1875 × bytes`.
 un compilador de IR a bucles nativos, y el compilador predicado sigue
 desenrollando los suyos. Cada byte cuesta 1.875 pasos, casi todos en celdas
 inertes. La imagen solo carga con el cargador crudo.
+
+
+## H14: bucle nativo con contador
+
+[`slopsynth/native_asm.py`](slopsynth/native_asm.py) reúne lo que `cat` y la cuenta
+atrás comparten (celdas con reclamo, código de un solo uso con D rastreado,
+planificador de vueltas); la imagen de `cat` no cambió con la refactorización.
+[`slopsynth/native_count.py`](slopsynth/native_count.py) construye `countdown(n)`:
+una celda de memoria vale 3^n; en cada vuelta `rotate` la divide entre 3 en su
+sitio, `output` imprime el valor y el valor mismo es la dirección a la que `move`
+manda D, de modo que el `jump` siguiente lee una tabla con una entrada por valor.
+Tras el último, la rotación da 3^17: el salto lee la memoria que la VM rellena
+encima de la imagen, y los dos últimos bytes de la imagen se eligen para que ese
+valor apunte a un `halt`.
+
+```sh
+python3 -B tools/verify_h14_countdown.py
+```
+
+La [campaña](evidence/h14_countdown_v1/protocol.md) pasa 6 de 6 cuentas (n de 0 a 5) en
+`fast20.c` original, `bolge19` y el modelo, todas terminan solas, más dos controles
+negativos. **Qué no hace:** no hay compilador desde IR (cada n tiene un layout
+encontrado por búsqueda y congelado), n ≥ 6 no tiene layout porque el prólogo se
+queda sin celdas de puntero, y la salida depende del relleno de memoria sobre la imagen,
+que ambas VM de referencia comparten pero que no es parte de ninguna especificación.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 

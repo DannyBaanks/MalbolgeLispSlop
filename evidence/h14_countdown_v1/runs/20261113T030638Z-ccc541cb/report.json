@@ -1,0 +1,54 @@
+{
+  "cases": 6,
+  "counts": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "host": {
+    "platform": "Linux-6.18.44-fc-v445-x86_64-with-glibc2.39",
+    "python": "3.13.18"
+  },
+  "lowering": "fixed19-native-countdown-v1",
+  "negative_controls": [
+    {
+      "differs_from_countdown": true,
+      "halted": {
+        "bolge19": true,
+        "fast20": true
+      },
+      "image": "mutant-table-cell.mb",
+      "stdout_hex": {
+        "bolge19": "",
+        "fast20": ""
+      }
+    },
+    {
+      "differs_from_countdown": true,
+      "halted": {
+        "bolge19": true,
+        "fast20": true
+      },
+      "image": "mutant-counter-seed.mb",
+      "stdout_hex": {
+        "bolge19": "",
+        "fast20": ""
+      }
+    }
+  ],
+  "not_demonstrated": [
+    "A compiler from IR: each count has a generated layout, and the body is always `rotate; output; exit on far value`.",
+    "Counts above 5: counter values are table addresses and must fit in the image.",
+    "Loop bodies that compute with several cells, or branch on more than the counter.",
+    "Loading with the canonical loader: the image contains inert cells that are not valid opcodes."
+  ],
+  "pass": 6,
+  "status": "PASS",
+  "upstream_fast20": {
+    "revision": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "sha256": "607467b591f3446e7e54dfccfee0fff867a03f325ca2767ff49be71e8a431143"
+  }
+}

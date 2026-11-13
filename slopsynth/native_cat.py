@@ -48,101 +48,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .cycles import OPCODES, PAIR_GAP, MODULUS, jump_cell, padding, pair_cell, pair_residue
+from .cycles import PAIR_GAP, jump_cell, padding, pair_cell, pair_residue
+from .native_asm import FAR, LAP, STEP, BOOT_CELL, bootstrap, Conflict, Laps, Memory, Once, once, seed as byte_seed
 
 LOWERING = "fixed19-native-cat-v1"
-LAP = MODULUS
 TABLE_LAPS = 4            # laps between the dispatch move and the table move
 EOF_WORD = 1700           # value of W after reading EOF
-BOOT_CELL = 41            # the first move of the image, at address 0, sends D here
-STEP = 81                 # far jump targets are multiples of 3^4, built with 14 rotations at most
-FAR = 26 * STEP           # prologue landing cell; above the EOF table cell
 # Addresses found by `search()`; the build checks every claim, so a bad set fails loudly.
 PARAMS = {"Y": 68, "W": 111, "U": 113, "V": 72, "table": 94, "eof": 65, "halt": 45, "slack": 9, "budget": 470}
-
-
-class Conflict(Exception):
-    """Two uses of one memory cell disagree, or a value does not fit in a byte."""
-
-
-class _Memory:
-    def __init__(self):
-        self.cells: dict[int, tuple[int, str]] = {}
-
-    def free(self, address: int) -> bool:
-        return address not in self.cells
-
-    def claim(self, address: int, value: int, kind: str = "pointer") -> None:
-        if not 0 <= value < 128 or address < 0:
-            raise Conflict(f"cell {address} cannot hold {value}")
-        old = self.cells.get(address)
-        if old is not None and (old != (value, kind) or kind != "pointer"):
-            raise Conflict(f"cell {address} already holds {old}, wanted {(value, kind)}")
-        self.cells[address] = (value, kind)
-
-    def fits(self, address: int, value: int) -> bool:
-        try:
-            self.claim(address, value)
-        except Conflict:
-            return False
-        return True
-
-
-def _once(operation: str, position: int) -> int:
-    """A cell that decodes to `operation` the first time it runs."""
-    value = (OPCODES[operation] - position) % MODULUS
-    return value if value >= 33 else value + MODULUS
-
-
-def _seed(value: int) -> tuple[int, int]:
-    """Byte seed and number of rotations that produce `value`."""
-    best = None
-    for k in range(1, 18):
-        if value % 3**k == 0 and value // 3**k < 128:
-            best = (value // 3**k, 18 - k)
-    if best is None:
-        raise Conflict(f"{value} is not a byte times a power of three")
-    return best
-
-
-class _Once:
-    """Straight-line code that runs a single time, with D tracked."""
-
-    def __init__(self, memory: _Memory, c: int, d: int):
-        self.memory, self.c, self.d = memory, c, d
-
-    def emit(self, operation: str) -> None:
-        self.memory.claim(self.c, _once(operation, self.c), "code")
-        self.c += 1
-        self.d += 1
-
-    def nop(self) -> None:
-        self.memory.claim(self.c, padding(self.c), "code")
-        self.c += 1
-        self.d += 1
-
-    def goto(self, address: int) -> None:
-        """Make the next instruction run with D at `address`."""
-        if self.d == address:
-            return
-        for _ in range(16):
-            if self.memory.fits(self.d, address - 1):
-                self.emit("move")
-                self.d = address
-                return
-            self.nop()
-        raise Conflict(f"no free pointer cell on the way to {address}")
-
-    def at(self, address: int, operation: str, times: int = 1) -> None:
-        for _ in range(times):
-            self.goto(address)
-            self.emit(operation)
-
-    def jump(self, address: int, target: int) -> None:
-        self.goto(address)
-        self.emit("jump")
-        self.memory.claim(target, padding(target), "code")
-        self.c = target + 1
 
 
 @dataclass(frozen=True, slots=True)
@@ -156,63 +69,29 @@ class Cat:
 
 
 def _build(p: dict[str, int]) -> Cat:
-    memory = _Memory()
+    memory = Memory()
     y, w, u, v = p["Y"], p["W"], p["U"], p["V"]
     for name, seed in (("Y", 0), ("W", 0), ("V", 0), ("U", 2)):
         memory.claim(p[name], seed, name)
-    memory.claim(BOOT_CELL, _seed(FAR)[0], "seed")
 
     # ---- loop, in the timeline of an even pass: D = off + C between moves
     landing = FAR + p["budget"]
     landing += -landing % STEP                    # the loop-back jump lands here
     base = (landing - pair_residue("input")) // LAP * LAP + LAP  # first lap whose input pair is past the landing
-    residue = {name: pair_residue(name) for name in ("input", "output", "rotate", "move", "crazy")}
-    pairs: list[tuple[str, int]] = []
+    laps = Laps(memory, base)
+    pairs = laps.pairs
     constants: list[tuple[int, int]] = []
-    state = {"lap": 0, "off": None}
-
-    def position(lap, name):
-        return base + lap * LAP + residue[name]
-
-    def pair(name, lap):
-        pairs.append((name, position(lap, name)))
-        return position(lap, name)
-
-    def move(pointer, operand_free=True, exact=False):
-        if not 0 <= pointer < 128:
-            raise Conflict(f"pointer {pointer}")
-        lap = state["lap"]
-        while True:
-            at = position(lap, "move")
-            if not operand_free or state["off"] is None or memory.fits(state["off"] + at, pointer):
-                break
-            if exact or lap > state["lap"] + 3:
-                raise Conflict("no room for a pointer cell")
-            lap += 1
-        pair("move", lap)
-        state["off"] = pointer - at
-        state["lap"] = lap
-        return at
-
-    def crazy(cell):
-        if state["off"] + position(state["lap"], "crazy") != cell:
-            raise AssertionError("crazy would miss its cell")
-        pair("crazy", state["lap"])
-        state["lap"] += 1
-
-    def access(cell):
-        move(cell - 22)
-        crazy(cell)
-
+    pair, move, crazy, access = laps.pair, laps.move, laps.crazy, laps.access
+    position = laps.position
     pair("input", 0)
     first_move = move(y - 22)                     # its two pointer cells are claimed at the end
     crazy(y)
     access(w)
     move(w - LAP, exact=True)                     # next lap's move finds D at W
-    state["lap"] += 1
-    dispatch = pair("move", state["lap"])         # D = W + 1: b + 1, or 1701
-    state["lap"] += TABLE_LAPS
-    table_move = pair("move", state["lap"])
+    laps.lap += 1
+    dispatch = pair("move", laps.lap)         # D = W + 1: b + 1, or 1701
+    laps.lap += TABLE_LAPS
+    table_move = pair("move", laps.lap)
     table = table_move - dispatch
     for byte in range(256):
         memory.claim(table + byte, p["table"])
@@ -223,27 +102,27 @@ def _build(p: dict[str, int]) -> Cat:
         constants.append((p["table"] + 5 - lag, resume))
         memory.claim(p["eof"] + 5 - lag, p["halt"])
     halt_at = p["halt"] + 1
-    memory.claim(halt_at, _once("halt", halt_at), "halt")
-    state["off"] = p["table"] + 5 - resume
-    state["lap"] = (resume - base) // LAP
-    if position(state["lap"], "output") <= resume:
-        state["lap"] += 1
-    pair("output", state["lap"])
+    memory.claim(halt_at, once("halt", halt_at), "halt")
+    laps.off = p["table"] + 5 - resume
+    laps.lap = (resume - base) // LAP
+    if position(laps.lap, "output") <= resume:
+        laps.lap += 1
+    pair("output", laps.lap)
     access(w)
     access(y)
     access(y)
-    rotate_lap = state["lap"]
+    rotate_lap = laps.lap
     while True:                                    # rotate Z sits one step before the next move
-        zero = state["off"] + position(rotate_lap, "rotate")
+        zero = laps.off + position(rotate_lap, "rotate")
         pointer_free = memory.fits(zero + 1, y - 22)
         if pointer_free and (memory.free(zero) or memory.cells[zero] == (0, "zero")):
             break
         rotate_lap += 1
-        if rotate_lap > state["lap"] + 3:
+        if rotate_lap > laps.lap + 3:
             raise Conflict("no room for the zero cell")
     memory.cells[zero] = (0, "zero")
     pair("rotate", rotate_lap)
-    state["lap"] = rotate_lap
+    laps.lap = rotate_lap
     access(y)
     access(u)
     access(v)
@@ -251,12 +130,12 @@ def _build(p: dict[str, int]) -> Cat:
     crazy(w)
     jump_b = last + 22 + PAIR_GAP + 1 + p["slack"]
     for lag in (0, PAIR_GAP):
-        constants.append((state["off"] + jump_b - lag, landing))
-    entry = state["off"] + jump_b - landing + first_move
+        constants.append((laps.off + jump_b - lag, landing))
+    entry = laps.off + jump_b - landing + first_move
     for lag in (-PAIR_GAP, PAIR_GAP):
         memory.claim(entry + lag, y - 22)
     for address, value in constants:
-        memory.claim(address, _seed(value)[0], "seed")
+        memory.claim(address, byte_seed(value)[0], "seed")
 
     # ---- one-shot code: bootstrap at 0, prologue at FAR
     def scratch(seed):
@@ -266,18 +145,9 @@ def _build(p: dict[str, int]) -> Cat:
                 return address
         raise Conflict("no room for a prologue cell")
 
-    code = _Once(memory, 0, 0)
-    code.emit("move")                              # D = C here: the cell is its own pointer
-    code.d = _once("move", 0) + 1
-    if code.d != BOOT_CELL:
-        raise AssertionError("bootstrap cell moved")
-    code.at(BOOT_CELL, "rotate", _seed(FAR)[1])
-    code.goto(BOOT_CELL)
-    if code.c >= BOOT_CELL:
-        raise Conflict("bootstrap overruns its data")
-    code.jump(BOOT_CELL, FAR)
+    code = bootstrap(memory)
     for address, value in constants:
-        code.at(address, "rotate", _seed(value)[1])
+        code.at(address, "rotate", byte_seed(value)[1])
     s1, c125, c121, temp, zero_p = (scratch(seed) for seed in (26, 125, 121, 0, 0))
     code.at(u, "rotate", 12)                       # U = 2 * 3^6
     code.at(s1, "rotate", 16)                      # A = 234
