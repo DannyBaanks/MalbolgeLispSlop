@@ -1,0 +1,18 @@
+name ir_arith_4
+case ,1bd309e503eb01ee
+entry init
+init:
+    st Z, 81
+    st ACC, 5
+    jump top
+top:
+    ld v, Z
+    breq v, 2, done, body
+body:
+    rot Z
+    write
+    craz ACC
+    write
+    jump top
+done:
+    halt

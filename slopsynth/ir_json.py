@@ -11,6 +11,7 @@ from .ir import (
     BranchEq,
     BranchZero,
     Call,
+    CrazyCell,
     Function,
     Halt,
     Jump,
@@ -131,6 +132,10 @@ def _module_operation(raw: object, label: str) -> ModuleOperation:
         if set(operation) != {"op", "address"}:
             raise ValueError(f"{label} rotate fields must be op and address")
         return Rotate(_value_ref(operation["address"], f"{label}.address"))
+    if name == "crazy_cell":
+        if set(operation) != {"op", "address"}:
+            raise ValueError(f"{label} crazy_cell fields must be op and address")
+        return CrazyCell(_value_ref(operation["address"], f"{label}.address"))
     if name == "jump":
         if set(operation) != {"op", "target"}:
             raise ValueError(f"{label} jump fields must be op and target")

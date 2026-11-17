@@ -28,7 +28,9 @@ por encima de la imagen (véase [H16](#h16-cuenta-atrás-con-salida-dentro-de-la
 **H17** amplía el IR con `rot` y `breq` y compila esa misma cuenta atrás desde un
 módulo IR a la imagen nativa (véase [H17](#h17-cuenta-atrás-compilada-desde-el-ir)).
 **H18** añade aritmética `crazy` lap-safe sobre una celda de datos dentro del bucle
-reejecutable (véase [H18](#h18-aritmética-crazy-lap-safe-en-el-bucle)).
+reejecutable (véase [H18](#h18-aritmética-crazy-lap-safe-en-el-bucle)). **H19**
+añade `craz <celda>` al IR y compila ese bucle aritmético desde un módulo IR
+(véase [H19](#h19-bucle-aritmético-compilado-desde-el-ir)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -42,6 +44,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H19: bucle aritmético compilado desde el IR** | El IR gana `craz <celda>`; `lower()` compila el bucle contador+acumulador (`st`/`ld`/`breq`/`rot`/`craz`/`write`/`jump`/`halt`) a la imagen nativa de H18, byte-idéntica | n = 0..6 por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 3 controles negativos |
 | **H18: aritmética `crazy` lap-safe en el bucle** | El bucle reejecutable reescribe una celda acumuladora con `crazy` en cada pasada (además del `rotate` del contador) y sale a un `halt` dentro de la imagen; imprime 2 bytes por pasada | n = 0..6 en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos; el decremento con acarreo (`sub 1`) en bucle queda NOT_DEMONSTRATED (no hay opcode de store y `crazy` es tritwise) |
 | **H17: cuenta atrás compilada desde el IR** | El IR gana `rot <celda>` y `breq v, 1, …`; `lower()` compila el módulo de la cuenta atrás (st/ld/breq/rot/write/jump/halt) a la imagen nativa de H16, byte-idéntica | n = 0..6 por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados antes de emitir; 3 controles negativos |
 | **H16: cuenta atrás con salida dentro de la imagen** | `move`+`jump` despachan sobre el contador **antes** de rotarlo; la tabla {3^n…1} está en la imagen y v=1 apunta a un `halt` en la celda 244; imprime 3^(n-1)…3, 1 y se detiene sin leer por encima de la imagen | n = 0..6 en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos |
@@ -349,6 +352,50 @@ H7 bajó `sub n, n, 1` en línea recta con cascadas de aterrizaje, no en bucle. 
 demuestra el primitivo lap-safe (celda reescrita por `crazy` cada pasada), no la
 aritmética con acarreo. Tampoco: n > 6, más de un `crazy` por pasada, ni cargador
 canónico.
+
+## H19: bucle aritmético compilado desde el IR
+
+El IR gana `craz <celda>` (`CrazyCell`: `mem[celda] = crazy(mem[celda], A)`, máscara
+en A). Con él, el bucle de H18 es un módulo normal
+([`examples/ir_arith.slop`](examples/ir_arith.slop)):
+
+```
+entry init
+init:  st Z, 81
+       st ACC, 5
+       jump top
+top:   ld v, Z
+       breq v, 1, done, body
+body:  rot Z
+       write
+       craz ACC
+       write
+       jump top
+done:  halt
+```
+
+[`slopsynth/native_ir_arith.py`](slopsynth/native_ir_arith.py) acepta exactamente
+ea CFG (una función sin parámetros, cuatro bloques) y comprueba cada caso
+declarado contra la referencia de H18 antes de emitir; cualquier otra cosa lanza
+`AssemblyError`. `lower()` emite a través de los layouts congelados de H18 según
+el `n` del módulo, así que **la imagen compilada desde el IR es byte-idéntica a la
+de H18** para cada cuenta.
+
+```sh
+python3 -B tools/verify_h19_ir_arith.py
+./build/bolge19 evidence/h19_ir_arith_v1/runs/*/ir_arith_6.mb --loader raw </dev/null
+```
+
+La [campaña](evidence/h19_ir_arith_v1/protocol.md) compila n = 0..6 por el camino
+IR y pasa 7 de 7 en `fast20.c` original, `bolge19` y el modelo con la cota
+estricta `max_address = len(image) − 1`; las imágenes son byte-idénticas a las de
+H18; 6 módulos mutados se rechazan antes de emitir y 3 controles negativos de
+imagen difieren en ambas VM.
+
+**Qué no hace:** compila **una** CFG. `craz` todavía no tiene lowering en el
+compilador predicado, no hay búsqueda de layout dirigida por el módulo, y la
+aritmética con acarreo (`sub`/`add` con acarreo) en un bucle reejecutable sigue
+NOT_DEMONSTRATED (no hay opcode de store y `crazy` es tritwise).
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 

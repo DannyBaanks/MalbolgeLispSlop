@@ -79,6 +79,17 @@ class Rotate:
 
 
 @dataclass(frozen=True, slots=True)
+class CrazyCell:
+    """mem[address] = crazy(mem[address], A) tritwise (mask is A); A = result."""
+
+    address: ValueRef
+
+    def __post_init__(self) -> None:
+        if isinstance(self.address, str) and not self.address:
+            raise ValueError("crazy address must not be empty")
+
+
+@dataclass(frozen=True, slots=True)
 class Jump:
     target: str
 
@@ -165,7 +176,7 @@ class Return:
 
 
 ModuleOperation: TypeAlias = (
-    Operation | WriteDecimal | BranchZero | BranchEq | Rotate | Jump | Load | Store | Add | Sub | Mul | Lt | Eq | And | Or | Call | Return
+    Operation | WriteDecimal | BranchZero | BranchEq | Rotate | CrazyCell | Jump | Load | Store | Add | Sub | Mul | Lt | Eq | And | Or | Call | Return
 )
 
 
@@ -182,7 +193,7 @@ class BasicBlock:
         if any(
             not isinstance(
                 operation,
-                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, BranchEq, Rotate, Jump, Load, Store, Add, Sub, Mul, Lt, Eq, And, Or, Call, Return),
+                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, BranchEq, Rotate, CrazyCell, Jump, Load, Store, Add, Sub, Mul, Lt, Eq, And, Or, Call, Return),
             )
             for operation in self.operations
         ):
