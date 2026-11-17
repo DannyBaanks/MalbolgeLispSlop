@@ -27,6 +27,8 @@ toda dentro de la imagen y el `halt` está en la celda 244: ninguna lectura cae
 por encima de la imagen (véase [H16](#h16-cuenta-atrás-con-salida-dentro-de-la-imagen)).
 **H17** amplía el IR con `rot` y `breq` y compila esa misma cuenta atrás desde un
 módulo IR a la imagen nativa (véase [H17](#h17-cuenta-atrás-compilada-desde-el-ir)).
+**H18** añade aritmética `crazy` lap-safe sobre una celda de datos dentro del bucle
+reejecutable (véase [H18](#h18-aritmética-crazy-lap-safe-en-el-bucle)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -40,6 +42,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H18: aritmética `crazy` lap-safe en el bucle** | El bucle reejecutable reescribe una celda acumuladora con `crazy` en cada pasada (además del `rotate` del contador) y sale a un `halt` dentro de la imagen; imprime 2 bytes por pasada | n = 0..6 en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos; el decremento con acarreo (`sub 1`) en bucle queda NOT_DEMONSTRATED (no hay opcode de store y `crazy` es tritwise) |
 | **H17: cuenta atrás compilada desde el IR** | El IR gana `rot <celda>` y `breq v, 1, …`; `lower()` compila el módulo de la cuenta atrás (st/ld/breq/rot/write/jump/halt) a la imagen nativa de H16, byte-idéntica | n = 0..6 por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados antes de emitir; 3 controles negativos |
 | **H16: cuenta atrás con salida dentro de la imagen** | `move`+`jump` despachan sobre el contador **antes** de rotarlo; la tabla {3^n…1} está en la imagen y v=1 apunta a un `halt` en la celda 244; imprime 3^(n-1)…3, 1 y se detiene sin leer por encima de la imagen | n = 0..6 en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos |
 | **H15: bucle nativo desde IR** | `lower()` compila la forma de H3 (`read; brz; halt; read; write; jump`) a un cuerpo lapeado que se re-ejecuta y sale a un `halt` **dentro de la imagen**, sin relleno de memoria | 390 casos en `fast20.c` original, `bolge19` y el modelo; 1.000.000 de bytes sin ceros = 1.037.001.279 pasos; dos controles negativos |
@@ -315,6 +318,37 @@ negativos de imagen difieren en ambas VM.
 en el compilador predicado, no hay búsqueda de layout dirigida por el módulo
 (el nombre de celda del módulo se liga a la celda Z congelada), y no hay
 aritmética general dentro del cuerpo (solo el `rotate`).
+
+## H18: aritmética `crazy` lap-safe en el bucle
+
+[`slopsynth/native_arith_loop.py`](slopsynth/native_arith_loop.py) extiende el
+bucle de H16 con una celda acumuladora `ACC` que un `crazy` **reescribe en cada
+pasada**: en la ruta de reanudación, tras `rotate Z` (A = Z') e `output`, un
+`access(ACC)` calcula `ACC' = crazy(ACC, A=Z')` (tritwise) y un segundo `output`
+imprime `ACC'`. Las mismas celdas corren en cada pasada; el despacho sobre `v = Z`
+(antes de rotar, como en H16) manda `v == 1` al `halt` de la celda 244, dentro de
+la imagen. Cada pasada imprime dos bytes: `Z' mod 256` y `ACC' mod 256`.
+[`reference(n)`](slopsynth/native_arith_loop.py) calcula la salida esperada solo
+from el orden de operaciones con los primitivos del modelo (`_rotate`/`_crazy`).
+
+```sh
+python3 -B tools/verify_h18_arith_loop.py
+./build/bolge19 evidence/h18_arith_loop_v1/runs/*/arith_loop_6.mb --loader raw </dev/null
+```
+
+La [campaña](evidence/h18_arith_loop_v1/protocol.md) pasa 7 de 7 cuentas (n de 0 a
+6) en `fast20.c` original, `bolge19` y el modelo con la cota estricta
+`max_address = len(image) − 1`; el acceso más alto trazado es 13 443 < 13 444;
+`bolge19` informa los mismos pasos que el modelo; 3 controles negativos difieren
+en ambas VM.
+
+**Qué no hace:** un decremento real (`sub 1`) dentro del bucle reejecutable. En
+fixed19 no hay opcode de store (`move` solo pone `D = mem[D]`; los stores van por
+`crazy`/`rotate`) y `crazy` es tritwise, así que el acarreo no cabe en un `crazy`:
+H7 bajó `sub n, n, 1` en línea recta con cascadas de aterrizaje, no en bucle. H18
+demuestra el primitivo lap-safe (celda reescrita por `crazy` cada pasada), no la
+aritmética con acarreo. Tampoco: n > 6, más de un `crazy` por pasada, ni cargador
+canónico.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 

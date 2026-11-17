@@ -40,5 +40,7 @@ jobs:
         run: python3 -B tools/verify_h16_count_in.py --output-root "$RUNNER_TEMP/h16"
       - name: Countdown lowered from an IR module
         run: python3 -B tools/verify_h17_ir_count.py --output-root "$RUNNER_TEMP/h17"
+      - name: Lap-safe crazy arithmetic on a data cell in the native loop
+        run: python3 -B tools/verify_h18_arith_loop.py --output-root "$RUNNER_TEMP/h18"
       - name: Differential fuzz of the predicated compiler
         run: python3 -B tools/fuzz_predicated.py --seed 100 --count 15

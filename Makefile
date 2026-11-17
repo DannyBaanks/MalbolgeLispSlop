@@ -61,5 +61,8 @@ verify-h16: build
 verify-h17: build
 	python3 -B tools/verify_h17_ir_count.py
 
+verify-h18: build
+	python3 -B tools/verify_h18_arith_loop.py
+
 fuzz: build
 	python3 -B tools/fuzz_predicated.py
