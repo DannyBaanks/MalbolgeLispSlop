@@ -21,7 +21,10 @@ eco de la entrada reejecutando el mismo cuerpo en cada vuelta (véase
 salida: un `cat` nativo que detecta el final de la entrada y se detiene solo
 (véase [H13b](#h13b-un-cat-nativo-que-termina-en-eof)). **H14** comparte el
 ensamblador entre dos bucles nativos y añade uno cuyo contador se reescribe en
-cada vuelta (véase [H14](#h14-bucle-nativo-con-contador)).
+cada vuelta (véase [H14](#h14-bucle-nativo-con-contador)). **H16** rehace esa
+cuenta atrás despachando **antes** de rotar, de modo que la tabla de salida vive
+toda dentro de la imagen y el `halt` está en la celda 244: ninguna lectura cae
+por encima de la imagen (véase [H16](#h16-cuenta-atrás-con-salida-dentro-de-la-imagen)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -31,10 +34,11 @@ la VM: `(- 1 (* 2 3))` → `-5`, `(* 99 99)` → `9801`. Véase
 La ejecución nativa de Lisp general continúa en desarrollo. El evaluador Python,
 el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
-## Estado verificado — 12 de noviembre de 2026
+## Estado verificado — 17 de noviembre de 2026
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H16: cuenta atrás con salida dentro de la imagen** | `move`+`jump` despachan sobre el contador **antes** de rotarlo; la tabla {3^n…1} está en la imagen y v=1 apunta a un `halt` en la celda 244; imprime 3^(n-1)…3, 1 y se detiene sin leer por encima de la imagen | n = 0..6 en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos |
 | **H15: bucle nativo desde IR** | `lower()` compila la forma de H3 (`read; brz; halt; read; write; jump`) a un cuerpo lapeado que se re-ejecuta y sale a un `halt` **dentro de la imagen**, sin relleno de memoria | 390 casos en `fast20.c` original, `bolge19` y el modelo; 1.000.000 de bytes sin ceros = 1.037.001.279 pasos; dos controles negativos |
 | **H14: cuenta atrás nativa** | `rotate` divide un contador en memoria entre 3 en cada vuelta, `output` lo imprime y un `move`+`jump` por tabla decide la salida; imprime 3^(n-1)…3, 1 y se detiene | n = 0..6 en `fast20.c` original, `bolge19` y el modelo; no hay compilador desde IR y no se encontró layout para n = 7, 8 |
 | **H13b: `cat` nativo** | Bucle que lee, comprueba EOF con dos celdas `crazy`, imprime, restaura sus datos y **se detiene al acabar la entrada**; 4.515 celdas, 1.875 pasos por byte | 326 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes, todos terminan solos; el cuerpo es fijo, no sale de un compilador |
@@ -221,6 +225,49 @@ paso `1279 + 2074 × vueltas`, más dos controles negativos.
 anidados dentro del cuerpo, y la composición con el compilador predicado (que sigue
 desenrollando) no existe. La imagen solo carga con el cargador crudo y la campaña es
 un conjunto finito de entradas, no una prueba para todas.
+
+## H16: cuenta atrás con salida dentro de la imagen
+
+[`slopsynth/native_count_in.py`](slopsynth/native_count_in.py) construye
+`count_in(n)`, 0 ≤ n ≤ 6, con la misma salida que H14 (3^(n-1)…3, 1) pero
+despachando **antes** de rotar el contador: el `move` de despacho lee la celda
+Z y el `jump` siguiente lee la tabla en `v + 5 + slack_a`, una entrada por valor
+del contador {3^n…3, 1}. La entrada de v = 1 apunta a `halt − 1` y el `halt`
+vive en la celda 244, dentro de la imagen; las otras entradas apuntan a la ruta
+de reanudación (`resume` = 13 122). Ninguna lectura cae por encima de la
+imagen: el modelo corriendo con `max_address = len(image) − 1` terminaría en
+`MODEL_BOUND` si la hubiera, y no la hay.
+
+- **La tabla dentro de la imagen.** H14 despacha *después* de rotar, así que su
+  última decisión lee la celda `3^17 + delta`, por encima de la imagen, y los dos
+  últimos bytes deciden la salida. H16 decide con el valor actual `v`, que es
+  pequeño, así que la tabla cabe entera (≤ 804 para n = 6) y el `halt` está en
+  la celda 244.
+- **Las constantes.** Como en H14/H15, el prólogo en `FAR` = 2 106 fabrica con
+  `rotate` las direcciones lejanas (`resume`, `landing`) a partir de semillas de
+  un byte; para n ≤ 4 el contador 3^n ya es un byte de la imagen y para n = 5, 6
+  se construye con 12 rotaciones. Cada imagen mide 13 350 celdas y su byte mayor
+  es 126.
+- **Las imágenes.** Los layouts son por n, encontrados por búsqueda y congelados
+  en `FROZEN`; la construcción comprueba cada celda y un conjunto malo lanza
+  `Conflict` en vez de emitir una imagen incorrecta.
+
+```sh
+python3 -B tools/verify_h16_count_in.py
+./build/bolge19 evidence/h16_count_in_v1/runs/*/count_in_6.mb --loader raw </dev/null
+```
+
+La [campaña](evidence/h16_count_in_v1/protocol.md) pasa 7 de 7 cuentas (n de 0 a
+6) en `fast20.c` original, `bolge19` y el modelo con la cota estricta
+`max_address = len(image) − 1`, todas terminan solas en el `halt` de la celda
+244, el acceso más alto trazado es la 13 349 (< 13 350), `bolge19` informa el
+mismo número de pasos que el modelo, y tres controles negativos (entrada de la
+primera vuelta, entrada de parada y semilla del contador) difieren en ambas VM.
+
+**Qué no hace:** no hay compilador desde IR para este cuerpo (cada n tiene un
+layout congelado; H15 compila otra forma), no se encontró layout para n > 6 (la
+tabla se extiende por la imagen baja y compite con el arranque y las ranuras de
+punteros lejanos del prólogo), y la imagen solo carga con el cargador crudo.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 

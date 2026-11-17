@@ -55,5 +55,8 @@ verify-h13: build
 verify-h15: build
 	python3 -B tools/verify_h15_native_ir_loop.py
 
+verify-h16: build
+	python3 -B tools/verify_h16_count_in.py
+
 fuzz: build
 	python3 -B tools/fuzz_predicated.py
