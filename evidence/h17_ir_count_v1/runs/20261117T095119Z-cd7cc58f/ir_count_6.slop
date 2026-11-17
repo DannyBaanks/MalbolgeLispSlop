@@ -1,0 +1,15 @@
+name ir_count_6
+case ,f3511b090301
+entry init
+init:
+    st Z, 729
+    jump top
+top:
+    ld v, Z
+    breq v, 1, done, body
+body:
+    rot Z
+    write
+    jump top
+done:
+    halt

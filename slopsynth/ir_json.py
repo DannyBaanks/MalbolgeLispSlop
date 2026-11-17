@@ -8,6 +8,7 @@ from pathlib import Path
 from .ir import (
     Add,
     BasicBlock,
+    BranchEq,
     BranchZero,
     Call,
     Function,
@@ -21,6 +22,7 @@ from .ir import (
     Program,
     ReadA,
     Return,
+    Rotate,
     Store,
     Sub,
     WriteA,
@@ -115,6 +117,20 @@ def _module_operation(raw: object, label: str) -> ModuleOperation:
             _string(operation["zero_target"], f"{label}.zero_target"),
             _string(operation["nonzero_target"], f"{label}.nonzero_target"),
         )
+    if name == "branch_eq":
+        required = {"op", "value", "rhs", "eq_target", "ne_target"}
+        if set(operation) != required:
+            raise ValueError(f"{label} branch_eq fields must be {sorted(required)}")
+        return BranchEq(
+            _value_ref(operation["value"], f"{label}.value"),
+            _value_ref(operation["rhs"], f"{label}.rhs"),
+            _string(operation["eq_target"], f"{label}.eq_target"),
+            _string(operation["ne_target"], f"{label}.ne_target"),
+        )
+    if name == "rotate":
+        if set(operation) != {"op", "address"}:
+            raise ValueError(f"{label} rotate fields must be op and address")
+        return Rotate(_value_ref(operation["address"], f"{label}.address"))
     if name == "jump":
         if set(operation) != {"op", "target"}:
             raise ValueError(f"{label} jump fields must be op and target")

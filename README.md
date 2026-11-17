@@ -25,6 +25,8 @@ cada vuelta (véase [H14](#h14-bucle-nativo-con-contador)). **H16** rehace esa
 cuenta atrás despachando **antes** de rotar, de modo que la tabla de salida vive
 toda dentro de la imagen y el `halt` está en la celda 244: ninguna lectura cae
 por encima de la imagen (véase [H16](#h16-cuenta-atrás-con-salida-dentro-de-la-imagen)).
+**H17** amplía el IR con `rot` y `breq` y compila esa misma cuenta atrás desde un
+módulo IR a la imagen nativa (véase [H17](#h17-cuenta-atrás-compilada-desde-el-ir)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -38,6 +40,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H17: cuenta atrás compilada desde el IR** | El IR gana `rot <celda>` y `breq v, 1, …`; `lower()` compila el módulo de la cuenta atrás (st/ld/breq/rot/write/jump/halt) a la imagen nativa de H16, byte-idéntica | n = 0..6 por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados antes de emitir; 3 controles negativos |
 | **H16: cuenta atrás con salida dentro de la imagen** | `move`+`jump` despachan sobre el contador **antes** de rotarlo; la tabla {3^n…1} está en la imagen y v=1 apunta a un `halt` en la celda 244; imprime 3^(n-1)…3, 1 y se detiene sin leer por encima de la imagen | n = 0..6 en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos |
 | **H15: bucle nativo desde IR** | `lower()` compila la forma de H3 (`read; brz; halt; read; write; jump`) a un cuerpo lapeado que se re-ejecuta y sale a un `halt` **dentro de la imagen**, sin relleno de memoria | 390 casos en `fast20.c` original, `bolge19` y el modelo; 1.000.000 de bytes sin ceros = 1.037.001.279 pasos; dos controles negativos |
 | **H14: cuenta atrás nativa** | `rotate` divide un contador en memoria entre 3 en cada vuelta, `output` lo imprime y un `move`+`jump` por tabla decide la salida; imprime 3^(n-1)…3, 1 y se detiene | n = 0..6 en `fast20.c` original, `bolge19` y el modelo; no hay compilador desde IR y no se encontró layout para n = 7, 8 |
@@ -268,6 +271,50 @@ primera vuelta, entrada de parada y semilla del contador) difieren en ambas VM.
 layout congelado; H15 compila otra forma), no se encontró layout para n > 6 (la
 tabla se extiende por la imagen baja y compite con el arranque y las ranuras de
 punteros lejanos del prólogo), y la imagen solo carga con el cargador crudo.
+
+## H17: cuenta atrás compilada desde el IR
+
+El IR gana dos operaciones (`slopsynth/ir.py`, con mnemonics en `lang.py` y
+campos JSON en `ir_json.py`): `rot <celda>` (`A = rotate(mem[celda])`,
+`mem[celda] = A`) y `breq v, rhs, eq, ne` (rama si `v == rhs`). Con ellas la
+cuenta atrás es un módulo normal ([`examples/ir_count.slop`](examples/ir_count.slop)):
+
+```
+entry init
+init:  st Z, 81
+       jump top
+top:   ld v, Z
+       breq v, 1, done, body
+body:  rot Z
+       write
+       jump top
+done:  halt
+```
+
+[`slopsynth/native_ir_count.py`](slopsynth/native_ir_count.py) acepta
+exactamente esa CFG (una función sin parámetros, cuatro bloques) y comprueba
+cada caso declarado contra la referencia antes de emitir; cualquier otra cosa
+lanza `AssemblyError`. El `breq v, 1` baja a la tabla nativa de despacho de
+H16 (la entrada de `v == 1` es el `halt` dentro de la imagen) y `rot` al par
+lappeado de `rotate`. `lower()` emite a través de los layouts congelados de
+H16 según el `n` del módulo, así que **la imagen compilada desde el IR es
+byte-idéntica a la de H16** para cada cuenta.
+
+```sh
+python3 -B tools/verify_h17_ir_count.py
+./build/bolge19 evidence/h17_ir_count_v1/runs/*/ir_count_6.mb --loader raw </dev/null
+```
+
+La [campaña](evidence/h17_ir_count_v1/protocol.md) compila n = 0..6 por el
+camino IR y pasa 7 de 7 en `fast20.c` original, `bolge19` y el modelo con la
+cota estricta `max_address = len(image) − 1`; las imágenes son byte-idénticas a
+las de H16; 6 módulos mutados se rechazan antes de emitir nada y 3 controles
+negativos de imagen difieren en ambas VM.
+
+**Qué no hace:** compila **una** CFG. `rot`/`breq` todavía no tienen lowering
+en el compilador predicado, no hay búsqueda de layout dirigida por el módulo
+(el nombre de celda del módulo se liga a la celda Z congelada), y no hay
+aritmética general dentro del cuerpo (solo el `rotate`).
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 

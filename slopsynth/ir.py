@@ -58,6 +58,27 @@ class BranchZero:
 
 
 @dataclass(frozen=True, slots=True)
+class BranchEq:
+    """Branch when `value == rhs`: eq_target on equality, ne_target otherwise."""
+
+    value: ValueRef
+    rhs: ValueRef
+    eq_target: str
+    ne_target: str
+
+
+@dataclass(frozen=True, slots=True)
+class Rotate:
+    """A = rotate(mem[address]) one trit to the right; mem[address] = A."""
+
+    address: ValueRef
+
+    def __post_init__(self) -> None:
+        if isinstance(self.address, str) and not self.address:
+            raise ValueError("rotate address must not be empty")
+
+
+@dataclass(frozen=True, slots=True)
 class Jump:
     target: str
 
@@ -144,7 +165,7 @@ class Return:
 
 
 ModuleOperation: TypeAlias = (
-    Operation | WriteDecimal | BranchZero | Jump | Load | Store | Add | Sub | Mul | Lt | Eq | And | Or | Call | Return
+    Operation | WriteDecimal | BranchZero | BranchEq | Rotate | Jump | Load | Store | Add | Sub | Mul | Lt | Eq | And | Or | Call | Return
 )
 
 
@@ -161,7 +182,7 @@ class BasicBlock:
         if any(
             not isinstance(
                 operation,
-                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, Jump, Load, Store, Add, Sub, Mul, Lt, Eq, And, Or, Call, Return),
+                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, BranchEq, Rotate, Jump, Load, Store, Add, Sub, Mul, Lt, Eq, And, Or, Call, Return),
             )
             for operation in self.operations
         ):
@@ -203,6 +224,11 @@ class Function:
                     or operation.nonzero_target not in labels
                 ):
                     raise ValueError("branch-zero targets must name blocks in the function")
+                if isinstance(operation, BranchEq) and (
+                    operation.eq_target not in labels
+                    or operation.ne_target not in labels
+                ):
+                    raise ValueError("branch-eq targets must name blocks in the function")
 
 
 @dataclass(frozen=True, slots=True)

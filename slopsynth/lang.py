@@ -17,6 +17,7 @@ from typing import TypeAlias
 from .ir import (
     Add,
     BasicBlock,
+    BranchEq,
     BranchZero,
     Call,
     Function,
@@ -29,6 +30,7 @@ from .ir import (
     Program,
     ReadA,
     Return,
+    Rotate,
     Store,
     Sub,
     ValueRef,
@@ -41,7 +43,7 @@ MAX_ADDRESS = 1_162_261_467
 _NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.-]*$")
 _INTEGER_RE = re.compile(r"^-?(0|[1-9][0-9]*)$")
 _HEX_RE = re.compile(r"^[0-9A-Fa-f]*$")
-_MODULE_MNEMONICS = frozenset({"jump", "brz", "ld", "st", "add", "sub", "call", "ret", "return", "write_decimal"})
+_MODULE_MNEMONICS = frozenset({"jump", "brz", "breq", "rot", "ld", "st", "add", "sub", "call", "ret", "return", "write_decimal"})
 _DECLINED_MNEMONICS: frozenset[str] = frozenset()
 
 
@@ -154,6 +156,21 @@ def _parse_operation(mnemonic: str, operands: list[str], line: int) -> object:
             zero_target=operands[1],
             nonzero_target=operands[2],
         )
+    if mnemonic == "breq":
+        if len(operands) != 4:
+            raise LangError(line, "breq takes a value, a comparison, an equal label and a not-equal label")
+        if not _is_identifier(operands[2]) or not _is_identifier(operands[3]):
+            raise LangError(line, "breq targets must be labels")
+        return BranchEq(
+            value=_parse_value(operands[0], line, "breq value"),
+            rhs=_parse_value(operands[1], line, "breq comparison"),
+            eq_target=operands[2],
+            ne_target=operands[3],
+        )
+    if mnemonic == "rot":
+        if len(operands) != 1:
+            raise LangError(line, "rot takes one address")
+        return Rotate(address=_parse_value(operands[0], line, "rotate address"))
     if mnemonic == "ld":
         if len(operands) != 2 or not _is_identifier(operands[0]):
             raise LangError(line, "ld takes an identifier destination and one address")
@@ -333,7 +350,7 @@ def parse_placed(text: str) -> Placed:
         for operation in block_operations:
             if not isinstance(
                 operation,
-                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, Jump, Load, Store, Add, Sub, Call, Return),
+                (ReadA, WriteA, WriteDecimal, Halt, BranchZero, BranchEq, Rotate, Jump, Load, Store, Add, Sub, Call, Return),
             ):
                 raise LangError(0, f"{operation!r} cannot be a module operation")
         basic_blocks.append(BasicBlock(name=label, operations=tuple(block_operations)))
@@ -460,6 +477,12 @@ def _format_operations(operations: tuple[object, ...]) -> list[str]:
             lines.append(
                 f"brz {operation.value},{operation.zero_target},{operation.nonzero_target}"
             )
+        elif isinstance(operation, BranchEq):
+            lines.append(
+                f"breq {operation.value},{operation.rhs},{operation.eq_target},{operation.ne_target}"
+            )
+        elif isinstance(operation, Rotate):
+            lines.append(f"rot {operation.address}")
         elif isinstance(operation, Load):
             lines.append(f"ld {operation.destination},{operation.address}")
         elif isinstance(operation, Store):
