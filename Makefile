@@ -1,4 +1,4 @@
-.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms test-conformance build-lisp-guest test-lisp-matrix verify-lisp-conformance build-eval-add test-eval-add verify-h9-eval-add verify-h13 fuzz
+.PHONY: build verify synth-echo review-time-estimate quine-smoke verify-unary verify-both-arms test-conformance build-lisp-guest test-lisp-matrix verify-lisp-conformance build-eval-add test-eval-add verify-h9-eval-add verify-h13 verify-h15 fuzz
 
 build:
 	./tools/build.sh
@@ -51,6 +51,9 @@ verify-h13: build
 	python3 -B tools/verify_h13_echo_loop.py
 	python3 -B tools/verify_h13_cat.py
 	python3 -B tools/verify_h14_countdown.py
+
+verify-h15: build
+	python3 -B tools/verify_h15_native_ir_loop.py
 
 fuzz: build
 	python3 -B tools/fuzz_predicated.py

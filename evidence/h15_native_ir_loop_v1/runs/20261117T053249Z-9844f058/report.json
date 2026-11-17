@@ -1,0 +1,79 @@
+{
+  "cases": 390,
+  "cases_declared": 3,
+  "cells": 4795,
+  "host": {
+    "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "image_sha256": "d4a1ce51a67b84dee2d1128f6b913a05f8d863349c9677ea1e1971d76e8569f7",
+  "largest_image_byte": 126,
+  "longest_input_bytes": 1000000,
+  "longest_run_vm_steps": 1037001279,
+  "loop": {
+    "cells": {
+      "P": 84,
+      "U": 51,
+      "V": 75,
+      "W": 112,
+      "Y": 60,
+      "Z": 225,
+      "eof_cell": 2076,
+      "halt": 99,
+      "landing": 2673,
+      "prologue": 2107,
+      "resume": 3402,
+      "table": 376,
+      "zero_cell": 376
+    },
+    "end": 4794,
+    "eof_byte": 218,
+    "eof_word": 1700,
+    "head": 2673,
+    "startup_and_exit_steps": 1279,
+    "steps_per_pass": 2074
+  },
+  "lowering": "fixed19-native-ir-loop-v1",
+  "module": "examples/ir_loop.slop",
+  "negative_controls": [
+    {
+      "differs_from_reference": true,
+      "halted": {
+        "bolge19": true,
+        "fast20": true
+      },
+      "image": "mutant-zero-loops.mb",
+      "stdin_hex": "00",
+      "stdout_hex": {
+        "bolge19": "da",
+        "fast20": "da"
+      }
+    },
+    {
+      "differs_from_reference": true,
+      "halted": {
+        "bolge19": true,
+        "fast20": true
+      },
+      "image": "mutant-early-exit.mb",
+      "stdin_hex": "4d3f",
+      "stdout_hex": {
+        "bolge19": "",
+        "fast20": ""
+      }
+    }
+  ],
+  "not_demonstrated": [
+    "Loop bodies other than this CFG: `lower` refuses anything but read/brz/halt/read/write/jump.",
+    "Memory, arithmetic or nested loops inside a native loop body.",
+    "Loading with the canonical loader: the image contains inert cells that are not valid opcodes.",
+    "A proof for all inputs: the campaign is a finite set, including every single byte.",
+    "Composition with the predicated compiler, which still unrolls the loops it compiles."
+  ],
+  "pass": 390,
+  "status": "PASS",
+  "upstream_fast20": {
+    "revision": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "sha256": "607467b591f3446e7e54dfccfee0fff867a03f325ca2767ff49be71e8a431143"
+  }
+}

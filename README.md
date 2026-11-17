@@ -35,6 +35,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H15: bucle nativo desde IR** | `lower()` compila la forma de H3 (`read; brz; halt; read; write; jump`) a un cuerpo lapeado que se re-ejecuta y sale a un `halt` **dentro de la imagen**, sin relleno de memoria | 390 casos en `fast20.c` original, `bolge19` y el modelo; 1.000.000 de bytes sin ceros = 1.037.001.279 pasos; dos controles negativos |
 | **H14: cuenta atrás nativa** | `rotate` divide un contador en memoria entre 3 en cada vuelta, `output` lo imprime y un `move`+`jump` por tabla decide la salida; imprime 3^(n-1)…3, 1 y se detiene | n = 0..6 en `fast20.c` original, `bolge19` y el modelo; no hay compilador desde IR y no se encontró layout para n = 7, 8 |
 | **H13b: `cat` nativo** | Bucle que lee, comprueba EOF con dos celdas `crazy`, imprime, restaura sus datos y **se detiene al acabar la entrada**; 4.515 celdas, 1.875 pasos por byte | 326 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes, todos terminan solos; el cuerpo es fijo, no sale de un compilador |
 | **H13a: bucle nativo** | Eco `input; output; jump` cuyo cuerpo de 82 celdas se vuelve a ejecutar en cada vuelta; el número de vueltas lo decide la entrada | 272 casos en `fast20.c` original y `bolge19`, hasta 1.000.000 de bytes; no termina en EOF (eso lo hace H13b) y el cuerpo no calcula |
@@ -111,9 +112,9 @@ las entradas de hasta 300 bytes.
 
 **Qué no hace:** no detecta el final de la entrada. Tras EOF imprime `0xDA` hasta
 que algo externo lo detiene, así que cada ejecución se corta por pasos o por bytes
-leídos. El cuerpo no calcula ni decide nada, y el compilador predicado sigue
-desenrollando sus bucles: bucles nativos con aritmética, ramas y salida
-condicional siguen **NOT_DEMONSTRATED**. La imagen usa celdas inertes que no son
+leídos. El cuerpo no calcula ni decide nada; H15 ya emite desde IR un bucle nativo
+con rama y salida condicional, pero la aritmética dentro de un bucle nativo sigue
+**NOT_DEMONSTRATED**. La imagen usa celdas inertes que no son
 opcodes válidos, por lo que se carga con `--loader raw` (como hace siempre
 `fast20.c`) y no con el cargador canónico.
 
@@ -147,10 +148,10 @@ original y en `bolge19`: todos los bytes sueltos, entradas de hasta 1.000.000 de
 bytes (1.875.001.279 pasos de VM) y dos controles negativos. Ninguna ejecución se
 corta desde fuera: cada una termina en el paso `1279 + 1875 × bytes`.
 
-**Qué no hace:** el cuerpo está generado a mano para este programa. No hay todavía
-un compilador de IR a bucles nativos, y el compilador predicado sigue
-desenrollando los suyos. Cada byte cuesta 1.875 pasos, casi todos en celdas
-inertes. La imagen solo carga con el cargador crudo.
+**Qué no hace:** el cuerpo está generado a mano para este programa; H15 compila
+otra forma desde IR, pero no `cat`, y el compilador predicado sigue desenrollando
+los suyos. Cada byte cuesta 1.875 pasos, casi todos en celdas inertes. La imagen
+solo carga con el cargador crudo.
 
 
 ## H14: bucle nativo con contador
@@ -172,10 +173,54 @@ python3 -B tools/verify_h14_countdown.py
 
 La [campaña](evidence/h14_countdown_v1/protocol.md) pasa 7 de 7 cuentas (n de 0 a 6) en
 `fast20.c` original, `bolge19` y el modelo, todas terminan solas, más dos controles
-negativos. **Qué no hace:** no hay compilador desde IR (cada n tiene un layout
-encontrado por búsqueda y congelado), no se encontró layout para n = 7 ni 8 (la tabla choca con el arranque y el prólogo; los
+negativos. **Qué no hace:** no hay compilador desde IR para este cuerpo (H15 compila
+la forma de H3; cada n tiene un layout encontrado por búsqueda y congelado), no se
+encontró layout para n = 7 ni 8 (la tabla choca con el arranque y el prólogo; los
 punteros a celdas lejanas se construyen con `rotate`), y la salida depende del relleno de memoria sobre la imagen,
 que ambas VM de referencia comparten pero que no es parte de ninguna especificación.
+
+
+## H15: primer bucle nativo emitido desde IR
+
+[`slopsynth/native_ir_loop.py`](slopsynth/native_ir_loop.py) compila el módulo
+[`examples/ir_loop.slop`](examples/ir_loop.slop) —la misma forma que H3— a una
+imagen de **4.795 celdas** cuyo cuerpo se re-ejecuta en cada vuelta y termina en un
+`halt` que está **dentro de la imagen**.
+
+- **La forma.** `read; brz A, zero, echo; zero: halt; echo: read; write; jump top`.
+  `lower()` rechaza cualquier otra: otro registro en `brz`, aritmética en un brazo,
+  un `write` en el brazo cero, un `jump` que no vuelve a la cabecera o un caso
+  declarado que contradiga la semántica.
+- **La prueba del selector.** Es la de H13b: dos `crazy` (Y = unos, W = 850)
+  devuelven el byte intacto y convierten EOF en 1700. La tabla de despacho vive en
+  las celdas que D recorre por deriva: la entrada del byte 0 y la de EOF apuntan a
+  un puntero de parada, las otras 255 al camino de reanudación.
+- **La salida en la imagen.** El `halt` está en la celda 99 y el salto de salida lee
+  una constante que construye el prólogo. Ninguna lectura cae por encima de la
+  imagen, así que la parada no depende del relleno de memoria que H14 necesita.
+- **La reanudación.** Restaura Y y W con la secuencia de siete `crazy` y un
+  `rotate` de H13b (A todavía lleva el selector), lee el payload, lo imprime y
+  vuelve a la cabecera. Si el payload es EOF imprime `0xDA` y la vuelta siguiente
+  lee EOF como selector y se detiene.
+- **El coste.** 1.279 pasos de arranque y parada y 2.074 por vuelta; el mismo cuerpo
+  se ejecuta en cada vuelta, y una pasada más cuesta exactamente 2.074 pasos
+  (`tests/test_native_ir_loop.py` lo comprueba).
+
+```sh
+python3 -B tools/verify_h15_native_ir_loop.py
+printf 'AB\x00' | ./build/bolge19 evidence/h15_native_ir_loop_v1/runs/*/ir_loop.mb --loader raw
+```
+
+La [campaña](evidence/h15_native_ir_loop_v1/protocol.md) pasa 390 de 390 casos en
+`fast20.c` original, `bolge19` y el modelo (este último hasta 300 bytes): todos los
+bytes sueltos, parejas seleccionadas, rampas, texto, 1.000.000 de bytes aleatorios y
+1.000.000 sin ceros (500.000 vueltas, 1.037.001.279 pasos), siempre terminando en el
+paso `1279 + 2074 × vueltas`, más dos controles negativos.
+
+**Qué no hace:** compila **una** forma. No hay memoria, aritmética ni bucles
+anidados dentro del cuerpo, y la composición con el compilador predicado (que sigue
+desenrollando) no existe. La imagen solo carga con el cargador crudo y la campaña es
+un conjunto finito de entradas, no una prueba para todas.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 

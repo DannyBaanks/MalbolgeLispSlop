@@ -34,5 +34,7 @@ jobs:
         run: python3 -B tools/verify_h13_cat.py --output-root "$RUNNER_TEMP/h13b"
       - name: Native countdown loops on upstream fast20.c and bolge19
         run: python3 -B tools/verify_h14_countdown.py --output-root "$RUNNER_TEMP/h14"
+      - name: Native loop emitted from IR
+        run: python3 -B tools/verify_h15_native_ir_loop.py --output-root "$RUNNER_TEMP/h15"
       - name: Differential fuzz of the predicated compiler
         run: python3 -B tools/fuzz_predicated.py --seed 100 --count 15
