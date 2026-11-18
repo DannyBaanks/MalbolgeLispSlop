@@ -1,0 +1,726 @@
+{
+ "schema_version": 1,
+ "target_vm": "fixed-3^19 (fast20 / bolge19)",
+ "total_imported": 44,
+ "total_skipped": 25,
+ "entries": [
+  {
+   "name": "hello_world_40",
+   "image_file": "hello_world_40.19.mb",
+   "image_bytes": 2223,
+   "image_sha256": "8541efff41fdb1e46ce18d10924237aaf22a22f2f643d0b60c1018ecc5f3c444",
+   "source_file": "MALBOLGE-MB-DATABASE/tools/fixtures/hello_world_40.mb",
+   "source_sha256": "956c134aa67fa3fc049bda71406673050b64b18663ee603b16c7b694e13fe6c1",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 12,
+   "expected_stdout_sha256": "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069"
+  },
+  {
+   "name": "boss2_brainfuck",
+   "image_file": "boss2_brainfuck.19.mb",
+   "image_bytes": 2129,
+   "image_sha256": "341828b7b3dd9a60cf7bc8ff883b15c14fa154cf6b16b1c25a66f913e5e118a8",
+   "source_file": "MALBOLGE-MB-DATABASE/pureepoch/programs/boss2_brainfuck.mal",
+   "source_sha256": "ac46c907fc219724e0bd60694a7549dc04995df75879f568d9a15b720e1cc8db",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 5,
+   "expected_stdout_sha256": "d8f81b0d28b84580540b5a10cdb471cdaf78fa0ce8b93d71c6c1bd6cdbe318df"
+  },
+  {
+   "name": "boss3_autonomous_loop",
+   "image_file": "boss3_autonomous_loop.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/pureepoch/programs/boss3_autonomous_loop.mal",
+   "source_sha256": "d2d6b91d5f4df1f64890174cbe22599e71b37041aeb3677d2845f95ae01263bc",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "m1a_rot10",
+   "image_file": "m1a_rot10.19.mb",
+   "image_bytes": 2114,
+   "image_sha256": "8bb5f99feef89ae19e5198b861fb6a4c725b5201742c811e11996b771b045289",
+   "source_file": "MALBOLGE-MB-DATABASE/pureepoch/programs/m1a_rot10.mal",
+   "source_sha256": "188f8e9ed4d24079a773aba4d809ce168f002d28f05e62ac8844d6dc89735148",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "bbf3f11cb5b43e700273a78d12de55e4a7eab741ed2abf13787a4d2dc832b8ec"
+  },
+  {
+   "name": "m1b_normal",
+   "image_file": "m1b_normal.19.mb",
+   "image_bytes": 2116,
+   "image_sha256": "381030b55e140c6a9c16cf32b8f9bb65d53d3512b979a985612d9425d5ca96d3",
+   "source_file": "MALBOLGE-MB-DATABASE/pureepoch/programs/m1b_normal.mal",
+   "source_sha256": "80e5cf6a208ccc2fe714d6fdf6c9e348b4c4ad0ef6323aa63f8193ea7d58c551",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "0a43b22d89fa2499be5c7704c9bf273260b0ca9588e4cd1897cd80f9c96cd97a"
+  },
+  {
+   "name": "quine94_ceiling_probe",
+   "image_file": "quine94_ceiling_probe.19.mb",
+   "image_bytes": 2114,
+   "image_sha256": "23ccd44ccf5f61086f9ceb5c16d4bfcbe5a2cba02c307efc09942f67cb4fabfa",
+   "source_file": "MALBOLGE-MB-DATABASE/pureepoch/programs/quine94_ceiling_probe.mal",
+   "source_sha256": "65722e4a4566207e66e86c1ce8f464c5b9e94103729fb365951c4f37f7546e59",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "4ae81572f06e1b88fd5ced7a1a000945432e83e1551e6f721ee9c00b8cc33260"
+  },
+  {
+   "name": "mbir_a05_lifo",
+   "image_file": "mbir_a05_lifo.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_a05_lifo.mb",
+   "source_sha256": "f237df8247f5c8dc10157b96f58ba1dc9eff06ecefe916651b1d3aba5a66ed6c",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "mbir_cmp_gt",
+   "image_file": "mbir_cmp_gt.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_cmp_gt.mb",
+   "source_sha256": "1f17062a9585bbbb5b23ab2383f1b22fd60614e1b84bace32c52fa9e40f52f50",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "mbir_cmp_lt",
+   "image_file": "mbir_cmp_lt.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_cmp_lt.mb",
+   "source_sha256": "252abb9e7030429c9ff49d5615f1596f562565dde8923152ff4f77e2ef4b7ee7",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "mbir_jump_graft",
+   "image_file": "mbir_jump_graft.19.mb",
+   "image_bytes": 2116,
+   "image_sha256": "c769eb7849a9e90b07c123755fb53a4431e3868b9dd03f918ff6653c2b36d8e7",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_jump_graft.mb",
+   "source_sha256": "87bd9179b32143266a966b41fc8d4781c1814a7c2baf5248b6c9215d22a32ba5",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "74e1ade320c66075468e17cfab33f41e8e0eaca45edb6dd7b086c49a358d2a69"
+  },
+  {
+   "name": "mbir_m2_alu",
+   "image_file": "mbir_m2_alu.19.mb",
+   "image_bytes": 2114,
+   "image_sha256": "8c9c3d5b9ebb7d5bb5845ecf4c689166146f86a20978c28870c8bb58a660114c",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_m2_alu.mb",
+   "source_sha256": "1c641b880d1b0bd1825546c494ce163e9ca2c336318831c7fef83d3bb37f71d5",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "dbc1b4c900ffe48d575b5da5c638040125f65db0fe3e24494b76ea986457d986"
+  },
+  {
+   "name": "mbir_m2_cf",
+   "image_file": "mbir_m2_cf.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_m2_cf.mb",
+   "source_sha256": "30cc7e51bd8b78c76760eb896b70931532e7b0dfe3b7a3bc0ceee1a38b44d436",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "mbir_m2_cf_cmp",
+   "image_file": "mbir_m2_cf_cmp.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_m2_cf_cmp.mb",
+   "source_sha256": "e1e38cb49847a5d63ff7a29fa30c4f1557e2a63524402b0f632295d4990ccf00",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "mbir_m2_loader",
+   "image_file": "mbir_m2_loader.19.mb",
+   "image_bytes": 2116,
+   "image_sha256": "c769eb7849a9e90b07c123755fb53a4431e3868b9dd03f918ff6653c2b36d8e7",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_m2_loader.mb",
+   "source_sha256": "76347c981fb4c491ae42f48d5d4a656a46ecabb63bcc2c086d52db01828a11a1",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "74e1ade320c66075468e17cfab33f41e8e0eaca45edb6dd7b086c49a358d2a69"
+  },
+  {
+   "name": "mbir_native_probe_d",
+   "image_file": "mbir_native_probe_d.19.mb",
+   "image_bytes": 2124,
+   "image_sha256": "9e9d6f34bc01e1408d526398941c9ffd3b3d612bca845292cfffcb09ea905f19",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_native_probe_d.mb",
+   "source_sha256": "abfb4a306441ed9ee177247a69cbf2d24d9470480d975fd6abc259d930a71445",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 2,
+   "expected_stdout_sha256": "a3449a6319472c88a90b1db68a007ff70954617224c8d2af969e1bdf90a21c18"
+  },
+  {
+   "name": "mbir_p0_add",
+   "image_file": "mbir_p0_add.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_p0_add.mb",
+   "source_sha256": "8afc560bceeba7ce88d4da0fe852145d32f1a72c62ca844a519ba7f9156e8fbe",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "mbir_p1_sub",
+   "image_file": "mbir_p1_sub.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_p1_sub.mb",
+   "source_sha256": "264c0d21954990ccdf69536e1baa4c1bbc60efd7bcc25e5ca21a216c39e04b5d",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "mbir_p2_cmp",
+   "image_file": "mbir_p2_cmp.19.mb",
+   "image_bytes": 2108,
+   "image_sha256": "e4aa3070434872f65983059b6d4c8dd1b930878bbf58a260d1adf30edc2156bb",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_p2_cmp.mb",
+   "source_sha256": "8b27b0f5298d3b5387dbe29dd9ee9e07b58bb5102b4b6004d8d06107f1951509",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 0,
+   "expected_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+   "name": "mbir_pointer_cell_rt",
+   "image_file": "mbir_pointer_cell_rt.19.mb",
+   "image_bytes": 2118,
+   "image_sha256": "f873dea4647383271393b6e2fd3d748d85e4b6e1fefabfadca56c88188bfd049",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_pointer_cell_rt.mb",
+   "source_sha256": "1fb3eba2751c9678d797fb8622a610924327e2c1cb4ed52e53fda3a2d30350f9",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "fde502858306c235a3121e42326b53228b7ef4690eeed92a2b2eafe73c03a3ef"
+  },
+  {
+   "name": "mbir_pointer_cell_rt_ctrl",
+   "image_file": "mbir_pointer_cell_rt_ctrl.19.mb",
+   "image_bytes": 2114,
+   "image_sha256": "12556711df740174d6087b1611c7c5c5212ac6011c19a8b832a76dccdb89c4c4",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_pointer_cell_rt_ctrl.mb",
+   "source_sha256": "6a5c1ecbcd4bf26f563a3b3d0fdfd16a52f6eeca1bb505a98c7fa5caff079a4b",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "528a84ce6b18eb7d0e54be01379122a76dfdca14c97f02e0424aabf0220d9f51"
+  },
+  {
+   "name": "mbir_stack2_oneshot",
+   "image_file": "mbir_stack2_oneshot.19.mb",
+   "image_bytes": 2125,
+   "image_sha256": "c92be4cbc28c3e8f122956b18104e96d5fb3d0903160d2aba54cf115d236d49f",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_stack2_oneshot.mb",
+   "source_sha256": "71ed7539045505fdfce8842d7c66fdc7375b6feae677ad66a401fca8d5860aa4",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 2,
+   "expected_stdout_sha256": "fcab7fcc2b4cffd9bb45003bfc2e468a04ef6f77ca8200a7341f027631584d25"
+  },
+  {
+   "name": "mbir_unified_graft",
+   "image_file": "mbir_unified_graft.19.mb",
+   "image_bytes": 2116,
+   "image_sha256": "c769eb7849a9e90b07c123755fb53a4431e3868b9dd03f918ff6653c2b36d8e7",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/mbir_unified_graft.mb",
+   "source_sha256": "5623fee2d81946ea06901add8cb315bac1c62da5d657e0a2db4e5e685e77b71b",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "74e1ade320c66075468e17cfab33f41e8e0eaca45edb6dd7b086c49a358d2a69"
+  },
+  {
+   "name": "simple_cat_lmao",
+   "image_file": "simple_cat_lmao.19.mb",
+   "image_bytes": 4515,
+   "image_sha256": "b4e4b2c0d1b837728e3c5d95b3468a4995b9b61dbf79095af9586e1a449ab8e2",
+   "source_file": "MALBOLGE-MB-DATABASE/vm_malbolge/src/simple_cat_lmao.mb",
+   "source_sha256": "949a57f8bc664dc27abaf92e3f64b48637bc02319c01ad70020f16fdd321778c",
+   "cfg_kind": "ECHO_LOOP",
+   "lowering": "fixed19-native-cat-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "486f6c6120556e736861636b6c6564",
+   "expected_stdout_len": 15,
+   "expected_stdout_sha256": "d24477cd2376a2f2b336e77d534b87ca0ec8ad40382976424db0aa2da9e8327e"
+  },
+  {
+   "name": "echo",
+   "image_file": "echo.19.mb",
+   "image_bytes": 2116,
+   "image_sha256": "c769eb7849a9e90b07c123755fb53a4431e3868b9dd03f918ff6653c2b36d8e7",
+   "source_file": "MalbolgeFree/corpus/classic/echo.mal",
+   "source_sha256": "681f8033410df7a4a5d7eaa3f8c730929459de77ed4fd27cac02cd813ab36c0c",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 1,
+   "expected_stdout_sha256": "74e1ade320c66075468e17cfab33f41e8e0eaca45edb6dd7b086c49a358d2a69"
+  },
+  {
+   "name": "echo2",
+   "image_file": "echo2.19.mb",
+   "image_bytes": 2117,
+   "image_sha256": "c22f9152e9373ad30148bf9e0e24f00394fab6cbbb52cdf1b478dec652d65f5f",
+   "source_file": "MalbolgeFree/corpus/classic/echo2.mal",
+   "source_sha256": "385b4edf9e49a9cd015866887b79f5c18c82ba9d7b6ff6ae3ab899cd3433d9c7",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 2,
+   "expected_stdout_sha256": "ee1e877713365238452c2b5fcd9aebc27f9868350395a48c1cfe5a4743d85ba3"
+  },
+  {
+   "name": "echo3",
+   "image_file": "echo3.19.mb",
+   "image_bytes": 2118,
+   "image_sha256": "ec42d9dc167828d2c062e18927e6869bd32ad5e2d2a3cc419f4bbecf50b8c201",
+   "source_file": "MalbolgeFree/corpus/classic/echo3.mal",
+   "source_sha256": "22fd7df4dcae6a7d58f6b2172cb45e9778568ad334122084e519d8e6b374fe05",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "empty_only",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 3,
+   "expected_stdout_sha256": "c9095d8ba2ada64f9d6c529236714a13a5c919568e9ec168bd074ce77472165d"
+  },
+  {
+   "name": "reproducer",
+   "image_file": "reproducer.19.mb",
+   "image_bytes": 3287,
+   "image_sha256": "04c19faea9a993670fee06c9d622f27b5eaab77b3060e7d957561fd24f1394ce",
+   "source_file": "MalbolgeFree/corpus/classic/reproducer.mal",
+   "source_sha256": "0b77006aae9b60952eb111493da5a96b0d75f19355661df82923430fcd14786c",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 96,
+   "expected_stdout_sha256": "d94a327593e239b882ba8cf12340cbbbc884fbc84361e1bc7c6928db172c0d50"
+  },
+  {
+   "name": "quijote_ch001_full",
+   "image_file": "quijote_ch001_full.19.mb",
+   "image_bytes": 3488,
+   "image_sha256": "045d679623583183bc70690cbc0d6b2446988c75662eddf9db2afbd7d7329fca",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_001/quijote_ch001_full.mal",
+   "source_sha256": "bfaa91e096e2fba39734607f1109688356da46bb03bb731f97b164edf7794ac3",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 101,
+   "expected_stdout_sha256": "9efd9d8e84252422944921d2ee454230ee42ecd3f6670515ddfd047a0c695a93"
+  },
+  {
+   "name": "quijote_ch002_full",
+   "image_file": "quijote_ch002_full.19.mb",
+   "image_bytes": 3184,
+   "image_sha256": "b49f7c58fa18eed799e43c79f5d6aafcf477609e2e2d426b166bf28e308d0370",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_002/quijote_ch002_full.mal",
+   "source_sha256": "9d638a49aaec186c7c9634d1373f4eef67122c04f9266113ef836ca0a2bac8a3",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 83,
+   "expected_stdout_sha256": "491cae5bbbe3a38477c052be98afe3db10d008a00e032f26ddf26a6f2b2dc602"
+  },
+  {
+   "name": "quijote_ch003_full",
+   "image_file": "quijote_ch003_full.19.mb",
+   "image_bytes": 3381,
+   "image_sha256": "0dcdeaa46ff305f07e79932ebc74ecb42aff5e28bbf3a566f7531c457caa1453",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_003/quijote_ch003_full.mal",
+   "source_sha256": "f1ac479a63541ed7d451180b02363fa8421a8aacc7233f983cda059741f71e03",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 93,
+   "expected_stdout_sha256": "a9ec3bc6f0cd769a8dfbea81ef9aebf3de13e76625ee99d083a2a17f1bb24790"
+  },
+  {
+   "name": "quijote_ch004_full",
+   "image_file": "quijote_ch004_full.19.mb",
+   "image_bytes": 2880,
+   "image_sha256": "ab91e8717042cc7341a9465b67b0ff48e76ea3ab56a3ae387feb570a2b469f16",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_004/quijote_ch004_full.mal",
+   "source_sha256": "1a4963c627f8106053cb5cd4d94eefb15fa7431ec93305773efb02782159057b",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 62,
+   "expected_stdout_sha256": "81564ceea05aabae1e3583d508b9e4835e6ff88dd050116189c74693e7b7a537"
+  },
+  {
+   "name": "quijote_ch005_full",
+   "image_file": "quijote_ch005_full.19.mb",
+   "image_bytes": 2975,
+   "image_sha256": "1c3d63cfe96c73e7c61dad073bc4e1e90f73dff2168f85e61454dc40ad0ce3bc",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_005/quijote_ch005_full.mal",
+   "source_sha256": "7d1a28a7b8e97a54d79382cd18fe84787df63fcae9fc8dae02393cfbcbbe5cad",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 68,
+   "expected_stdout_sha256": "0481fde319b8e3d27c12002a672d07542f2e9e02c7b67ea8e114ca554f55ff90"
+  },
+  {
+   "name": "quijote_ch006_full",
+   "image_file": "quijote_ch006_full.19.mb",
+   "image_bytes": 3861,
+   "image_sha256": "128fea27d5c37471c87e4f91689e4ec622b1c8e5394b95c64d8fe994e0cd9216",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_006/quijote_ch006_full.mal",
+   "source_sha256": "fbc360fc5e02cf89ef0b5c44550f046e194d68a295223f70338906af643d6bc2",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 129,
+   "expected_stdout_sha256": "2c1b261c68682ff27f5a8f1624c61bf249687c87cb3e5739ac0134d4adf38933"
+  },
+  {
+   "name": "quijote_ch007_full",
+   "image_file": "quijote_ch007_full.19.mb",
+   "image_bytes": 3135,
+   "image_sha256": "704e2defff12eb30849b16293f1a91382f73f8641cd6bc2ce6e57bd77bd70704",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_007/quijote_ch007_full.mal",
+   "source_sha256": "8f4d7ccb947c8cf90dad8d4bbea11088cecad6f21d81d2c84a622afd68704f57",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 77,
+   "expected_stdout_sha256": "5f2d09cd39be4a484d41c23bccae92b443c318358fd1055d04f1924062d4d3b8"
+  },
+  {
+   "name": "quijote_ch008_full",
+   "image_file": "quijote_ch008_full.19.mb",
+   "image_bytes": 4484,
+   "image_sha256": "6c8d80d9db522600f122cb0319b2ec4e4ae5ecb1ebc8ac5547930d9d6abeb5e4",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_008/quijote_ch008_full.mal",
+   "source_sha256": "e0a0f6f335b41333d35ace8f4469c8ba96032909853cf3434607ac1fb903cab0",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 177,
+   "expected_stdout_sha256": "8da3640df45de3d58e6fc44bd7fc4fe886495657b3b5aff8858755899f65bfbe"
+  },
+  {
+   "name": "quijote_ch009_full",
+   "image_file": "quijote_ch009_full.19.mb",
+   "image_bytes": 4152,
+   "image_sha256": "a425ad132bc5b93200e483af74ee78aacfb38b1bc1544cff77b87bd0f2a91a97",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_009/quijote_ch009_full.mal",
+   "source_sha256": "e51906fb8a512aa1b7bdf34ff0807c45ac87b06b5a4155293f0b46aad82f6697",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 120,
+   "expected_stdout_sha256": "deb6d4ab064eb329e69c9a17ee0d670cddc3ac00174b72459058c3b55c513f4f"
+  },
+  {
+   "name": "quijote_ch010_full",
+   "image_file": "quijote_ch010_full.19.mb",
+   "image_bytes": 3302,
+   "image_sha256": "74456b03ece5d8f8b1b689a3fbcc44dc4ebbcb251830c0c9b661aeae55567b06",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_010/quijote_ch010_full.mal",
+   "source_sha256": "15ff64e6036f735b1481ba7eea44b77cbb5829de080b03b02675c6b9e2382da4",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 95,
+   "expected_stdout_sha256": "2a0d2f36e7e4852dda14c464c29878497ecabfb8346f189c56669926faaa9ee6"
+  },
+  {
+   "name": "quijote_ch011_full",
+   "image_file": "quijote_ch011_full.19.mb",
+   "image_bytes": 2897,
+   "image_sha256": "871f9001143abfbe3235c20b9e12a8b6396414aa619f17cdaa6e33a938aa9bc8",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_011/quijote_ch011_full.mal",
+   "source_sha256": "6eff7e778c83c897abb2802f85f9b893107e333c768afe1c1cff03c799855c4e",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 60,
+   "expected_stdout_sha256": "ceb923691e00ddf20307f46e749a8941047e0a57999efda42b6d1e3e2fcb9c6a"
+  },
+  {
+   "name": "quijote_ch012_full",
+   "image_file": "quijote_ch012_full.19.mb",
+   "image_bytes": 4026,
+   "image_sha256": "f5624bc72be9b0ebe500d5857a63ec3e905afb969cfb8f6b6d7cfe27b8589992",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_012/quijote_ch012_full.mal",
+   "source_sha256": "820f6c2c6c212f395f93096f9603a80d139c0a3fd1a8d35fcfb5ece796cf29f1",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 156,
+   "expected_stdout_sha256": "2fd04a1e3917b335795d9d19bc8b53f3465b14ec8dc01ccc5afb77f0ffcc88ac"
+  },
+  {
+   "name": "quijote_ch013_full",
+   "image_file": "quijote_ch013_full.19.mb",
+   "image_bytes": 3668,
+   "image_sha256": "4c257961ad4b2fd2949d3777181d6a58e4c792c8b5480165c46e3307b8c701a7",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_013/quijote_ch013_full.mal",
+   "source_sha256": "9a813b679dbd564e12df5ff660895727b503d758507ec63a8892337894155d98",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 121,
+   "expected_stdout_sha256": "ce3b0069bde33403389a2f7e5063a521a3d8260155185ea038e17793742d583d"
+  },
+  {
+   "name": "quijote_ch014_full",
+   "image_file": "quijote_ch014_full.19.mb",
+   "image_bytes": 5298,
+   "image_sha256": "524fec3666d2e00de1383c17fa6439af3416c6c8fb0341441bee4a47f2e6390b",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_014/quijote_ch014_full.mal",
+   "source_sha256": "bc5afcf62b101d1d2ef7c3b1bc8e24f264314bb335beca3fd190f6f15dde06a5",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 235,
+   "expected_stdout_sha256": "c071fe695b3f7c007d75490b47b310a2461b8d70362448deee7993ef6cfb2e6a"
+  },
+  {
+   "name": "quijote_ch015_full",
+   "image_file": "quijote_ch015_full.19.mb",
+   "image_bytes": 4603,
+   "image_sha256": "5351eb0f54e74813979abcf10920e334b84dee55df0e47aa0bb48434c42a4243",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_015/quijote_ch015_full.mal",
+   "source_sha256": "8ab9de594cf651787cbf7bbc5154d09b41204b55af815d8bba78d0f148a77487",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 188,
+   "expected_stdout_sha256": "d3dc305c334df996fc0a2bada4e625a5dd0cd710834f661c7cb9a056497923f4"
+  },
+  {
+   "name": "quijote_ch016_full",
+   "image_file": "quijote_ch016_full.19.mb",
+   "image_bytes": 3899,
+   "image_sha256": "f31e3abec96b6198242dd390868a616779c5fab33cc80458b96aeb64e2b050c0",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_016/quijote_ch016_full.mal",
+   "source_sha256": "5e834a567fa85af349d12cbbfc60c8c42ddb64cc76cd1aac69eeae41f55be9e9",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 131,
+   "expected_stdout_sha256": "a4a914564251bb9cd7136ac1b958496d1ba7f57f703c0f28e11c3e688ba188f8"
+  },
+  {
+   "name": "quijote_ch017_full",
+   "image_file": "quijote_ch017_full.19.mb",
+   "image_bytes": 4188,
+   "image_sha256": "ce710133e8c2631875d03ff7f21d9fbedb36c13f12766055b2241ac625a4aa7e",
+   "source_file": "Malbolge-Translator/artifacts/quijote/chapter_017/quijote_ch017_full.mal",
+   "source_sha256": "6042347c149f8c6983e40b9a6740588024edc119acb135e208b473dd9b3d34c4",
+   "cfg_kind": "STRAIGHT_LINE_HALT",
+   "lowering": "c2u-once-retarget-v1",
+   "stdin_scope": "any",
+   "probe_stdin_hex": "",
+   "expected_stdout_len": 165,
+   "expected_stdout_sha256": "82621c22c43b742543cca7e72881725cde166899429ff7ae2ebfb3e45fde2f01"
+  }
+ ],
+ "skipped": [
+  {
+   "program": "boss1_byzantine.mal",
+   "reason": "UNSUPPORTED_CFG: status=HALT, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "m1c_normal.mal",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "m1e_normal.mal",
+   "reason": "UNSUPPORTED_CFG: status=HALT, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "m2_normal.mal",
+   "reason": "UNSUPPORTED_CFG: status=HALT, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "m3_normal.mal",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "torus_borrow_e_t2.mal",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=1, loop_ops={'nop': 460, 'movd': 32, 'rot': 32, 'opr': 4, 'in': 2, 'jmp': 2, 'out': 1, '53': 1, '69': 1, '16': 1, '66': 1, '65': 1, '55': 1, '54': 2, '17': 2, '32': 1, '82': 2, '31': 1, '73': 1, '91': 1, '83': 1, '8': 2, '35': 1, '27': 1, '29': 2, '77': 1, '74': 1, '0': 1, '79': 1, '10': 2, '41': 1, '56': 3, '71': 1, '3': 1, '64': 1, '45': 1, '51': 1, '80': 1, '72': 1, '33': 1, '11': 1, '85': 1, '48': 1, '13': 1, '59': 1, '7': 1, '47': 1, '60': 1, '88': 1, '58': 1}"
+  },
+  {
+   "program": "torus_e_t3_normal.mal",
+   "reason": "UNSUPPORTED_CFG: status=HALT, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "mbir_alu.mb",
+   "reason": "UNSUPPORTED_CFG: status=MAX_STEPS, sccs=1, loop_ops={'jmp': 281959, 'nop': 24496, 'movd': 78500, 'opr': 17528, 'rot': 24590, 'in': 201, '53': 668, '44': 20642, '63': 669, '36': 28845, '66': 668, '72': 1494, '71': 602, '73': 2431, '74': 1003, '75': 1605, '60': 671, '37': 668, '86': 724, '78': 1002, '79': 1223, '82': 224, '34': 1602, '92': 1602, '83': 1602, '49': 670, '76': 602, '85': 326, '54': 668, '90': 502, '67': 670, '91': 222, '77': 598, '56': 222, '89': 101, 'out': 200}"
+  },
+  {
+   "program": "mbir_alu_rel.mb",
+   "reason": "UNSUPPORTED_CFG: status=MAX_STEPS, sccs=1, loop_ops={'jmp': 280198, 'nop': 25603, 'movd': 79243, 'opr': 17365, 'rot': 24927, 'in': 167, '53': 647, '44': 20467, '63': 647, '36': 28935, '66': 650, '72': 1456, '71': 584, '73': 2555, '74': 1000, '75': 1583, '60': 650, '37': 648, '86': 722, '78': 999, '79': 1220, '82': 222, '34': 1662, '92': 1662, '83': 1662, '49': 650, '76': 583, '85': 225, '54': 646, '90': 500, '67': 647, '91': 223, '77': 497, '56': 222, '89': 167, 'out': 166}"
+  },
+  {
+   "program": "mbir_c_native.mb",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=1, loop_ops={'movd': 3, 'rot': 2, 'jmp': 2, '29': 1, '86': 1, '87': 1, '50': 1, '51': 1}"
+  },
+  {
+   "program": "mbir_cmp_lt_dec.mb",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "mbir_dispatch2.mb",
+   "reason": "LOAD_ERROR: invalid character 50 at cell 41"
+  },
+  {
+   "program": "mbir_dispatch4_pack.mb",
+   "reason": "LOAD_ERROR: invalid character 95 at cell 41"
+  },
+  {
+   "program": "mbir_dispatch5.mb",
+   "reason": "LOAD_ERROR: invalid character 105 at cell 41"
+  },
+  {
+   "program": "mbir_dispatchN.mb",
+   "reason": "LOAD_ERROR: invalid character 49 at cell 41"
+  },
+  {
+   "program": "mbir_native_2routes.mb",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "mbir_native_3routes.mb",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "mbir_native_cmp_decimal.mb",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "mbir_native_fold_loop.mb",
+   "reason": "LOAD_ERROR: invalid character 68 at cell 41"
+  },
+  {
+   "program": "mbir_native_stack.mb",
+   "reason": "UNSUPPORTED_CFG: status=INVALID_CELL, sccs=0, loop_ops={}"
+  },
+  {
+   "program": "mbir_stack_loop_lifo2.mb",
+   "reason": "LOAD_ERROR: invalid character 90 at cell 41"
+  },
+  {
+   "program": "mbir_stack_loop_lifo2_ctrl.mb",
+   "reason": "LOAD_ERROR: invalid character 90 at cell 41"
+  },
+  {
+   "program": "mbir_stack_loop_phase.mb",
+   "reason": "LOAD_ERROR: invalid character 53 at cell 41"
+  },
+  {
+   "program": "mbir_stack_loop_phase_ctrl.mb",
+   "reason": "LOAD_ERROR: invalid character 53 at cell 41"
+  },
+  {
+   "program": "quine_m281.mal",
+   "reason": "UNSUPPORTED_CFG: status=MAX_STEPS, sccs=1, loop_ops={'jmp': 163140, 'movd': 51449, 'nop': 16190, 'opr': 7369, 'rot': 9041, '36': 4644, '56': 17328, '61': 10085, '44': 9671, '63': 11082, '64': 2216, '65': 604, '66': 4131, '67': 4735, '57': 19007, '69': 2216, '70': 4130, '71': 2518, '86': 2015, '31': 806, '90': 2015, '21': 806, '82': 806, '76': 806, '43': 2015, '45': 5239, '46': 3627, '49': 10881, '50': 14105, '51': 8866, '52': 8866, '53': 17732, '54': 19412, '55': 16120, '59': 16120, '58': 8866, '60': 7254, '27': 1612, '41': 1612, '47': 2015, '28': 1612, '73': 1612, '24': 1612, '75': 1612, '38': 1612, 'out': 408, '85': 151, '48': 67, '89': 117, '12': 12, '26': 11, '20': 11, '29': 11}"
+  }
+ ]
+}
