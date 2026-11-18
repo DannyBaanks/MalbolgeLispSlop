@@ -1,0 +1,20 @@
+name ir_cipher
+case ,
+case 0241,c9
+case 024102,c992
+case 0241024200,c9c6
+case 0102ff00,eded
+entry init
+init:
+    st ACC, 6
+    jump top
+top:
+    read s
+    brz s, zero, echo
+zero:
+    halt
+echo:
+    read b
+    craz ACC
+    write
+    jump top

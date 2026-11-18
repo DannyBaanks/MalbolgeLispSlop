@@ -33,6 +33,8 @@ añade `craz <celda>` al IR y compila ese bucle aritmético desde un módulo IR
 (véase [H19](#h19-bucle-aritmético-compilado-desde-el-ir)). **H20** añade un
 bucle nativo input-driven que acumula cada byte leído con `crazy` lap-safe y
 termina en EOF/0 dentro de la imagen (véase [H20](#h20-cipher-input-driven-con-crazy-lap-safe)).
+**H21** extiende el lowering del IR a ese bucle cipher
+(véase [H21](#h21-cipher-compilado-desde-el-ir)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -46,6 +48,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H21: cipher compilado desde el IR** | `lower()` compila el bucle selector+payload con `craz ACC` (`st ACC,5; read; brz; halt; read; craz; write; jump`) a la imagen nativa de H20, byte-idéntica | 50 casos por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 2 controles negativos |
 | **H20: cipher input-driven con `crazy` lap-safe** | Bucle nativo de 2 lecturas/pasada (selector+payload) que reescribe un acumulador `ACC` con `crazy` usando el byte leído como máscara, imprime `ACC' mod 256` y se detiene en 0/EOF dentro de la imagen | 56 casos en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos |
 | **H19: bucle aritmético compilado desde el IR** | El IR gana `craz <celda>`; `lower()` compila el bucle contador+acumulador (`st`/`ld`/`breq`/`rot`/`craz`/`write`/`jump`/`halt`) a la imagen nativa de H18, byte-idéntica | n = 0..6 por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 3 controles negativos |
 | **H18: aritmética `crazy` lap-safe en el bucle** | El bucle reejecutable reescribe una celda acumuladora con `crazy` en cada pasada (además del `rotate` del contador) y sale a un `halt` dentro de la imagen; imprime 2 bytes por pasada | n = 0..6 en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos; el decremento con acarreo (`sub 1`) en bucle queda NOT_DEMONSTRATED (no hay opcode de store y `crazy` es tritwise) |
@@ -425,9 +428,48 @@ pasadas), `bolge19` informa los mismos pasos que el modelo, la cadena del
 acumulador se comprueba con `trace_writes`, y 3 controles negativos (entrada de
 selector, stub de halt, semilla del acumulador) difieren en ambas VM.
 
-**Qué no hace:** todavía no hay lowering desde IR para este bucle (la CFG de
-H17/H19 es otra); la aritmética con acarreo por pasada sigue NOT_DEMONSTRATED;
+**Qué no hace:** todavía no hay lowering desde IR para este bucle (eso es H21);
+la aritmética con acarreo por pasada sigue NOT_DEMONSTRATED;
 y la imagen solo carga con el cargador crudo.
+
+## H21: cipher compilado desde el IR
+
+[`slopsynth/native_ir_cipher.py`](slopsynth/native_ir_cipher.py) extiende el
+lowering del IR al bucle de H20. El módulo
+([`examples/ir_cipher.slop`](examples/ir_cipher.slop)) es el bucle de dos lecturas
+de H15 con el payload acumulado en vez de hacer eco:
+
+```
+entry init
+init:  st ACC, 5
+       jump top
+top:   read s
+       brz s, zero, echo
+zero:  halt
+echo:  read b
+       craz ACC
+       write
+       jump top
+```
+
+`lower()` acepta exactamente esa CFG (una función sin parámetros, cuatro bloques)
+y comprueba cada caso declarado contra `native_cipher.reference` antes de emitir;
+cualquier otra cosa lanza `AssemblyError`. Emite a través del layout congelado de
+H20, así que **la imagen compilada desde el IR es byte-idéntica a la de H20**.
+
+```sh
+python3 -B tools/verify_h21_ir_cipher.py
+printf '\x02A\x02B' | ./build/bolge19 evidence/h21_ir_cipher_v1/runs/*/ir_cipher.mb --loader raw
+```
+
+La [campaña](evidence/h21_ir_cipher_v1/protocol.md) corre 50 casos por el camino
+IR en `fast20.c` original, `bolge19` y el modelo con la cota estricta
+`max_address = len(image) − 1`; la imagen es byte-idéntica a la de H20; 6 módulos
+mutados se rechazan antes de emitir y 2 controles negativos difieren en ambas VM.
+
+**Qué no hace:** compila **una** CFG. `craz`/`rot`/`breq` siguen sin lowering en el
+compilador predicado, y la aritmética con acarreo en bucle reejecutable sigue
+NOT_DEMONSTRATED.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 
