@@ -91,7 +91,7 @@ LOWERINGS: tuple[tuple[str, str], ...] = (
 def _import_module(name: str):
     from .lang import parse_placed
     from pathlib import Path
-    src = Path("/home/danny/Development/ISyCo Git/MalbolgeLispSlop/examples") / name
+    src = Path("examples") / name
     placed = parse_placed(src.read_text(encoding="utf-8"))
     if placed.module is None:
         raise AssemblyError(f"{name} is not a module (no control flow)")
@@ -260,7 +260,7 @@ def lower(module: Module) -> "UnifiedResult":
 def _import_module(name: str):
     from .lang import parse_placed
     from pathlib import Path
-    src = Path("/home/danny/Development/ISyCo Git/MalbolgeLispSlop/examples") / name
+    src = Path("examples") / name
     placed = parse_placed(src.read_text(encoding="utf-8"))
     if placed.module is None:
         raise AssemblyError(f"{name} is not a module (no control flow)")
