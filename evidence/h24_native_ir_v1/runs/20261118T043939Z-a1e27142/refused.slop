@@ -1,0 +1,10 @@
+name weird
+case 00,00
+entry main
+main:
+    read x
+    call y, identity, x
+    write y
+    halt
+identity:
+    ret x
