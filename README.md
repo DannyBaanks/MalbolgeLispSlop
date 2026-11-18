@@ -37,7 +37,9 @@ termina en EOF/0 dentro de la imagen (véase [H20](#h20-cipher-input-driven-con-
 (véase [H21](#h21-cipher-compilado-desde-el-ir)). **H22** encadena dos
 acumuladores con `crazy` por pasada (véase [H22](#h22-cipher-de-dos-acumuladores)).
 **H23** extiende el lowering del IR a esa cadena doble
-(véase [H23](#h23-cipher-doble-compilado-desde-el-ir)).
+(véase [H23](#h23-cipher-doble-compilado-desde-el-ir)). **H24** unifica los cinco
+lowering IR nativos en un dispatcher único
+(véase [H24](#h24-dispatcher-unificado-del-lowering-ir)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -51,6 +53,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H24: dispatcher unificado del lowering IR** | `slopsynth/native_ir.py::lower` prueba los 5 lowering nativos (H15/H17/H19/H21/H23) en orden fijo y emite la imagen byte-idéntica del que acepta; el resto se rechaza listando todos los motivos | 5 ejemplos (uno por lowering) con sus casos declarados + campaña extra en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 1 módulo desconocido rechazado con los 5 motivos |
 | **H23: cipher doble compilado desde el IR** | `lower()` compila el módulo con dos `craz` en el bloque payload (`st ACC,5; st ACC2,7; read; brz; halt; read; craz; craz; write; jump`) a la imagen nativa de H22, byte-idéntica | 50 casos por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 3 controles negativos |
 | **H22: cipher de dos acumuladores** | Cada pasada reescribe dos celdas con `crazy` encadenadas por A (`ACC1' = TBL[ACC1][b]`, `ACC2' = TBL[ACC2][ACC1']`) y imprime `ACC2' mod 256`; halt en 0/EOF dentro de la imagen | 50 casos en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; cadenas de ambos acumuladores verificadas con `trace_writes`; 3 controles negativos |
 | **H21: cipher compilado desde el IR** | `lower()` compila el bucle selector+payload con `craz ACC` (`st ACC,5; read; brz; halt; read; craz; write; jump`) a la imagen nativa de H20, byte-idéntica | 50 casos por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 2 controles negativos |
@@ -520,6 +523,29 @@ La [campaña](evidence/h23_ir_cipher2_v1/protocol.md) corre 50 casos por el cami
 IR en `fast20.c` original, `bolge19` y el modelo con la cota estricta
 `max_address = len(image) − 1`; 6 módulos mutados se rechazan antes de emitir y 3
 controles negativos difieren en ambas VM.
+
+## H24: dispatcher unificado del lowering IR
+
+[`slopsynth/native_ir.py`](slopsynth/native_ir.py) reúne los cinco lowering IR
+nativos en un único `lower(module)`: prueba cada back-end en orden fijo
+(H15 `ir_loop`, H17 `ir_count`, H19 `ir_arith`, H21 `ir_cipher`, H23
+`ir_cipher2`) y emite con el primero que acepte el módulo; la imagen resultante
+es **byte-idéntica** a la del lowering especializado. Un módulo que ninguno
+acepta se rechaza con `AssemblyError` listando los cinco motivos.
+
+```sh
+python3 -B tools/verify_h24_native_ir.py
+```
+
+La [campaña](evidence/h24_native_ir_v1/protocol.md) compila los 5 ejemplos por el
+dispatcher y los ejecuta (casos declarados + campaña extra) en `fast20.c`
+original, `bolge19` y el modelo con la cota estricta `max_address = len(image) − 1`;
+cada imagen es byte-idéntica a la de su builder nativo sellado, y un módulo
+desconocido se rechaza listando los 5 lowering.
+
+**Qué no hace:** compila solo esas 5 CFG; el compilador predicado sigue sin
+`rot`/`breq`/`craz`; y la aritmética con acarreo en bucle reejecutable es
+imposible en fixed19 (ver la nota estructural en H23).
 
 > **Nota estructural (por qué la aritmética con acarreo en bucle reejecutable
 > es imposible en fixed19, no solo no encontrada):** el perfil tiene 8 opcodes
