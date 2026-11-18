@@ -1,0 +1,14 @@
+name ir_loop
+case 00,
+case 024100,41
+case 0241024200,4142
+entry top
+top:
+read
+brz A, zero, echo
+zero:
+halt
+echo:
+read
+write
+jump top

@@ -82,5 +82,8 @@ verify-h23: build
 verify-h24: build
 	python3 -B tools/verify_h24_native_ir.py
 
+verify-h25: build
+	python3 -B tools/verify_h25_native_ir_unified.py
+
 fuzz: build
 	python3 -B tools/fuzz_predicated.py

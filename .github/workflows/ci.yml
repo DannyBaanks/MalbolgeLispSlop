@@ -53,6 +53,8 @@ jobs:
       - name: Two-accumulator cipher lowered from an IR module
         run: python3 -B tools/verify_h23_ir_cipher2.py --output-root "$RUNNER_TEMP/h23"
       - name: Unified native IR dispatcher
+        run: python3 -B tools/verify_h25_native_ir_unified.py --output-root "$RUNNER_TEMP/h25"
+      - name: Unified native IR dispatcher
         run: python3 -B tools/verify_h24_native_ir.py --output-root "$RUNNER_TEMP/h24"
       - name: Differential fuzz of the predicated compiler
         run: python3 -B tools/fuzz_predicated.py --seed 100 --count 15

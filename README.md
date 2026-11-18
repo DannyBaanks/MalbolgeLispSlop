@@ -39,7 +39,10 @@ acumuladores con `crazy` por pasada (véase [H22](#h22-cipher-de-dos-acumuladore
 **H23** extiende el lowering del IR a esa cadena doble
 (véase [H23](#h23-cipher-doble-compilado-desde-el-ir)). **H24** unifica los cinco
 lowering IR nativos en un dispatcher único
-(véase [H24](#h24-dispatcher-unificado-del-lowering-ir)).
+(véase [H24](#h24-dispatcher-unificado-del-lowering-ir)). **H25** consolida todo en
+un solo módulo `native_ir_unified.py` que exporta `lower()`, `lower_placed()`,
+`lower_source()` y `reference()` para los 5 CFGs, con tests y verifier unificados
+(véase [H25](#h25-ir-unificado)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -53,6 +56,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H25: IR unificado** | `slopsynth/native_ir_unified.py` exporta `lower()` que despacha a los 5 lowering IR (H15/H17/H19/H21/H23) y emite imagen byte-idéntica; 5 ejemplos, 34 casos, 1 módulo rechazado listando los 5 lowering | 34/34 casos en `fast20.c`, `bolge19` y modelo con `max_address = len(image)−1`; 1 módulo rechazado con 5 motivos |
 | **H24: dispatcher unificado del lowering IR** | `slopsynth/native_ir.py::lower` prueba los 5 lowering nativos (H15/H17/H19/H21/H23) en orden fijo y emite la imagen byte-idéntica del que acepta; el resto se rechaza listando todos los motivos | 5 ejemplos (uno por lowering) con sus casos declarados + campaña extra en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 1 módulo desconocido rechazado con los 5 motivos |
 | **H23: cipher doble compilado desde el IR** | `lower()` compila el módulo con dos `craz` en el bloque payload (`st ACC,5; st ACC2,7; read; brz; halt; read; craz; craz; write; jump`) a la imagen nativa de H22, byte-idéntica | 50 casos por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 3 controles negativos |
 | **H22: cipher de dos acumuladores** | Cada pasada reescribe dos celdas con `crazy` encadenadas por A (`ACC1' = TBL[ACC1][b]`, `ACC2' = TBL[ACC2][ACC1']`) y imprime `ACC2' mod 256`; halt en 0/EOF dentro de la imagen | 50 casos en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; cadenas de ambos acumuladores verificadas con `trace_writes`; 3 controles negativos |
@@ -559,6 +563,27 @@ imposible en fixed19 (ver la nota estructural en H23).
 > circuito canónico acíclico cuyo resultado vive en A y se imprime, nunca se
 > guarda. En bucles lapped solo caben actualizaciones lap-safe que son función de
 > la propia celda: `rotate` (÷3, H16) y `crazy` con máscara en A (H18/H20/H22).
+
+## H25: IR unificado
+
+[`slopsynth/native_ir_unified.py`](slopsynth/native_ir_unified.py) exporta un único
+`lower(module)` que despacha a los 5 lowering IR (H15/H17/H19/H21/H23) y emite
+la imagen byte-idéntica del que acepta; un módulo desconocido se rechaza con
+`AssemblyError` listando los 5 motivos.
+
+```sh
+python3 -B tools/verify_h25_native_ir_unified.py
+```
+
+La [campaña](evidence/h25_native_ir_unified_v1/protocol.md) compila los 5 ejemplos
+por el dispatcher y los ejecuta (casos declarados + campaña extra) en `fast20.c`
+original, `bolge19` y el modelo con la cota estricta `max_address = len(image) − 1`;
+cada imagen es byte-idéntica a la de su builder nativo sellado, y un módulo
+desconocido se rechaza listando los 5 lowering.
+
+**Qué no hace:** compila solo esas 5 CFG; el compilador predicado sigue sin
+`rot`/`breq`/`craz`; y la aritmética con acarreo en bucle reejecutable es
+imposible en fixed19 (ver la nota estructural en H23).
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 
