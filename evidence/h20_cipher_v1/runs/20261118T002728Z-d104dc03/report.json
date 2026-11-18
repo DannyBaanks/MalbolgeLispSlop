@@ -1,0 +1,66 @@
+{
+  "acc_chain_ok": true,
+  "cases": 50,
+  "host": {
+    "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "image_cells": 4791,
+  "image_sha256": "c7ef70e4b959c31400c64e250698beba19cf49877e064283b307f0037656610f",
+  "lowering": "fixed19-native-cipher-v1",
+  "max_access": 3167,
+  "model_bound": "max_address = len(image) - 1 (any read above the image would be MODEL_BOUND)",
+  "negative_controls": [
+    {
+      "differs_from_reference": true,
+      "halted": {
+        "bolge19": true,
+        "fast20": true
+      },
+      "image": "mutant-selector-entry.mb",
+      "stdin_hex": "02410242",
+      "stdout_hex": {
+        "bolge19": "",
+        "fast20": ""
+      }
+    },
+    {
+      "differs_from_reference": true,
+      "halted": {
+        "bolge19": true,
+        "fast20": true
+      },
+      "image": "mutant-selector3-entry.mb",
+      "stdin_hex": "0358035900",
+      "stdout_hex": {
+        "bolge19": "",
+        "fast20": ""
+      }
+    },
+    {
+      "differs_from_reference": true,
+      "halted": {
+        "bolge19": true,
+        "fast20": true
+      },
+      "image": "mutant-acc-seed.mb",
+      "stdin_hex": "02410242",
+      "stdout_hex": {
+        "bolge19": "cbcc",
+        "fast20": "cbcc"
+      }
+    }
+  ],
+  "not_demonstrated": [
+    "Borrow-based arithmetic (add/sub with carry) per pass: no store opcode and crazy is tritwise (see H18).",
+    "A compiler from IR for this loop: the CFG lowering exists only for the H17/H19 loops, not yet for the cipher loop.",
+    "Loading with the canonical loader: the image contains inert cells that are not valid opcodes.",
+    "A proof for all inputs: the campaign is finite (56 cases including 100-byte runs), not a proof for every byte string."
+  ],
+  "pass": 50,
+  "status": "PASS",
+  "upstream_fast20": {
+    "revision": "0dc37eb1c15548d45be1a019069fcb290b1d78a5",
+    "sha256": "607467b591f3446e7e54dfccfee0fff867a03f325ca2767ff49be71e8a431143"
+  }
+}
