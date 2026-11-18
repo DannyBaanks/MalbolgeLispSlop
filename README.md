@@ -36,6 +36,8 @@ termina en EOF/0 dentro de la imagen (véase [H20](#h20-cipher-input-driven-con-
 **H21** extiende el lowering del IR a ese bucle cipher
 (véase [H21](#h21-cipher-compilado-desde-el-ir)). **H22** encadena dos
 acumuladores con `crazy` por pasada (véase [H22](#h22-cipher-de-dos-acumuladores)).
+**H23** extiende el lowering del IR a esa cadena doble
+(véase [H23](#h23-cipher-doble-compilado-desde-el-ir)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -49,6 +51,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H23: cipher doble compilado desde el IR** | `lower()` compila el módulo con dos `craz` en el bloque payload (`st ACC,5; st ACC2,7; read; brz; halt; read; craz; craz; write; jump`) a la imagen nativa de H22, byte-idéntica | 50 casos por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 3 controles negativos |
 | **H22: cipher de dos acumuladores** | Cada pasada reescribe dos celdas con `crazy` encadenadas por A (`ACC1' = TBL[ACC1][b]`, `ACC2' = TBL[ACC2][ACC1']`) y imprime `ACC2' mod 256`; halt en 0/EOF dentro de la imagen | 50 casos en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; cadenas de ambos acumuladores verificadas con `trace_writes`; 3 controles negativos |
 | **H21: cipher compilado desde el IR** | `lower()` compila el bucle selector+payload con `craz ACC` (`st ACC,5; read; brz; halt; read; craz; write; jump`) a la imagen nativa de H20, byte-idéntica | 50 casos por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 2 controles negativos |
 | **H20: cipher input-driven con `crazy` lap-safe** | Bucle nativo de 2 lecturas/pasada (selector+payload) que reescribe un acumulador `ACC` con `crazy` usando el byte leído como máscara, imprime `ACC' mod 256` y se detiene en 0/EOF dentro de la imagen | 56 casos en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos |
@@ -495,8 +498,41 @@ La [campaña](evidence/h22_cipher2_v1/protocol.md) pasa 50 de 50 casos en
 con `trace_writes`; 3 controles negativos difieren en ambas VM.
 
 **Qué no hace:** todavía no hay lowering desde IR para esta cadena de dos
-acumuladores; la aritmética con acarreo por pasada sigue NOT_DEMONSTRATED; y la
-imagen solo carga con el cargador crudo.
+acumuladores (eso es H23); la aritmética con acarreo por pasada sigue
+NOT_DEMONSTRATED (ver nota abajo); y la imagen solo carga con el cargador crudo.
+
+## H23: cipher doble compilado desde el IR
+
+[`slopsynth/native_ir_cipher2.py`](slopsynth/native_ir_cipher2.py) extiende el
+lowering del IR al bucle de H22: el bloque payload hace dos `craz` seguidos
+(`read b; craz ACC; craz ACC2; write; jump top`) y el entry guarda ambos
+acumuladores (`st ACC, 5; st ACC2, 7`). El módulo de ejemplo es
+[`examples/ir_cipher2.slop`](examples/ir_cipher2.slop). `lower()` acepta
+exactamente esa CFG, comprueba cada caso contra `native_cipher2.reference` y
+emite a través del layout congelado de H22: **imagen byte-idéntica a H22**.
+
+```sh
+python3 -B tools/verify_h23_ir_cipher2.py
+printf '\x02A\x02B' | ./build/bolge19 evidence/h23_ir_cipher2_v1/runs/*/ir_cipher2.mb --loader raw
+```
+
+La [campaña](evidence/h23_ir_cipher2_v1/protocol.md) corre 50 casos por el camino
+IR en `fast20.c` original, `bolge19` y el modelo con la cota estricta
+`max_address = len(image) − 1`; 6 módulos mutados se rechazan antes de emitir y 3
+controles negativos difieren en ambas VM.
+
+> **Nota estructural (por qué la aritmética con acarreo en bucle reejecutable
+> es imposible en fixed19, no solo no encontrada):** el perfil tiene 8 opcodes
+> (`jump, output, input, rotate, move, crazy, nop, halt`) y **no hay opcode de
+> store**: `move` solo pone `D = mem[D]`, `input` (cargador crudo) solo pone A, y
+> las únicas escrituras de celda son `rotate` (`mem[D] := rotate(mem[D])`) y
+> `crazy` (`mem[D] := TBL[mem[D]][A]`), ambas funciones del valor *actual* de la
+> celda. Por tanto no se puede guardar un byte de entrada exacto en una celda ni
+> persistir un valor calculado con acarreo en un acumulador; el acarreo no es
+> expresable tritwise. El sumador con acarreo de H9 v3 solo funciona como
+> circuito canónico acíclico cuyo resultado vive en A y se imprime, nunca se
+> guarda. En bucles lapped solo caben actualizaciones lap-safe que son función de
+> la propia celda: `rotate` (÷3, H16) y `crazy` con máscara en A (H18/H20/H22).
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 

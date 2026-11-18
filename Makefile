@@ -76,5 +76,8 @@ verify-h21: build
 verify-h22: build
 	python3 -B tools/verify_h22_cipher2.py
 
+verify-h23: build
+	python3 -B tools/verify_h23_ir_cipher2.py
+
 fuzz: build
 	python3 -B tools/fuzz_predicated.py

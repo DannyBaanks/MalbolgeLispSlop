@@ -50,5 +50,7 @@ jobs:
         run: python3 -B tools/verify_h21_ir_cipher.py --output-root "$RUNNER_TEMP/h21"
       - name: Chained two-accumulator cipher loop
         run: python3 -B tools/verify_h22_cipher2.py --output-root "$RUNNER_TEMP/h22"
+      - name: Two-accumulator cipher lowered from an IR module
+        run: python3 -B tools/verify_h23_ir_cipher2.py --output-root "$RUNNER_TEMP/h23"
       - name: Differential fuzz of the predicated compiler
         run: python3 -B tools/fuzz_predicated.py --seed 100 --count 15
