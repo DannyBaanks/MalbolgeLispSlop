@@ -34,7 +34,8 @@ añade `craz <celda>` al IR y compila ese bucle aritmético desde un módulo IR
 bucle nativo input-driven que acumula cada byte leído con `crazy` lap-safe y
 termina en EOF/0 dentro de la imagen (véase [H20](#h20-cipher-input-driven-con-crazy-lap-safe)).
 **H21** extiende el lowering del IR a ese bucle cipher
-(véase [H21](#h21-cipher-compilado-desde-el-ir)).
+(véase [H21](#h21-cipher-compilado-desde-el-ir)). **H22** encadena dos
+acumuladores con `crazy` por pasada (véase [H22](#h22-cipher-de-dos-acumuladores)).
 
 Encima de ese sumador hay un **compilador de programas IR con ramas, bucles
 acotados y memoria** (H10–H12). Con él, evaluadores escritos en IR corren dentro de
@@ -48,6 +49,7 @@ el probe de bootstrap y el circuito H9 son capacidades diferentes.
 
 | Componente | Capacidad | Alcance de la evidencia |
 | :--- | :--- | :--- |
+| **H22: cipher de dos acumuladores** | Cada pasada reescribe dos celdas con `crazy` encadenadas por A (`ACC1' = TBL[ACC1][b]`, `ACC2' = TBL[ACC2][ACC1']`) y imprime `ACC2' mod 256`; halt en 0/EOF dentro de la imagen | 50 casos en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; cadenas de ambos acumuladores verificadas con `trace_writes`; 3 controles negativos |
 | **H21: cipher compilado desde el IR** | `lower()` compila el bucle selector+payload con `craz ACC` (`st ACC,5; read; brz; halt; read; craz; write; jump`) a la imagen nativa de H20, byte-idéntica | 50 casos por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 2 controles negativos |
 | **H20: cipher input-driven con `crazy` lap-safe** | Bucle nativo de 2 lecturas/pasada (selector+payload) que reescribe un acumulador `ACC` con `crazy` usando el byte leído como máscara, imprime `ACC' mod 256` y se detiene en 0/EOF dentro de la imagen | 56 casos en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 3 controles negativos |
 | **H19: bucle aritmético compilado desde el IR** | El IR gana `craz <celda>`; `lower()` compila el bucle contador+acumulador (`st`/`ld`/`breq`/`rot`/`craz`/`write`/`jump`/`halt`) a la imagen nativa de H18, byte-idéntica | n = 0..6 por el camino IR en `fast20.c` original, `bolge19` y el modelo con `max_address = len(image)−1`; 6 módulos mutados rechazados; 3 controles negativos |
@@ -470,6 +472,31 @@ mutados se rechazan antes de emitir y 2 controles negativos difieren en ambas VM
 **Qué no hace:** compila **una** CFG. `craz`/`rot`/`breq` siguen sin lowering en el
 compilador predicado, y la aritmética con acarreo en bucle reejecutable sigue
 NOT_DEMONSTRATED.
+
+## H22: cipher de dos acumuladores
+
+[`slopsynth/native_cipher2.py`](slopsynth/native_cipher2.py) extiende el bucle de
+H20 para que cada pasada reescriba **dos** celdas con `crazy`, encadenadas por A:
+tras leer el payload `b`, `access(ACC1)` calcula `ACC1' = crazy(ACC1, A=b)` y pone
+`A = ACC1'`; `access(ACC2)` calcula entonces `ACC2' = crazy(ACC2, A=ACC1')`; `output`
+imprime `ACC2' mod 256`. La cadena fluye por A, así que ninguna máscara hace falta
+restaurarla. El bucle termina en un selector 0 o EOF, en el `halt` dentro de la
+imagen, sin leer por encima de ella. [`reference(stdin)`](slopsynth/native_cipher2.py)
+calcula la salida solo del orden de operaciones con `_crazy`.
+
+```sh
+python3 -B tools/verify_h22_cipher2.py
+printf '\x02A\x02B' | ./build/bolge19 evidence/h22_cipher2_v1/runs/*/cipher2.mb --loader raw
+```
+
+La [campaña](evidence/h22_cipher2_v1/protocol.md) pasa 50 de 50 casos en
+`fast20.c` original, `bolge19` y el modelo con la cota estricta
+`max_address = len(image) − 1`; las cadenas de ambos acumuladores se verifican
+con `trace_writes`; 3 controles negativos difieren en ambas VM.
+
+**Qué no hace:** todavía no hay lowering desde IR para esta cadena de dos
+acumuladores; la aritmética con acarreo por pasada sigue NOT_DEMONSTRATED; y la
+imagen solo carga con el cargador crudo.
 
 ## H9 v3: sumador ternario nativo compilado desde el IR
 
